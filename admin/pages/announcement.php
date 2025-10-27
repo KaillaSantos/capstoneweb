@@ -7,6 +7,10 @@ error_reporting(E_ALL);
 // includes
 require_once __DIR__ . '/../../includes/authSession.php';
 
+$query = "SELECT * FROM account WHERE userid = '$userid'";
+$result = mysqli_query($conn, $query);
+$user = mysqli_fetch_assoc($result);
+
 // ✅ Check session early
 if (!isset($_SESSION['userid'])) {
     echo "<script>alert('Unauthorized access. Please login.');
