@@ -188,6 +188,8 @@ $userid = $_SESSION['userid'];
     });
   </script>
 
+<!-- toggle -->
+<script src="/capstoneweb/assets/sidebarToggle.js"></script>
 
 <!-- verification modal -->
 <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
@@ -212,9 +214,7 @@ $userid = $_SESSION['userid'];
   </div>
 </div>
 
-<!-- toggle -->
-<script src="/capstoneweb/assets/sidebarToggle.js"></script>
-   
+
 
 </body>
 
