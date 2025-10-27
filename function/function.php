@@ -7,7 +7,6 @@ ini_set('display_errors', 1);
 session_start();
 require_once __DIR__ . '/../conn/dbconn.php';
 
-$_SESSION['role'] = $row['role'];
 
 // log in 
 if (isset($_POST['submit'])) {
@@ -126,12 +125,22 @@ if (isset($_POST['submitsetting'])) {
         }
     }
 
+    function getUserInfo($conn, $userid) {
+    $query = "SELECT role FROM account WHERE userid = '$userid'";
+    $result = mysqli_query($conn, $query);
+    return mysqli_fetch_assoc($result);
+    }
+
+    // Usage
+    $user = getUserInfo($conn, $_SESSION['role']);
+    echo $user['role'];
+
 
     // ✅ determine where to go back to
     $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
     
     // admin redirect back 
-    if($row['role'] == 'admin'){
+    if($user['role'] == 'admin'){
         // If referrer is the accsetting page, redirect to dashboard instead
         if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
             $previousPage = '/capstoneweb/admin/pages/dashboard.php'; // adjust path if needed
@@ -145,7 +154,7 @@ if (isset($_POST['submitsetting'])) {
         exit();
     }
 
-    if($role['role'] == 'user') {
+    if($user['role'] == 'user') {
         // If referrer is the accsetting page, redirect to dashboard instead
         if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
             $previousPage = '/capstoneweb/user/pages/user_announcement.php'; // adjust path if needed
