@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../conn/dbconn.php';
+require_once __DIR__ . '/../../conn/dbconn.php';
 
 // Handle AJAX request for data
 if (isset($_GET['ajax'])) {
