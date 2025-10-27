@@ -69,13 +69,13 @@
               <label for="purok" class="form-label d-block">Purok Number:</label>
                 <select name="role" id="role" class="form-select" required>
                   <option value="" disabled selected>Select Purok</option>
-                  <option value="Purok 1">Purok 1</option>
-                  <option value="Purok 2">Purok 2</option>
-                  <option value="Purok 3">Purok 3</option>
-                  <option value="Purok 4">Purok 4</option>
-                  <option value="Purok 5">Purok 5</option>
-                  <option value="Purok 6">Purok 6</option>
-                  <option value="Purok 7">Purok 7</option>
+                  <option value="1">Purok 1</option>
+                  <option value="2">Purok 2</option>
+                  <option value="3">Purok 3</option>
+                  <option value="4">Purok 4</option>
+                  <option value="5">Purok 5</option>
+                  <option value="6">Purok 6</option>
+                  <option value="7">Purok 7</option>
                 </select>
             </div>
               <div class="mb-3">
