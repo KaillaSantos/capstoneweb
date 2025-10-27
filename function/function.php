@@ -128,11 +128,6 @@ if (isset($_POST['submitsetting'])) {
     // ✅ determine where to go back to
     $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
     
-    // If referrer is the accsetting page, redirect to dashboard instead
-    if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-        $previousPage = '/capstoneweb/admin/pages/dashboard.php'; // adjust path if needed
-    }
-
     // ✅ redirect back
     echo "<script>
         alert('Account updated successfully!');
