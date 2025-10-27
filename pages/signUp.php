@@ -55,16 +55,6 @@
                 <input type="email" name="email" id="email" class="form-control" placeholder="E-mail" required>
               </div>
               <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
-                <i class="bi bi-eye-slash" id="togglePassword"></i>
-              </div>
-              <div class="mb-3">
-                <label for="rePassword" class="form-label">Re-enter Password</label>
-                <input type="password" id="rePassword" name="rePassword" class="form-control" placeholder="Re-enter Password" required />
-                <i class="bi bi-eye-slash" id="toggleRePassword"></i>
-              </div>
-             <div class="mb-3">
               <label for="role" class="form-label d-block">Select Role</label>
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="role" id="roleUser" value="user" checked required>
@@ -75,6 +65,17 @@
                 <label class="form-check-label" for="roleAdmin">Admin</label>
               </div>
             </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
+              </div>
+              <div class="mb-3">
+                <label for="rePassword" class="form-label">Re-enter Password</label>
+                <input type="password" id="rePassword" name="rePassword" class="form-control" placeholder="Re-enter Password" required />
+                <i class="bi bi-eye-slash" id="toggleRePassword"></i>
+              </div>
+             
               <button type="submit" name="signup" class="btn btn-success w-100">Register</button>
             </form>
 
