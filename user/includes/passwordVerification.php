@@ -31,7 +31,7 @@ if (isset($_POST['verify_submit'])) {
 
     if ($isValid) {
       // ✅ correct absolute path
-      $target = 'http://' . $_SERVER['HTTP_HOST'] . '/capstoneweb/pages/user_accsetting.php?userid=' . urlencode($userid);
+      $target = 'http://' . $_SERVER['HTTP_HOST'] . '/capstoneweb/user/pages/user_accsetting.php?userid=' . urlencode($userid);
       header("Location: $target");
       exit;
     } else {
