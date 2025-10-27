@@ -29,7 +29,6 @@ if (isset($_POST['verify_submit'])) {
 
     if ($isValid) {
       echo "<script>
-        alert('Password verified successfully.');
         window.location.href = '{$redirect}?userid={$userid}';
       </script>";
       exit();
