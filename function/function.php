@@ -221,18 +221,19 @@ if (isset($_POST['add_material'])) {
 }
 
 if (isset($_POST['submit_redeem'])) {
-    require_once __DIR__ . '/../conn/dbconn.php'; // ✅ Make sure the DB connection is included
+    require_once __DIR__ . '/../conn/dbconn.php'; // Make sure the DB connection is included
     session_start();
 
-    // ✅ Get the logged-in user's ID from session
-    $userid = $_SESSION['userid'] ?? 0;
+    //  Get the logged-in user's ID from session
+    $userid = mysqli_real_escape_string($conn, $_POST['user_id']); // user selected by admin
 
-    // ✅ Sanitize inputs
+
+    // Sanitize inputs
     $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
 
-    // ✅ Insert record into records table
+    // Insert record into records table
     $insertRecord = "INSERT INTO records (record_name, date, user_id) 
                      VALUES ('$record_name', '$date', '$userid')";
     $insertResult = mysqli_query($conn, $insertRecord);
@@ -255,7 +256,7 @@ if (isset($_POST['submit_redeem'])) {
         }
     }
 
-    // ✅ Insert recyclable materials into record_items
+    // Insert recyclable materials into record_items
     foreach ($materials as $recyclable_id => $data) {
         $quantity = (float)($data['quantity'] ?? 0);
         $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
@@ -267,7 +268,7 @@ if (isset($_POST['submit_redeem'])) {
         }
     }
 
-    // ✅ Redirect after success
+    // Redirect after success
     header("Location: ../pages/record.php?userid={$userid}");
     exit();
 }

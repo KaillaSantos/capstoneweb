@@ -1,14 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
+require_once __DIR__ . '/../../includes/conn/dbconn.php';
 
-// etch the user's full name based on logged-in session
-$userQuery = "SELECT userName FROM account WHERE userid = ?";
-$stmt = mysqli_prepare($conn, $userQuery);
-mysqli_stmt_bind_param($stmt, "i", $userid);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $fullname);
-mysqli_stmt_fetch($stmt);
-mysqli_stmt_close($stmt);
+// Fetch all users for dropdown (the admin chooses one)
+$userListQuery = "SELECT userid, userName FROM account ORDER BY userName ASC";
+$userListResult = mysqli_query($conn, $userListQuery);
 
 // Fetch recyclable materials
 $query = "SELECT id, RM_name FROM recyclable ORDER BY id ASC";
@@ -63,15 +59,6 @@ $result = mysqli_query($conn, $query);
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .redeem_panel select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: #fff url('https://cdn-icons-png.flaticon.com/512/32/32195.png') no-repeat right 12px center;
-            background-size: 16px;
-            padding-right: 35px;
-            cursor: pointer;
-        }
         .redeem_panel button.save-btn {
             margin-top: 25px;
             width: 100%;
@@ -104,34 +91,39 @@ $result = mysqli_query($conn, $query);
     <div class="redeem_panel">
         <h2>Redeem Materials</h2>
         <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+            
+            <!-- Dropdown for choosing which user -->
             <div class="mb-3">
-                <label for="record_name" class="form-label">Household Name:</label>
-                <input type="text" name="record_name" class="form-control" placeholder="Juan Dela Cruz" required>
+                <label for="user_id" class="form-label">Select Household:</label>
+                <select name="user_id" class="form-control" required>
+                    <option value="">-- Choose a user --</option>
+                    <?php while ($user = mysqli_fetch_assoc($userListResult)) { ?>
+                        <option value="<?= $user['userid'] ?>"><?= htmlspecialchars($user['userName']) ?></option>
+                    <?php } ?>
+                </select>
             </div>
+
             <div class="mb-3">
                 <label for="date" class="form-label">Date:</label>
                 <input type="date" name="date" class="form-control" required>
             </div>
-            <?php
-            $query = "SELECT * FROM recyclable ORDER BY id ASC";
-            $res = mysqli_query($conn, $query);
-            while ($row = mysqli_fetch_assoc($res)) {
-                $rid = $row['id'];
-                $name = htmlspecialchars($row['RM_name']);
-            ?>
+
+            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <div class="material-row">
-                    <label style="flex:1;"><?= $name ?>:</label>
-                    <input type="number" name="materials[<?= $rid ?>][quantity]" class="form-control d-inline" style="max-width:200px;" min="0" placeholder="0">
-                    <select name="materials[<?= $rid ?>][unit]" class="form-control d-inline" style="max-width:200px;">
+                    <label><?= htmlspecialchars($row['RM_name']) ?>:</label>
+                    <input type="number" name="materials[<?= $row['id'] ?>][quantity]" class="form-control" min="0" placeholder="0">
+                    <select name="materials[<?= $row['id'] ?>][unit]" class="form-control">
                         <option value="kg">kg</option>
                         <option value="pcs">pcs</option>
                     </select>
                 </div>
             <?php } ?>
+
             <div class="mb-3">
-                <label for="rec img" class="form-label">Upload Image (optional):</label>
+                <label for="rec_img" class="form-label">Upload Image (optional):</label>
                 <input type="file" class="form-control" name="rec_img" accept="image/*">
             </div>
+
             <button type="submit" class="save-btn" name="submit_redeem">Submit</button>
         </form>
     </div>
