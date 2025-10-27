@@ -1,13 +1,9 @@
-
-
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
-require_once __DIR__ . '/../includes/passwordVerification.php'; 
+require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
 require_once __DIR__ . '/../includes/recordsChart.php';
 include __DIR__ . '/../includes/sidebar.php';
-
-
 
 $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
@@ -21,6 +17,7 @@ $pending_notifications = 3;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -32,16 +29,17 @@ $pending_notifications = 3;
   <link rel="stylesheet" href="/capstoneweb/user-admin.css">
   <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
 </head>
+
 <body>
 
-<!-- ===== SIDEBAR ===== -->
+  <!-- ===== SIDEBAR ===== -->
   <?php include  '../includes/sidebar.php'; ?>
 
-<!-- ===== TOGGLE BUTTON ===== -->
-<button id="toggleSidebar"><i class="fa fa-bars"></i></button>
+  <!-- ===== TOGGLE BUTTON ===== -->
+  <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-<!-- ===== CONTENT AREA ===== -->
-<div class="content" id="content">
+  <!-- ===== CONTENT AREA ===== -->
+  <div class="content" id="content">
     <header class="dashboard-header">
       <div class="header-left">
         <img src="/capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
@@ -109,9 +107,9 @@ $pending_notifications = 3;
           <li><span>Purok 5</span><span>⭐ 245</span></li>
         </ul>
       </div>
-    </section>
-  
-          <div class="card chart">
+      
+
+      <div class="card chart">
         <h2>Recycling Overview</h2>
 
         <!-- Dropdown -->
@@ -126,32 +124,36 @@ $pending_notifications = 3;
           <canvas id="recordChart"></canvas>
         </div>
       </div>
-</div>
 
-<script src="/capstoneweb/assets/sidebarToggle.js"></script>
+    </section>
 
- <!-- Verify Password Modal -->
-<div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="post" action="">
-        <div class="modal-header">
-          <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="verifyPassword" class="form-label">Enter Password</label>
-            <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+  </div>
+
+  <script src="/capstoneweb/assets/sidebarToggle.js"></script>
+
+  <!-- Verify Password Modal -->
+  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="post" action="">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-        </div>
-      </form>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="verifyPassword" class="form-label">Enter Password</label>
+              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
 </body>
+
 </html>
