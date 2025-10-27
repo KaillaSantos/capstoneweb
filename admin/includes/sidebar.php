@@ -14,7 +14,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <img src="<?= htmlspecialchars($userImage) ?>" alt="User">
     <div class="profile-info">
       <h3><?= htmlspecialchars($user['userName']) ?></h3>
-      <p ><?= htmlspecialchars($user['email']) ?></p>
+      <p ><?= htmlspecialchars($user['email']) ?></p> 
     </div>
   </div>
 
