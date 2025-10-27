@@ -112,7 +112,7 @@ if (isset($_POST['submitsetting'])) {
 
     // ✅ update user info
     $query1 = "UPDATE account 
-               SET userName = '$userName', email = '$email', passWord = '$hashedPassword' 
+               SET userName = '$userName', email = '$email', passWord = '$passWord' 
                WHERE userid = $userid";
     mysqli_query($conn, $query1);
 
