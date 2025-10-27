@@ -71,7 +71,7 @@ if (isset($_POST['signup'])) {
 
     if ($result->num_rows > 0) {
         $_SESSION['registerError'] = "Email already exists.";
-        header("Location: /casptoneweb/pages/signUp.php");
+        header("Location: /capstoneweb/pages/signUp.php");
         exit();
     }
 
@@ -86,12 +86,12 @@ if (isset($_POST['signup'])) {
             exit();
         } else {
             $_SESSION['registerError'] = "Database error: " . mysqli_error($conn);
-            header("Location: /casptoneweb/pages/signUp.php");
+            header("Location: /capstoneweb/pages/signUp.php");
             exit();
         }
     } else {
         $_SESSION['registerError'] = "All fields are required.";
-        header("Location: /casptoneweb/pages/signUp.php");
+        header("Location: /capstoneweb/pages/signUp.php");
         exit();
     }
 }
