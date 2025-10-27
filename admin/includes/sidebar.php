@@ -6,6 +6,7 @@ $user = mysqli_fetch_assoc($result);
 $userImage = !empty($user['userimg']) ? "../image/" . $user['userimg'] : "../image/placeholder.jpg";
 
 $current_page = basename($_SERVER['PHP_SELF']);
+echo "<!-- Current Page: $current_page -->";
 ?>
 
 <div class="sidebar">
