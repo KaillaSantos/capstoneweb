@@ -103,6 +103,30 @@
 
   <script src="../function/js/loginEyeToggle.js"></script>
 
+    <!-- ✅ Toggle Purok Visibility Script -->
+  <script>
+    const roleUser = document.getElementById('roleUser');
+    const roleAdmin = document.getElementById('roleAdmin');
+    const purokContainer = document.getElementById('purokContainer');
+    const purokSelect = document.getElementById('purok');
+
+    function togglePurokVisibility() {
+      if (roleAdmin.checked) {
+        purokContainer.style.display = 'none';
+        purokSelect.removeAttribute('required');
+      } else {
+        purokContainer.style.display = 'block';
+        purokSelect.setAttribute('required', 'required');
+      }
+    }
+
+    // Run on page load and whenever the radio changes
+    document.addEventListener('DOMContentLoaded', togglePurokVisibility);
+    roleUser.addEventListener('change', togglePurokVisibility);
+    roleAdmin.addEventListener('change', togglePurokVisibility);
+  </script>
+
+
 </body>
 
 </html>
