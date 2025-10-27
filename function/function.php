@@ -110,9 +110,6 @@ if (isset($_POST['submitsetting'])) {
         exit();
     }
 
-    // ✅ hash password
-    $hashedPassword = password_hash($passWord, PASSWORD_DEFAULT);
-
     // ✅ update user info
     $query1 = "UPDATE account 
                SET userName = '$userName', email = '$email', passWord = '$hashedPassword' 
