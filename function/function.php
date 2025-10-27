@@ -244,7 +244,7 @@ if (isset($_POST['submit_redeem'])) {
 
     $record_id = mysqli_insert_id($conn);
 
-    // ✅ Handle image upload (optional)
+    // Handle image upload (optional)
     if (!empty($_FILES["rec_img"]["name"])) {
         $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
         $tempname = $_FILES["rec_img"]["tmp_name"];
