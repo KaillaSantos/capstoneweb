@@ -7,6 +7,8 @@ ini_set('display_errors', 1);
 session_start();
 require_once __DIR__ . '/../conn/dbconn.php';
 
+$_SESSION['role'] = $row['role'];
+
 // log in 
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -128,12 +130,36 @@ if (isset($_POST['submitsetting'])) {
     // ✅ determine where to go back to
     $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
     
-    // ✅ redirect back
-    echo "<script>
-        alert('Account updated successfully!');
-        window.location.href = '$previousPage';
-    </script>";
-    exit();
+    // admin redirect back 
+    if($row['role'] == 'admin'){
+        // If referrer is the accsetting page, redirect to dashboard instead
+        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+            $previousPage = '/capstoneweb/admin/pages/dashboard.php'; // adjust path if needed
+        }
+
+        // ✅ redirect back
+        echo "<script>
+            alert('Account updated successfully!');
+            window.location.href = '$previousPage';
+        </script>";
+        exit();
+    }
+
+    if($role['role'] == 'user') {
+        // If referrer is the accsetting page, redirect to dashboard instead
+        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+            $previousPage = '/capstoneweb/user/pages/user_announcement.php'; // adjust path if needed
+        }
+
+        // ✅ redirect back
+        echo "<script>
+            alert('Account updated successfully!');
+            window.location.href = '$previousPage';
+        </script>";
+        exit();
+    }
+
+    
 }
 
 
