@@ -221,28 +221,32 @@ if (isset($_POST['add_material'])) {
 }
 
 if (isset($_POST['submit_redeem'])) {
+    session_start();
+    $userid = $_SESSION['userid'] ?? 0; // get logged-in user ID
+
     $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
 
-    // Insert into records table
-    $insertRecord = "INSERT INTO records (record_name, date) VALUES ('$record_name', '$date')";
+    // ✅ Insert record with the logged-in user's ID
+    $insertRecord = "INSERT INTO records (record_name, date, user_id) 
+                     VALUES ('$record_name', '$date', '$userid')";
     mysqli_query($conn, $insertRecord);
     $record_id = mysqli_insert_id($conn);
 
-    // Handle file upload (optional)
+    // ✅ Handle image upload (optional)
     $filename = "";
     if (!empty($_FILES["rec_img"]["name"])) {
         $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
         $tempname = $_FILES["rec_img"]["tmp_name"];
         $folder = "../assets/proofs/" . $filename;
-        move_uploaded_file($tempname, $folder);
 
-        // 🔹 Save filename in records if you want proof image tied to the record
-        mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
+        if (move_uploaded_file($tempname, $folder)) {
+            mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
+        }
     }
 
-    // Insert into record_items (with unit)
+    // ✅ Insert materials into record_items
     foreach ($materials as $recyclable_id => $data) {
         $quantity = (int)($data['quantity'] ?? 0);
         $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
@@ -254,7 +258,6 @@ if (isset($_POST['submit_redeem'])) {
         }
     }
 
-    $userid = $_SESSION['userid'] ?? 0;
     header("Location: ../pages/record.php?userid={$userid}");
     exit();
 }
