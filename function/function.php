@@ -110,11 +110,16 @@ if (isset($_POST['submitsetting'])) {
         exit();
     }
 
+    // ✅ hash password
+    $hashedPassword = password_hash($passWord, PASSWORD_DEFAULT);
+
+    // ✅ update user info
     $query1 = "UPDATE account 
-               SET userName = '$userName', email = '$email', passWord = '$passWord' 
+               SET userName = '$userName', email = '$email', passWord = '$hashedPassword' 
                WHERE userid = $userid";
     mysqli_query($conn, $query1);
 
+    // ✅ handle image upload
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = $_FILES['userimg']['name'];
         $target  = "../image/" . basename($userimg);
@@ -125,51 +130,38 @@ if (isset($_POST['submitsetting'])) {
         }
     }
 
+    // ✅ get role from database
     function getUserInfo($conn, $userid) {
-    $query = "SELECT role FROM account WHERE userid = '$userid'";
-    $result = mysqli_query($conn, $query);
-    return mysqli_fetch_assoc($result);
+        $query = "SELECT role FROM account WHERE userid = '$userid'";
+        $result = mysqli_query($conn, $query);
+        return mysqli_fetch_assoc($result);
     }
 
-    // Usage
-    $user = getUserInfo($conn, $_SESSION['role']);
-
-
-    // ✅ determine where to go back to
+    $user = getUserInfo($conn, $_SESSION['userid']);
     $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
-    
-    // admin redirect back 
-    if($user['role'] == 'admin'){
-        // If referrer is the accsetting page, redirect to dashboard instead
-        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-            $previousPage = '/capstoneweb/admin/pages/dashboard.php'; // adjust path if needed
-        }
 
-        // ✅ redirect back
-        echo "<script>
-            alert('Account updated successfully!');
-            window.location.href = '$previousPage';
-        </script>";
+    // ✅ redirect based on role
+    if ($user && $user['role'] == 'admin') {
+        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+            $previousPage = '/capstoneweb/admin/pages/dashboard.php';
+        }
+    } elseif ($user && $user['role'] == 'user') {
+        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+            $previousPage = '/capstoneweb/user/pages/user_announcement.php';
+        }
+    } else {
+        echo "<script>alert('Error: user role not found');</script>";
         exit();
     }
 
-    if($user['role'] == 'user') {
-        // If referrer is the accsetting page, redirect to dashboard instead
-        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-            $previousPage = '/capstoneweb/user/pages/user_announcement.php'; // adjust path if needed
-        }
-
-        // ✅ redirect back
-        echo "<script>
-            alert('Account updated successfully!');
-            window.location.href = '$previousPage';
-        </script>";
-        exit();
-    }
-
-    
+    // ✅ final redirect
+    echo "<script>
+        alert('Account updated successfully!');
+        window.location.href = '$previousPage';
+    </script>";
+    exit();
 }
-
+?>
 
 // Back-End for Announcement
 if (isset($_POST['submit_announcement'])) {
