@@ -1,4 +1,11 @@
 <?php
+
+// print out error
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// includes
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php'; 
 require_once __DIR__ . '/../../includes/archiveHandling.php';
