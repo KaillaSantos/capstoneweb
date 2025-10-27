@@ -1,5 +1,4 @@
 <?php
-
 // print out error
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -7,21 +6,19 @@ error_reporting(E_ALL);
 
 // includes
 require_once __DIR__ . '/../../includes/authSession.php';
-require_once __DIR__ . '/../includes/passwordVerification.php'; 
-require_once __DIR__ . '/../../includes/archiveHandling.php';
 
-$query = "SELECT * FROM account WHERE userid = '$userid'";
-$result = mysqli_query($conn, $query);
-$user = mysqli_fetch_assoc($result);
-
-// ✅ Check session
+// ✅ Check session early
 if (!isset($_SESSION['userid'])) {
     echo "<script>alert('Unauthorized access. Please login.');
     window.location.href='../login.php';</script>";
     exit();
 }
 
-$userid = $_SESSION['userid'];
+$userid = $_SESSION['userid']; // now defined before use
+
+require_once __DIR__ . '/../includes/passwordVerification.php'; 
+require_once __DIR__ . '/../../includes/archiveHandling.php';
+
 ?>
 
 <!DOCTYPE html>
