@@ -20,7 +20,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </div>
 
   <div class="sidenav">
-    <a href="/capstoneweb/admin/pages/dashboard.php?userid=<?= $userid ?>" class="<?= ($current_page == 'dashboard.php') ? 'active' : '' ?>"><i class="fas fa-home" style="font-size: 20px;"></i> <span class="link-text">Dashboard</span></a>
     <a href="/capstoneweb/admin/pages/announcement.php?userid=<?= $userid ?>" class="<?= ($current_page == 'announcement.php') ? 'active' : '' ?>"><i class="fas fa-bell"></i> <span class="link-text"> Announcement</span></a>
     <a href="/capstoneweb/admin/pages/record.php?userid=<?= $userid ?>" class="<?= ($current_page == 'record.php') ? 'active' : '' ?>"><i class="fas fa-clipboard-list"></i><span class="link-text"> Records</span></a>
     <a href="/capstoneweb/admin/pages/recyclables.php?userid=<?= $userid ?>" class="<?= ($current_page == 'recyclables.php') ? 'active' : '' ?>"><i class="fas fa-recycle"></i><span class="link-text"> Recyclables</span></a>
