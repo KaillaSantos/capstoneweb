@@ -81,7 +81,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
               <div class="card text-center">
                 <div class="card-body">
                   <h4 class="card-title"><?= $rows['RM_name']; ?></h4>
-                  <img src="../assets/<?= $rows['RM_img'] ?>" class="card-img">
+                  <img src="/capstoneweb/assets/<?= $rows['RM_img'] ?>" class="card-img">
                   <p class="mt-3" style="font-size: 20px;">
                     Total: <?= $rows['total_quantity']; ?> <?= htmlspecialchars($rows['unit']); ?>
                   </p>

@@ -7,6 +7,7 @@ ini_set('display_errors', 1);
 session_start();
 require_once __DIR__ . '/../conn/dbconn.php';
 
+
 // log in 
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -55,6 +56,7 @@ if (isset($_POST['signup'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role = mysqli_real_escape_string($conn, $_POST['role']);
+    $purok = mysqli_real_escape_string($conn, $_POST['purok']);
 
     // 🧩 Check password match
     if ($passWord !== $rePassword) {
@@ -69,14 +71,14 @@ if (isset($_POST['signup'])) {
 
     if ($result->num_rows > 0) {
         $_SESSION['registerError'] = "Email already exists.";
-        header("Location: /casptone/pages/signUp.php");
+        header("Location: /capstoneweb/pages/signUp.php");
         exit();
     }
 
     // 🧩 Insert new user
-    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role)) {
-        $query2 = "INSERT INTO account (userName, passWord, email, role)
-                   VALUES ('$userName', '$passWord', '$email', '$role')";
+    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) && !empty($purok)) {
+        $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
+                   VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
         if (mysqli_query($conn, $query2)) {
             $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
@@ -84,12 +86,12 @@ if (isset($_POST['signup'])) {
             exit();
         } else {
             $_SESSION['registerError'] = "Database error: " . mysqli_error($conn);
-            header("Location: /casptone/pages/signUp.php");
+            header("Location: /capstoneweb/pages/signUp.php");
             exit();
         }
     } else {
         $_SESSION['registerError'] = "All fields are required.";
-        header("Location: /casptone/pages/signUp.php");
+        header("Location: /capstoneweb/pages/signUp.php");
         exit();
     }
 }
@@ -109,11 +111,13 @@ if (isset($_POST['submitsetting'])) {
         exit();
     }
 
+    // ✅ update user info
     $query1 = "UPDATE account 
                SET userName = '$userName', email = '$email', passWord = '$passWord' 
                WHERE userid = $userid";
     mysqli_query($conn, $query1);
 
+    // ✅ handle image upload
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = $_FILES['userimg']['name'];
         $target  = "../image/" . basename($userimg);
@@ -124,16 +128,31 @@ if (isset($_POST['submitsetting'])) {
         }
     }
 
-
-    // ✅ determine where to go back to
-    $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
-    
-    // If referrer is the accsetting page, redirect to dashboard instead
-    if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-        $previousPage = '/capstoneweb/admin/pages/dashboard.php'; // adjust path if needed
+    // ✅ get role from database
+    function getUserInfo($conn, $userid) {
+        $query = "SELECT role FROM account WHERE userid = '$userid'";
+        $result = mysqli_query($conn, $query);
+        return mysqli_fetch_assoc($result);
     }
 
-    // ✅ redirect back
+    $user = getUserInfo($conn, $_SESSION['userid']);
+    $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
+
+    // ✅ redirect based on role
+    if ($user && $user['role'] == 'admin') {
+        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+            $previousPage = '/capstoneweb/admin/pages/dashboard.php';
+        }
+    } elseif ($user && $user['role'] == 'user') {
+        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+            $previousPage = '/capstoneweb/user/pages/user_announcement.php';
+        }
+    } else {
+        echo "<script>alert('Error: user role not found');</script>";
+        exit();
+    }
+
+    // ✅ final redirect
     echo "<script>
         alert('Account updated successfully!');
         window.location.href = '$previousPage';
