@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 25, 2025 at 10:02 AM
+-- Host: 127.0.0.1
+-- Generation Time: Oct 27, 2025 at 10:12 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,6 +32,7 @@ CREATE TABLE `account` (
   `userimg` varchar(220) DEFAULT NULL,
   `userName` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `purok` int(11) NOT NULL,
   `passWord` varchar(20) NOT NULL,
   `role` varchar(10) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'not verified'
@@ -41,13 +42,10 @@ CREATE TABLE `account` (
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `passWord`, `role`, `status`) VALUES
-(1, 'defaultuserimage.jpg', 'Admin1', 'admin123@gmail.com', 'admin123', '', 'not verified'),
-(2, 'geb.jpg', 'Geb Sanchez', 'gebsanchez@gmail.com', 'gebsanchez', '', 'not verified'),
-(3, '', ' Mico Veriño', 'verinomico@gmail.com', 'micoVerino', '', 'not verified'),
-(4, '', 'geb michael', 'kreidehsrmain@gmail.com', 'P@$$w0rd!', '', 'not verified'),
-(5, NULL, 'Kailla Santos', 'kaillasantos@gmail.com', 'kailla123', 'user', 'not verified'),
-(6, NULL, 'Kai Amboy', 'kaiamboy@gmail.com', 'kaiamboy', 'admin', 'not verified');
+INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`) VALUES
+(5, NULL, 'Kailla Santos1', 'kaillasantos@gmail.com', 0, 'kailla123', 'user', 'not verified'),
+(6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmin', 'admin', 'not verified'),
+(7, NULL, 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 1, 'geb123', 'user', 'not verified');
 
 -- --------------------------------------------------------
 
@@ -264,7 +262,7 @@ ALTER TABLE `rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `announcement`
