@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2025 at 10:12 AM
+-- Generation Time: Oct 27, 2025 at 12:37 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,9 +43,9 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`) VALUES
-(5, NULL, 'Kailla Santos1', 'kaillasantos@gmail.com', 0, 'kailla123', 'user', 'not verified'),
-(6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmin', 'admin', 'not verified'),
-(7, NULL, 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 1, 'geb123', 'user', 'not verified');
+(6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmmin123', 'admin', 'not verified'),
+(8, NULL, 'Geb Micahel', 'user@gmail.com', 1, 'Samic57', 'user', 'not verified'),
+(9, NULL, 'Kailla', 'user123@gmail.com', 3, '1234567', 'user', 'not verified');
 
 -- --------------------------------------------------------
 
@@ -105,21 +105,17 @@ CREATE TABLE `records` (
   `id` int(11) NOT NULL,
   `record_name` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `rec_img` varchar(100) NOT NULL
+  `rec_img` varchar(100) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `records`
 --
 
-INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`) VALUES
-(11, 'Mico', '2025-02-09', '1759338106_waguri padoru.jpg'),
-(12, 'awaa', '2025-02-04', ''),
-(13, 'www', '2025-02-04', ''),
-(14, 'qweqwe', '2220-02-22', ''),
-(15, 'aaaa', '0312-02-12', ''),
-(16, 'aaaaa', '1231-02-13', ''),
-(17, 'asdw', '2025-12-21', '');
+INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
+(21, 'Geb Micahel', '2025-10-27', '', 8),
+(22, 'Kailla', '2025-10-26', '', 9);
 
 -- --------------------------------------------------------
 
@@ -140,33 +136,14 @@ CREATE TABLE `record_items` (
 --
 
 INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `unit`) VALUES
-(0, 11, 4, 1, 'kg'),
-(0, 11, 5, 1, 'kg'),
-(0, 11, 6, 1, 'kg'),
-(0, 11, 9, 1, 'kg'),
-(0, 12, 4, 1, 'kg'),
-(0, 12, 5, 1, 'kg'),
-(0, 12, 6, 1, 'kg'),
-(0, 12, 9, 1, 'kg'),
-(0, 13, 4, 1, 'kg'),
-(0, 13, 5, 1, 'kg'),
-(0, 13, 6, 1, 'kg'),
-(0, 13, 9, 1, 'kg'),
-(0, 14, 4, 12, 'kg'),
-(0, 14, 5, 32, 'kg'),
-(0, 14, 6, 4, 'kg'),
-(0, 14, 9, 2, 'kg'),
-(0, 15, 4, 22, 'kg'),
-(0, 15, 5, 22, 'kg'),
-(0, 15, 6, 22, 'kg'),
-(0, 15, 9, 22, 'kg'),
-(0, 16, 4, 123, 'kg'),
-(0, 16, 5, 12, 'kg'),
-(0, 16, 6, 2, 'kg'),
-(0, 17, 4, 12, 'kg'),
-(0, 17, 5, 24, 'kg'),
-(0, 17, 6, 7, 'kg'),
-(0, 17, 9, 6, 'kg');
+(0, 21, 4, 21, 'kg'),
+(0, 21, 5, 18, 'kg'),
+(0, 21, 6, 15, 'kg'),
+(0, 21, 9, 9, 'kg'),
+(0, 22, 4, 32, 'pcs'),
+(0, 22, 5, 14, 'kg'),
+(0, 22, 6, 21, 'kg'),
+(0, 22, 9, 7, 'kg');
 
 -- --------------------------------------------------------
 
@@ -262,7 +239,7 @@ ALTER TABLE `rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `announcement`
@@ -280,7 +257,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
