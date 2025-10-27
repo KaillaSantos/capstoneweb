@@ -56,6 +56,7 @@ if (isset($_POST['signup'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role = mysqli_real_escape_string($conn, $_POST['role']);
+    $purok = mysqli_real_escape_string($conn, $_POST['purok']);
 
     // 🧩 Check password match
     if ($passWord !== $rePassword) {
@@ -75,9 +76,9 @@ if (isset($_POST['signup'])) {
     }
 
     // 🧩 Insert new user
-    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role)) {
-        $query2 = "INSERT INTO account (userName, passWord, email, role)
-                   VALUES ('$userName', '$passWord', '$email', '$role')";
+    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) && !empty($purok)) {
+        $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
+                   VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
         if (mysqli_query($conn, $query2)) {
             $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
