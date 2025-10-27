@@ -27,6 +27,7 @@ if (isset($_POST['verify_submit'])) {
 
     if ($isValid) {
       echo "<script>
+        <script>alert('Incorrect password. Please try again.');</script>;
         window.location.href = '/capstoneweb/admin/pages/accsetting.php?userid={$userid}';
       </script>";
       exit();
