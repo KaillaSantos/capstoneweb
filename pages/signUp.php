@@ -66,7 +66,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <label for="purol">Purok Number:</label>
+              <label for="purok" class="form-label d-block">Purok Number:</label>
                 <select name="role" id="role" class="form-select" required>
                   <option value="" disabled selected>Select Purok</option>
                   <option value="Purok 1">Purok 1</option>
