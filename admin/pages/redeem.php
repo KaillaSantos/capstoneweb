@@ -93,12 +93,17 @@ $result = mysqli_query($conn, $query);
             
             <!-- Dropdown for choosing which user -->
             <div class="mb-3">
-                <label for="user_id" class="form-label">Select Household:</label>
+                <label for="user_id" class="form-label">Select Household (User):</label>
                 <select name="user_id" class="form-control" required>
-                    <option value="">-- Choose a user --</option>
-                    <?php while ($user = mysqli_fetch_assoc($userListResult)) { ?>
-                        <option value="<?= $user['userid'] ?>"><?= htmlspecialchars($user['userName']) ?></option>
-                    <?php } ?>
+                    <option value="">-- Select Household --</option>
+                    <?php
+                    // Fetch only non-admin users
+                    $userQuery = "SELECT userid, userName FROM account WHERE role != 'admin'";
+                    $userResult = mysqli_query($conn, $userQuery);
+                    while ($u = mysqli_fetch_assoc($userResult)) {
+                        echo '<option value="' . $u['userid'] . '">' . htmlspecialchars($u['userName']) . '</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
