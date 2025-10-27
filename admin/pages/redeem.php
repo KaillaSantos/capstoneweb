@@ -1,10 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
 
-// Fetch all users for dropdown (the admin chooses one)
-$userListQuery = "SELECT userid, userName FROM account ORDER BY userName ASC";
-$userListResult = mysqli_query($conn, $userListQuery);
-
 // Fetch recyclable materials
 $query = "SELECT id, RM_name FROM recyclable ORDER BY id ASC";
 $result = mysqli_query($conn, $query);
@@ -50,7 +46,6 @@ $result = mysqli_query($conn, $query);
             text-align: left;
         }
         .redeem_panel input,
-        .redeem_panel textarea,
         .redeem_panel select {
             width: 100%;
             padding: 12px;
@@ -91,20 +86,27 @@ $result = mysqli_query($conn, $query);
         <h2>Redeem Materials</h2>
         <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
             
-            <!-- Dropdown for choosing which user -->
+            <!-- Select Household (non-admin users only) -->
             <div class="mb-3">
                 <label for="user_id" class="form-label">Select Household (User):</label>
-                <select name="user_id" class="form-control" required>
+                <select id="userSelect" name="user_id" class="form-control" required>
                     <option value="">-- Select Household --</option>
                     <?php
                     // Fetch only non-admin users
-                    $userQuery = "SELECT userid, userName FROM account WHERE role != 'admin'";
+                    $userQuery = "SELECT userid, userName FROM account WHERE role != 'admin' ORDER BY userName ASC";
                     $userResult = mysqli_query($conn, $userQuery);
                     while ($u = mysqli_fetch_assoc($userResult)) {
-                        echo '<option value="' . $u['userid'] . '">' . htmlspecialchars($u['userName']) . '</option>';
+                        echo '<option value="' . $u['userid'] . '" data-name="' . htmlspecialchars($u['userName']) . '">' 
+                            . htmlspecialchars($u['userName']) . '</option>';
                     }
                     ?>
                 </select>
+            </div>
+
+            <!-- Auto-filled household name (record_name) -->
+            <div class="mb-3">
+                <label for="record_name" class="form-label">Household Name:</label>
+                <input type="text" id="recordName" name="record_name" class="form-control" readonly required>
             </div>
 
             <div class="mb-3">
@@ -113,10 +115,10 @@ $result = mysqli_query($conn, $query);
             </div>
 
             <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                <div class="material-row">
+                <div class="material-row mb-2">
                     <label><?= htmlspecialchars($row['RM_name']) ?>:</label>
                     <input type="number" name="materials[<?= $row['id'] ?>][quantity]" class="form-control" min="0" placeholder="0">
-                    <select name="materials[<?= $row['id'] ?>][unit]" class="form-control">
+                    <select name="materials[<?= $row['id'] ?>][unit]" class="form-control mt-1">
                         <option value="kg">kg</option>
                         <option value="pcs">pcs</option>
                     </select>
@@ -131,5 +133,13 @@ $result = mysqli_query($conn, $query);
             <button type="submit" class="save-btn" name="submit_redeem">Submit</button>
         </form>
     </div>
+
+    <!--JavaScript to auto-fill household name -->
+    <script>
+    document.getElementById('userSelect').addEventListener('change', function() {
+        const selected = this.options[this.selectedIndex];
+        document.getElementById('recordName').value = selected.getAttribute('data-name') || '';
+    });
+    </script>
 </body>
 </html>
