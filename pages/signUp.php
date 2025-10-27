@@ -65,7 +65,7 @@
                 <label class="form-check-label" for="roleAdmin">Admin</label>
               </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" id="purokContainer">
               <label for="purok" class="form-label d-block">Purok Number:</label>
                 <select name="purok" id="purok" class="form-select" required>
                   <option value="" disabled selected>Select Purok</option>
