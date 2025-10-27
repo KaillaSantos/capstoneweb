@@ -183,7 +183,7 @@ $userid = $_SESSION['userid'];
 <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="post" action="/../passwordVerfication.php">
+      <form method="post" action="">
         <div class="modal-header">
           <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
