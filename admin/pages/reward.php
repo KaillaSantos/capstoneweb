@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
-include_once __DIR__ . '/../../includes/passwordVerification.php';
+include_once __DIR__ . '/../includes/passwordVerification.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
