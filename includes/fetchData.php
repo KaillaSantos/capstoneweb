@@ -1,5 +1,5 @@
 <?php
-require_once '../conn/dbconn.php';
+require_once '/../conn/dbconn.php';
 
 // ✅ Fetch recyclable categories
 $categories = [];
