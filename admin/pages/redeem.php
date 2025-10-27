@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
-require_once __DIR__ . '/../../includes/conn/dbconn.php';
 
 // Fetch all users for dropdown (the admin chooses one)
 $userListQuery = "SELECT userid, userName FROM account ORDER BY userName ASC";
