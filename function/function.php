@@ -159,7 +159,7 @@ if (isset($_POST['submitsetting'])) {
     </script>";
     exit();
 }
-?>
+
 
 // Back-End for Announcement
 if (isset($_POST['submit_announcement'])) {
