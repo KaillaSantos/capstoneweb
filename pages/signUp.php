@@ -65,6 +65,15 @@
                 <label class="form-check-label" for="roleAdmin">Admin</label>
               </div>
             </div>
+            <div class="mb-3">
+              <label for="purol">Purok Number:</label>
+                <select name="role" id="role" class="form-select" required>
+                  <option value="" disabled selected>Select Purok</option>
+                  <option value="Purok 1">Purok 1</option>
+                  <option value="Purok 2">Purok 2</option>
+                  <option value="Purok 3">Purok 3</option>
+                </select>
+            </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
