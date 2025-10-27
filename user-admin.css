@@ -13,7 +13,7 @@ body {
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #2c5e1a; /* main green */
+  background-color: #2c5e1a; /* Main green */
   color: white;
   padding-top: 20px;
   position: fixed;
@@ -36,13 +36,12 @@ body.sidebar-collapsed .sidebar .link-text {
   display: none;
 }
 
-/* Center icons when collapsed */
 body.sidebar-collapsed .sidenav a {
-  text-align: center;
   justify-content: center;
+  text-align: center;
 }
 
-/* === PROFILE SECTION === */
+/* === PROFILE === */
 .profile {
   text-align: center;
   margin-bottom: 30px;
@@ -84,24 +83,21 @@ body.sidebar-collapsed .sidenav a {
   width: 100%;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
-  position: relative;
 }
 
-/* Hover effect */
 .sidenav a:hover {
   background-color: #1a4314;
-  color: #fff;
 }
 
-/* Active link (highlighted) */
+/* === ACTIVE LINK === */
 .sidenav a.active {
-  background-color: #4caf50; /* lighter green */
+  background-color: #4caf50;
   color: #fff;
   font-weight: bold;
-  border-left: 5px solid #a2f89a; /* accent line */
+  border-left: 5px solid #a2f89a;
 }
 
-/* When collapsed, keep the active icon colored */
+/* Keep active icon colored when collapsed */
 body.sidebar-collapsed .sidenav a.active {
   background-color: transparent;
   border-left: none;
@@ -111,7 +107,7 @@ body.sidebar-collapsed .sidenav a.active i {
   color: #4caf50;
 }
 
-/* Optional: Add a hover tooltip for collapsed mode */
+/* === TOOLTIP IN COLLAPSED MODE === */
 body.sidebar-collapsed .sidenav a {
   position: relative;
 }
