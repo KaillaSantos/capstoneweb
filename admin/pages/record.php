@@ -60,32 +60,58 @@ require_once __DIR__ . '/../../includes/fetchData.php';
       </div>
     </div>
 
-    <div class="d-flex justify-content-end mb-3">
-      <form method="post" class="d-flex align-items-center gap-2">
-        <!-- Hidden user ID -->
-        <input type="hidden" name="userid" value="<?= htmlspecialchars($userid) ?>">
-
-        <label for="sort" class="form-label mb-0">Sort By:</label>
-        <select name="sort" id="sort" class="form-select w-auto">
-          <option value="date_desc" <?= ($sort == 'date_desc') ? 'selected' : '' ?>>Newest First</option>
-          <option value="date_asc" <?= ($sort == 'date_asc') ? 'selected' : '' ?>>Oldest First</option>
-          <option value="name_asc" <?= ($sort == 'name_asc') ? 'selected' : '' ?>>Name A–Z</option>
-          <option value="name_desc" <?= ($sort == 'name_desc') ? 'selected' : '' ?>>Name Z–A</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Sort</button>
-      </form>
-    </div>
-
-
     <div class="table-responsive mt-3">
       <table class="table table-bordered table-striped table-hover">
-        <thead class="table-dark">
+        <thead class="table-dark align-middle">
           <tr>
-            <th>Date</th>
-            <th>Household Name</th>
-            <?php foreach ($categories as $catName): ?>
-              <th><?= htmlspecialchars($catName) ?></th>
+            <!-- Date -->
+            <th>
+              <div class="d-flex align-items-center justify-content-between">
+                <span>Date</span>
+                <div class="d-flex flex-column ms-1">
+                  <a href="?sort=date_asc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-up <?= ($sort == 'date_asc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                  <a href="?sort=date_desc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-down <?= ($sort == 'date_desc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                </div>
+              </div>
+            </th>
+
+            <!-- Household Name -->
+            <th>
+              <div class="d-flex align-items-center justify-content-between">
+                <span>Household Name</span>
+                <div class="d-flex flex-column ms-1">
+                  <a href="?sort=name_asc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-up <?= ($sort == 'name_asc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                  <a href="?sort=name_desc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-down <?= ($sort == 'name_desc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                </div>
+              </div>
+            </th>
+
+            <!-- Category Columns with sorting -->
+            <?php foreach ($categories as $catId => $catName): ?>
+              <th>
+                <div class="d-flex align-items-center justify-content-between">
+                  <span><?= htmlspecialchars($catName) ?></span>
+                  <div class="d-flex flex-column ms-1">
+                    <a href="?sort=cat_<?= $catId ?>_asc" class="text-light text-decoration-none small">
+                      <i class="fa-solid fa-caret-up <?= ($sort == 'cat_' . $catId . '_asc') ? 'text-warning' : '' ?>"></i>
+                    </a>
+                    <a href="?sort=cat_<?= $catId ?>_desc" class="text-light text-decoration-none small">
+                      <i class="fa-solid fa-caret-down <?= ($sort == 'cat_' . $catId . '_desc') ? 'text-warning' : '' ?>"></i>
+                    </a>
+                  </div>
+                </div>
+              </th>
             <?php endforeach; ?>
+
+
             <th>Image</th>
           </tr>
         </thead>
