@@ -9,10 +9,11 @@ body {
   /* padding: 0; */
 }
 
+/* === SIDEBAR CONTAINER === */
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #2c5e1a;
+  background-color: #2c5e1a; /* main green */
   color: white;
   padding-top: 20px;
   position: fixed;
@@ -21,8 +22,27 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: width 0.3s ease;
+  z-index: 100;
 }
 
+/* === COLLAPSED SIDEBAR === */
+body.sidebar-collapsed .sidebar {
+  width: 80px;
+}
+
+body.sidebar-collapsed .sidebar .profile-info,
+body.sidebar-collapsed .sidebar .link-text {
+  display: none;
+}
+
+/* Center icons when collapsed */
+body.sidebar-collapsed .sidenav a {
+  text-align: center;
+  justify-content: center;
+}
+
+/* === PROFILE SECTION === */
 .profile {
   text-align: center;
   margin-bottom: 30px;
@@ -47,21 +67,70 @@ body {
   color: #bbb;
 }
 
-.sidebar a {
-  padding: 10px 20px;
-  background-color: #2c5e1a;
-  display: block;
+/* === NAVIGATION LINKS === */
+.sidenav {
   width: 100%;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidenav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
   color: white;
+  width: 100%;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
-.sidebar a:hover {
+/* Hover effect */
+.sidenav a:hover {
+  background-color: #1a4314;
+  color: #fff;
+}
+
+/* Active link (highlighted) */
+.sidenav a.active {
+  background-color: #4caf50; /* lighter green */
+  color: #fff;
+  font-weight: bold;
+  border-left: 5px solid #a2f89a; /* accent line */
+}
+
+/* When collapsed, keep the active icon colored */
+body.sidebar-collapsed .sidenav a.active {
+  background-color: transparent;
+  border-left: none;
+}
+
+body.sidebar-collapsed .sidenav a.active i {
+  color: #4caf50;
+}
+
+/* Optional: Add a hover tooltip for collapsed mode */
+body.sidebar-collapsed .sidenav a {
+  position: relative;
+}
+
+body.sidebar-collapsed .sidenav a:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 90px;
   background: #1a4314;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 13px;
+  z-index: 999;
 }
 
+
+/* all content page */
 .content {
   margin-left: 250px;
   padding-left: 20px;
