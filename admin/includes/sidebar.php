@@ -15,7 +15,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="profile-info">
       <h3><?= htmlspecialchars($user['userName']) ?></h3>
       <p ><?= htmlspecialchars($user['email']) ?></p>
-      <p> Purok <?= htmlspecialchars($user['purok']) ?></p>
     </div>
   </div>
 
