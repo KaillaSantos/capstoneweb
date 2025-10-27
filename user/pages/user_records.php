@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
-require_once __DIR__ . '/../../includes/dbconn.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
 
 // Get logged-in user ID
