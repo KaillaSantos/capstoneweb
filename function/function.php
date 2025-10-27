@@ -133,7 +133,6 @@ if (isset($_POST['submitsetting'])) {
 
     // Usage
     $user = getUserInfo($conn, $_SESSION['role']);
-    echo $user['role'];
 
 
     // ✅ determine where to go back to
