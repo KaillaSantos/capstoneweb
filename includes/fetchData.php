@@ -52,38 +52,5 @@ if ($notifResult && mysqli_num_rows($notifResult) > 0) {
   }
 }
 
-// verify password for account settings
-if (isset($_POST['verify_submit'])) {
-  $password = $_POST['verify_password'];
-  $userid = mysqli_real_escape_string($conn, $_POST['userid']); // get from hidden input
 
-  $query = "SELECT password FROM account WHERE userid = '$userid'";
-  $result = mysqli_query($conn, $query);
-
-  if ($result && mysqli_num_rows($result) > 0) {
-    $row = mysqli_fetch_assoc($result);
-    $storedPassword = $row['password'];
-
-    $isValid = false;
-
-    // Case 1: Password looks hashed (bcrypt/argon2 etc.)
-    if (preg_match('/^\$2[ayb]\$|^\$argon2i\$|^\$argon2id\$/', $storedPassword)) {
-      if (password_verify($password, $storedPassword)) {
-        $isValid = true;
-      }
-    } else {
-      // Case 2: Plain text fallback
-      if ($password === $storedPassword) {
-        $isValid = true;
-      }
-    }
-
-    if ($isValid) {
-      header("Location: /capstoneweb/pages/accsetting.php?userid={$userid}");
-      exit();
-    } else {
-      echo "<script>alert('Incorrect password. Please try again.');</script>";
-    }
-  }
-}
 ?>
