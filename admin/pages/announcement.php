@@ -3,6 +3,9 @@ require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php'; 
 require_once __DIR__ . '/../../includes/archiveHandling.php';
 
+$query = "SELECT * FROM account WHERE userid = '$userid'";
+$result = mysqli_query($conn, $query);
+$user = mysqli_fetch_assoc($result);
 
 // ✅ Check session
 if (!isset($_SESSION['userid'])) {
