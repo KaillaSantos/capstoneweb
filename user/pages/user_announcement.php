@@ -23,7 +23,7 @@ $userid = $_SESSION['userid'];
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
-  <link rel="stylesheet" href="\capstoneweb/user-admin.css">
+  <link rel="stylesheet" href="\capstoneweb/user-admiin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
 </head>
 
