@@ -193,6 +193,7 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
   <div class="modal-dialog">
     <div class="modal-content">
       <form method="post" action="">
+        <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
         <div class="modal-header">
           <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

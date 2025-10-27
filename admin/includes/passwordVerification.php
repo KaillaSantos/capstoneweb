@@ -26,9 +26,10 @@ if (isset($_POST['verify_submit'])) {
     }
 
     if ($isValid) {
+      $redirect = $_POST['redirect'] ?? '/capstoneweb/admin/pages/accsetting.php';
       echo "<script>
-        alert('passwordverfication triggered.');
-        window.location.href = '/capstoneweb/admin/pages/accsetting.php?userid={$userid}';
+        alert('Password verification successful.');
+        window.location.href = '{$redirect}?userid={$userid}';
       </script>";
       exit();
     } else {
