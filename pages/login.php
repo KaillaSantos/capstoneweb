@@ -56,12 +56,13 @@
                                 <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
                                 <i class="bi bi-eye-slash" id="togglePassword"></i>
                             </div>
-                                <a href="#" class="text-left fs-6" style="padding-left: 180px; font-size:10px;" class="recover_button">Recover Password</a>
                             <button type="submit" name="submit" class="btn btn-success w-100 mt-3" > Log-in </button>
                         </form>
-
                         <p class="text-center mt-3">
                             Don't have an account? <a href="signUp.php" style="text-decoration: none;">Sign up here</a>
+                        </p>
+                        <p class ="text-center mt-3">
+                            <a href="#" style="font-size: 12px; text-decoration: none;">Recover Password</a>
                         </p>
                     </div>
                 </div>
