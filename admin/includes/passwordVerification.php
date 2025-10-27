@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../conn/dbconn.php';
-require_once __DIR__ . '/../includes/authSession.php';
+require_once __DIR__ . '/../../includes/authSession.php';
 
 if (isset($_POST['verify_submit'])) {
   $password = $_POST['verify_password'];
