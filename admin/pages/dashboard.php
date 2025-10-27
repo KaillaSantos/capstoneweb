@@ -4,7 +4,7 @@
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php'; 
 require_once __DIR__ . '/../../includes/fetchData.php';
-require_once __DIR__ . '/../../includes/recordsChart.php';
+require_once __DIR__ . '/../includes/recordsChart.php';
 include __DIR__ . '/../includes/sidebar.php';
 
 
@@ -111,32 +111,22 @@ $pending_notifications = 3;
       </div>
     </section>
   
-</div>
-<script>
+          <div class="card chart">
+        <h2>Recycling Overview</h2>
 
-// ===== Chart.js Setup =====
-const ctx = document.getElementById('wasteChart');
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Plastics', 'Glass', 'Paper', 'Metal', 'Others'],
-    datasets: [{
-      label: 'Kg Collected',
-      data: [120, 90, 75, 45, 30],
-      backgroundColor: '#2e7d32',
-      borderRadius: 8
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { grid: { display: false } },
-      y: { beginAtZero: true }
-    }
-  }
-});
-</script>
+        <!-- Dropdown -->
+        <div style="margin-bottom: 20px;">
+          <select id="householdSelect" class="form-select" style="max-width: 300px;">
+            <option value="">Total Recycled</option>
+          </select>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-wrapper" style="margin-top: 20px;">
+          <canvas id="recordChart"></canvas>
+        </div>
+      </div>
+</div>
 
 <script src="/capstoneweb/assets/sidebarToggle.js"></script>
 

@@ -57,9 +57,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
         <form action="\capstoneweb\function/function.php" method="post" class="d-inline">
           <button type="submit" name="reset_data" class="btn btn-danger" onclick="return confirm('Are you sure you want to reset all data? This cannot be undone.');"><i class="fa-solid fa-trash-can-arrow-up"></i> Reset </button>
         </form>
-        <?php
-        include_once '../includes/recordSort.php';
-        ?>
       </div>
     </div>
 
