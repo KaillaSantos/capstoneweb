@@ -17,6 +17,7 @@ if (!isset($_SESSION['userid'])) {
 $userid = $_SESSION['userid']; // now defined before use
 
 require_once __DIR__ . '/../includes/passwordVerification.php'; 
+require_once __DIR__ . '/../../includes/fetchData.php';
 require_once __DIR__ . '/../../includes/archiveHandling.php';
 
 ?>
