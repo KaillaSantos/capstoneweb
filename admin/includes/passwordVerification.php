@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../conn/dbconn.php';
-session_start();
 
 if (isset($_POST['verify_submit'])) {
   $password = $_POST['verify_password'];
