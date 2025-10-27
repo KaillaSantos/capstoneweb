@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../includes/authSession.php';
 
 // etch the user's full name based on logged-in session
-$userQuery = "SELECT userName FROM account WHERE id = ?";
+$userQuery = "SELECT userName FROM account WHERE userid = ?";
 $stmt = mysqli_prepare($conn, $userQuery);
 mysqli_stmt_bind_param($stmt, "i", $userid);
 mysqli_stmt_execute($stmt);
