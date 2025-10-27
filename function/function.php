@@ -372,34 +372,54 @@ if (isset($_POST['update_announcement'])) {
     }
 }
 
-if (isset($_POST['submit_rewards'])) {
-    $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
-    $product_description = mysqli_real_escape_string($conn, $_POST['product_description']);
-    $product_points = mysqli_real_escape_string($conn, $_POST['product_points']);
-    $product_date = mysqli_real_escape_string($conn, $_POST['product_date']);
+if (isset($_POST['submit_redeem'])) {
+    require_once __DIR__ . '/../conn/dbconn.php';
+    session_start();
 
-    $filename = "";
-    if (!empty($_FILES["product_img"]["name"])) {
-        $filename = basename($_FILES["product_img"]["name"]);
-        $tempname = $_FILES["product_img"]["tmp_name"];
-        $folder = "../productImg/" . $filename;
+    // Get selected user from dropdown
+    $userid = mysqli_real_escape_string($conn, $_POST['user_id']);
 
-        if (!move_uploaded_file($tempname, $folder)) {
-            echo "<script>alert('Image Upload Failed.');</script>";
-            $filename = "";
+    // Get admin ID (logged in)
+    $admin_id = $_SESSION['userid'] ?? 0;
+
+    // Other fields
+    $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
+    $date = mysqli_real_escape_string($conn, $_POST['date']);
+    $materials = $_POST['materials'] ?? [];
+
+    // Insert record (link to selected user)
+    $insertRecord = "INSERT INTO records (record_name, date, user_id, encoded_by) 
+                     VALUES ('$record_name', '$date', '$userid', '$admin_id')";
+    mysqli_query($conn, $insertRecord);
+    $record_id = mysqli_insert_id($conn);
+
+    // Handle optional image
+    if (!empty($_FILES["rec_img"]["name"])) {
+        $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
+        $tempname = $_FILES["rec_img"]["tmp_name"];
+        $folder = "../assets/proofs/" . $filename;
+
+        if (move_uploaded_file($tempname, $folder)) {
+            mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
         }
     }
 
-    $query = "INSERT INTO rewards (product_name, product_description, product_points, product_date, product_img)
-          VALUES ('$product_name', '$product_description', '$product_points', '$product_date', '$filename')";
+    // Insert recyclable materials
+    foreach ($materials as $recyclable_id => $data) {
+        $quantity = (int)($data['quantity'] ?? 0);
+        $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
 
-    if (mysqli_query($conn, $query)) {
-        header("Location: ../pages/reward.php?userid={$userid}");
-        exit();
-    } else {
-        echo "<script>alert('Adding announcement failed.');</script>";
+        if ($quantity > 0) {
+            $insertItem = "INSERT INTO record_items (record_id, recyclable_id, quantity, unit) 
+                           VALUES ($record_id, $recyclable_id, $quantity, '$unit')";
+            mysqli_query($conn, $insertItem);
+        }
     }
+
+    header("Location: ../pages/record.php?userid={$userid}");
+    exit();
 }
+
 
 // Reset Button for rewards
 if (isset($_POST['reset_rewards'])) {
