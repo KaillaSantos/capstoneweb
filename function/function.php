@@ -221,34 +221,43 @@ if (isset($_POST['add_material'])) {
 }
 
 if (isset($_POST['submit_redeem'])) {
+    require_once __DIR__ . '/../conn/dbconn.php'; // ✅ Make sure the DB connection is included
     session_start();
-    $userid = $_SESSION['userid'] ?? 0; // get logged-in user ID
 
+    // ✅ Get the logged-in user's ID from session
+    $userid = $_SESSION['userid'] ?? 0;
+
+    // ✅ Sanitize inputs
     $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
 
-    // ✅ Insert record with the logged-in user's ID
+    // ✅ Insert record into records table
     $insertRecord = "INSERT INTO records (record_name, date, user_id) 
                      VALUES ('$record_name', '$date', '$userid')";
-    mysqli_query($conn, $insertRecord);
+    $insertResult = mysqli_query($conn, $insertRecord);
+
+    if (!$insertResult) {
+        die("❌ Failed to insert record: " . mysqli_error($conn));
+    }
+
     $record_id = mysqli_insert_id($conn);
 
     // ✅ Handle image upload (optional)
-    $filename = "";
     if (!empty($_FILES["rec_img"]["name"])) {
         $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
         $tempname = $_FILES["rec_img"]["tmp_name"];
         $folder = "../assets/proofs/" . $filename;
 
         if (move_uploaded_file($tempname, $folder)) {
-            mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
+            $updateImg = "UPDATE records SET rec_img = '$filename' WHERE id = $record_id";
+            mysqli_query($conn, $updateImg);
         }
     }
 
-    // ✅ Insert materials into record_items
+    // ✅ Insert recyclable materials into record_items
     foreach ($materials as $recyclable_id => $data) {
-        $quantity = (int)($data['quantity'] ?? 0);
+        $quantity = (float)($data['quantity'] ?? 0);
         $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
 
         if ($quantity > 0) {
@@ -258,9 +267,11 @@ if (isset($_POST['submit_redeem'])) {
         }
     }
 
+    // ✅ Redirect after success
     header("Location: ../pages/record.php?userid={$userid}");
     exit();
 }
+
 
 
 // Reset Button for records

@@ -1,8 +1,17 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
 
-// fetch recyclables
-$query = "SELECT id, RM_name FROM recyclable";
+// etch the user's full name based on logged-in session
+$userQuery = "SELECT fullname FROM users WHERE id = ?";
+$stmt = mysqli_prepare($conn, $userQuery);
+mysqli_stmt_bind_param($stmt, "i", $userid);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $fullname);
+mysqli_stmt_fetch($stmt);
+mysqli_stmt_close($stmt);
+
+// Fetch recyclable materials
+$query = "SELECT id, RM_name FROM recyclable ORDER BY id ASC";
 $result = mysqli_query($conn, $query);
 ?>
 <!DOCTYPE html>
