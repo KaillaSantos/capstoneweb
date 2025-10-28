@@ -117,26 +117,31 @@ if (isset($_POST['submitsetting'])) {
                    WHERE userid = '$userid'";
     mysqli_query($conn, $updateInfo);
 
-    // ✅ Handle profile image upload
+    // ✅ handle image upload
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = $_FILES['userimg']['name'];
+        $target  = "../image/" . basename($userimg);
         $tmpName = $_FILES['userimg']['tmp_name'];
-        $targetDir = "/capstoneweb/image/";
-        $targetFile = $targetDir . basename($userimg);
-        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-        // Validate image file type (optional but safer)
-        $allowedTypes = ['jpg', 'jpeg', 'png'];
-        if (in_array($fileType, $allowedTypes)) {
-            if (move_uploaded_file($tmpName, $targetFile)) {
-                $updateImage = "UPDATE account SET userimg = '$userimg' WHERE userid = '$userid'";
-                mysqli_query($conn, $updateImage);
+        // debug info
+        if (!file_exists("../image/")) {
+            echo "<script>alert('❌ Folder /image/ does not exist');</script>";
+        }
+
+        if (move_uploaded_file($tmpName, $target)) {
+            $query = "UPDATE account SET userimg = '$userimg' WHERE userid = '$userid'";
+            if (mysqli_query($conn, $query)) {
+                echo "<script>console.log('✅ Image uploaded and DB updated successfully');</script>";
+            } else {
+                echo "<script>alert('❌ Database update failed: " . mysqli_error($conn) . "');</script>";
             }
         } else {
-            echo "<script>alert('Invalid image type. Only JPG and PNG are allowed.'); history.back();</script>";
-            exit();
+            echo "<script>alert('❌ Failed to move uploaded file');</script>";
         }
+    } else {
+        echo "<script>console.log('ℹ️ No new image uploaded');</script>";
     }
+
 
     // ✅ Fetch user role
     function getUserInfo($conn, $userid) {
