@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 <?php
 session_start();
-require_once __DIR__ . '../conn/dbconn.php';
+require_once __DIR__ . '/../conn/dbconn.php';
 
 
 // log in 
