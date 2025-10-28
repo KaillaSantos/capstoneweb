@@ -35,7 +35,7 @@
     <!-- HOME SECTION -->
     <section id="#uphome" class="home">
         <div class="home-img">
-            <img src="../image/logo.png" alt="">
+            <img src="/image/logo.png" alt="">
         </div>
         <div class="home-content">
             <h1>Welcome to <span style="color: green;">E-Recycle</span></h1>
