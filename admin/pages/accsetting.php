@@ -1,92 +1,190 @@
 <?php
 require_once __DIR__ . '/../../conn/dbconn.php';
+require_once __DIR__ . '/../../includes/authSession.php';
+require_once __DIR__ . '/../includes/passwordVerification.php';
 
+// ✅ Check session
+if (!isset($_SESSION['userid'])) {
+    echo "<script>alert('Unauthorized access. Please login.');
+    window.location.href='../login.php';</script>";
+    exit();
+}
+
+$userid = $_SESSION['userid'];
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Account Settings | E-Recycle</title>
+    <link rel="stylesheet" href="\capstoneweb\user-admin.css">
+    <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
+    <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-    <link rel="stylesheet" href="../user-admin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
-    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        /* === Layout === */
+            body {
+            background: #f5f6f7;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fff;
+            padding: 0;
+            }
+
+            .profile-header {
+            background-color: #1A4314;
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            margin-bottom: 20px;
+            }
+
+            .profile-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            }
+
+            .profile-header p {
+            margin: 5px 0 0;
+            font-size: 15px;
+            }
+
+            /* === Profile Card === */
+            .profile-container {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-        }
+            align-items: flex-start;
+            padding: 30px;
+            }
 
-        .settings-panel {
+            .profile-card {
+            display: flex;
+            flex-wrap: wrap;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 950px;
             width: 100%;
-            max-width: 500px;
-            /* background: #f9f9f9; */
-            padding: 40px 30px;
-            /* border-radius: 10px; */
-            /* box-shadow: 0px 4px 15px rgba(0,0,0,0.1); */
+            padding: 30px;
+            gap: 30px;
+            }
+
+            /* === Left (Profile Image) === */
+            .profile-left {
+            flex: 1;
+            min-width: 250px;
             text-align: center;
-            position: relative;
-        }
+            justify-content: center;
+            }
 
-        .settings-panel h2 {
-            margin-bottom: 25px;
-            font-size: 28px;
-            font-weight: bold;
-        }
+            .profile-img-wrapper {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px;
+            border: 3px solid #1A4314;
+            }
 
-        .settings-panel label {
+            .profile-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            }
+
+            .profile-left input[type="file"] {
             display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            text-align: left;
-        }
+            margin: 10px auto;
+            font-size: 14px;
+            }
 
-        .settings-panel input {
+            .profile-left small {
+            color: #888;
+            font-size: 12px;
+            }
+
+            /* === Right (Form Fields) === */
+            .profile-right {
+            flex: 2;
+            min-width: 300px;
+            }
+
+            .form-group {
+            margin-bottom: 15px;
+            }
+
+            .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            }
+
+            .form-group input {
             width: 100%;
-            padding: 12px;
-            margin-top: 5px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+            border-radius: 6px;
+            font-size: 14px;
+            }
 
-        .settings-panel button.save-btn {
-            margin-top: 25px;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            background: #1A4314;
+            /* === Buttons === */
+            .save-btn {
+            background-color: #1A4314;
             color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .settings-panel button.save-btn:hover {
-            background: #2C5E1A;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 22px;
-            background: none;
             border: none;
+            border-radius: 6px;
+            padding: 12px 18px;
+            width: 100%;
             cursor: pointer;
-            color: #000;
-            text-decoration: none;
-        }
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.3s;
+            }
+
+            .save-btn:hover {
+            background-color: #2C5E1A;
+            }
+
+            /* === Responsive === */
+            @media (max-width: 768px) {
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-right {
+                width: 100%;
+            }
+            }
+            .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            }
+
+            .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 18px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.3s;
+            }
+
+            .cancel-btn:hover {
+            background-color: #999;
+            color: white;
+            }
+
     </style>
 </head>
 <body>
@@ -98,65 +196,161 @@ require_once __DIR__ . '/../../conn/dbconn.php';
        
            $data = mysqli_num_rows($run);
            $rows = mysqli_fetch_assoc($run);
+
+           $userImage = !empty($rows['userimg']) 
+            ? "/capstoneweb/image/" . $rows['userimg'] 
+            : "/capstoneweb/image/placeholder.jpg";
+
        ?>
-           <!-- Updated Close Button -->
-           <button type="button" class="close-btn" onclick="window.history.back();">Cancel</button>
+
+
+    <!-- Sidebar -->
+    <?php include '../includes/sidebar.php'; ?>
+
+    <!-- Sidebar Toggle Button (visible on all screens) -->
+    <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
+
+    <!-- Overlay (for mobile view) -->
+    <div class="overlay"></div>
+
+    <div class="content">
+
+        <header class="dashboard-header">
+        <div class="header-left">
+            <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
+            <div class="header-text">
+            <h1>E-Recycle Account Settings</h1>
+            <p>Municipality of San Ildefonso</p>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <span class="date-display"><?php echo date("F j, Y"); ?></span>
+        </div>
+        </header>
+
            
     <div class="settings-panel">
-        <h2>Account Settings</h2>
 
-        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
-
-            <input type="hidden" name="userid" value="<?= $rows['userid'] ?>">
-
-            <label for="userimg">Upload Profile:</label>
-            <input class="form-control" type="file" name="userimg">
-
-            <label for="userName">Name:</label>
-            <input type="text" name="userName" placeholder="Juan Dela Cruz" value="<?= $rows['userName'] ?>">
-
-            <label for="email">Email:</label>
-            <input type="email" name="email" placeholder="juandelacruz@gmail.com" value="<?= $rows['email'] ?>">
-
-            <label for="password">Password:</label>
-            <div class="input-group mb-3">
-                <input type="password" id="password" name="passWord" class="form-control" placeholder="Enter new password" value="<?= $rows['passWord'] ?>">
-                <span class="input-group-text">
-                    <i class="fa fa-eye" id="togglePassword" style="cursor: pointer;"></i>
-                </span>
+        <!-- Profile Card -->
+        <div class="profile-container">
+        <div class="profile-card">
+            
+            <!-- Profile Image Section -->
+            <div class="profile-left">
+                <div class="profile-img-wrapper">
+                    <img id="profilePreview" src="<?= $userImage ?>" alt="Profile Image">
+                </div>
+                <input type="file" id="uploadProfile" name="userimg" accept="image/*" onchange="previewImage(event)">
+                <small>Allowed types: jpg, png | Max: 5MB</small>
             </div>
 
-            <label for="repassword">Re-Enter your new Password:</label>
-            <div class="input-group mb-3">
-                <input type="password" id="repassword" name="rePassword" class="form-control" placeholder="Re-Enter your new password">
-                <span class="input-group-text">
-                    <i class="fa fa-eye" id="toggleRePassword" style="cursor: pointer;"></i>
-                </span>
-            </div>
 
-            <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
-        </form>
+            <!-- Form Section -->
+            <div class="profile-right">
+            <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+                <input type="hidden" name="userid" value="<?= $rows['userid'] ?>">
+
+                <div class="form-group">
+                <label for="userName">Full Name:</label>
+                <input type="text" name="userName" value="<?= $rows['userName'] ?>" placeholder="Enter full name">
+                </div>
+
+                <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="<?= $rows['email'] ?>" placeholder="Enter email">
+                </div>
+
+                <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
+                </div>
+
+                <div class="form-group">
+                <label for="repassword">Re-enter Password:</label>
+                <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
+                    <button type="button" class="cancel-btn" onclick="cancelChanges()">Cancel</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
         <?php }  ?>
+    </div>
     </div>
 
     <script>
-    // Toggle first password
-    const togglePassword = document.querySelector("#togglePassword");
-    const password = document.querySelector("#password");
-    togglePassword.addEventListener("click", function () {
-        const type = password.getAttribute("type") === "password" ? "text" : "password";
-        password.setAttribute("type", type);
-        this.classList.toggle("fa-eye-slash");
-    });
+        // Toggle first password
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+        togglePassword.addEventListener("click", function () {
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            this.classList.toggle("fa-eye-slash");
+        });
 
-    // Toggle re-enter password
-    const toggleRePassword = document.querySelector("#toggleRePassword");
-    const repassword = document.querySelector("#repassword");
-    toggleRePassword.addEventListener("click", function () {
-        const type = repassword.getAttribute("type") === "password" ? "text" : "password";
-        repassword.setAttribute("type", type);
-        this.classList.toggle("fa-eye-slash");
-    });
-</script>
+        // Toggle re-enter password
+        const toggleRePassword = document.querySelector("#toggleRePassword");
+        const repassword = document.querySelector("#repassword");
+        toggleRePassword.addEventListener("click", function () {
+            const type = repassword.getAttribute("type") === "password" ? "text" : "password";
+            repassword.setAttribute("type", type);
+            this.classList.toggle("fa-eye-slash");
+        });
+
+        //Profile Image Preview
+        function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('profilePreview');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Cancel button → confirm and redirect or reset
+        function cancelChanges() {
+        const confirmCancel = confirm("Are you sure you want to cancel your changes?");
+        if (confirmCancel) {
+            window.history.back();
+        }
+        }
+        
+    </script>
+
+    <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- toggle -->
+    <script src="../../assets/sidebarToggle.js"></script>
+
+  <!-- 🔐 Password Verification Modal -->
+  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="post" action="">
+          <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="verifyPassword" class="form-label">Enter Password</label>
+              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
 </body>
 </html>
