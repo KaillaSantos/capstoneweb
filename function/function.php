@@ -121,7 +121,7 @@ if (isset($_POST['submitsetting'])) {
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = $_FILES['userimg']['name'];
         $tmpName = $_FILES['userimg']['tmp_name'];
-        $targetDir = "../../image/";
+        $targetDir = "/capstoneweb/image/";
         $targetFile = $targetDir . basename($userimg);
         $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
