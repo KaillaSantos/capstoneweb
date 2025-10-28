@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
+require_once __DIR__ . '/../includes/passwordVerification.php';
 
 // Get logged-in user ID
 $userid = $_SESSION['userid'] ?? null;
