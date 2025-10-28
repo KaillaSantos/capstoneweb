@@ -50,12 +50,12 @@
 
     <!-- SERVICES SECTION (included from PHP file) -->
     <section id="services">
-        <?php include 'ServicesPage.php'; ?>
+        <?php include '../includes/ServicesPage.php'; ?>
     </section>
 
     <!-- CONTACT SECTION (included from PHP file) -->
     <section id="contact">
-        <?php include 'ContactPage.php'; ?>
+        <?php include '../includes/ContactPage.php'; ?>
     </section>
 
 </body>
