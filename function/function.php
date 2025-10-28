@@ -26,11 +26,11 @@ if (isset($_POST['submit'])) {
             $_SESSION['role'] = $row['role'];
 
             if($row['role'] == "admin") {
-                header("Location: /capstoneweb/admin/pages/dashboard.php?userid={$row['userid']}");
+                header("Location: ../admin/pages/dashboard.php?userid={$row['userid']}");
                 exit();
             } 
             if($row['role'] == "user") {
-                header("Location: /capstoneweb/user/pages/user_announcement.php?userid={$row['userid']}");
+                header("Location: ../user/pages/user_announcement.php?userid={$row['userid']}");
                 exit();
             }
 
@@ -38,13 +38,13 @@ if (isset($_POST['submit'])) {
         } else {
             // ❌ Incorrect password
             $_SESSION['login_error'] = "Email or password didn't match.";
-            header("Location: /capstoneweb/pages/login.php");
+            header("Location:login.php");
             exit();
         }
     } else {
         // ❌ No user found
         $_SESSION['login_error'] = "Unregistered account.";
-        header("Location: /capstoneweb/pages/login.php");
+        header("Location: login.php");
         exit();
     }
 }
