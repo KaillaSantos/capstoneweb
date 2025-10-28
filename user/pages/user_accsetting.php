@@ -28,7 +28,7 @@ $userid = $_SESSION['userid'];
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        /* body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #fff;
@@ -37,7 +37,7 @@ $userid = $_SESSION['userid'];
             align-items: center;
             height: 100vh;
             width: 100%;
-        }
+        } */
 
         .settings-panel {
             width: 100%;
