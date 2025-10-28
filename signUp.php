@@ -20,9 +20,9 @@
       </div> 
       
       <nav>
-          <a href="/capstoneweb/pages/LandingPage.php#home">Home</a>
-          <a href="/capstoneweb/pages/LandingPage.php#services">Services</a>
-          <a href="/capstoneweb/pages/LandingPage.php#contact">Contact</a>
+          <a href="/capstoneweb/index.php#home">Home</a>
+          <a href="/capstoneweb/index.php#services">Services</a>
+          <a href="/capstoneweb/index.php#contact">Contact</a>
       </nav>
   </div>
 
