@@ -119,29 +119,23 @@ if (isset($_POST['submitsetting'])) {
 
     // ✅ handle image upload
     if (!empty($_FILES['userimg']['name'])) {
-        $userimg = $_FILES['userimg']['name'];
-        $target  = "../image/" . basename($userimg);
-        $tmpName = $_FILES['userimg']['tmp_name'];
+        $userimg = basename($_FILES['userimg']['name']);
+        $targetDir = __DIR__ . "/../image/"; // absolute path to /capstoneweb/image/
+        $target = $targetDir . $userimg;
 
-        // debug info
-        if (!file_exists("../image/")) {
-            echo "<script>alert('❌ Folder /image/ does not exist');</script>";
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
         }
 
-        if (move_uploaded_file($tmpName, $target)) {
+        if (move_uploaded_file($_FILES['userimg']['tmp_name'], $target)) {
             $query = "UPDATE account SET userimg = '$userimg' WHERE userid = '$userid'";
-            if (mysqli_query($conn, $query)) {
-                echo "<script>console.log('✅ Image uploaded and DB updated successfully');</script>";
-            } else {
-                echo "<script>alert('❌ Database update failed: " . mysqli_error($conn) . "');</script>";
+            if (!mysqli_query($conn, $query)) {
+                echo "<script>alert('Database error: " . mysqli_error($conn) . "');</script>";
             }
         } else {
-            echo "<script>alert('❌ Failed to move uploaded file');</script>";
+            echo "<script>alert('Failed to upload image to /image/ folder');</script>";
         }
-    } else {
-        echo "<script>console.log('ℹ️ No new image uploaded');</script>";
     }
-
 
     // ✅ Fetch user role
     function getUserInfo($conn, $userid) {
