@@ -45,7 +45,7 @@
             }
             ?>
 
-            <form method="post" action="../function/function.php">
+            <form method="post" action="/function/function.php">
               <div class="mb-3">
                 <label for="username" class="form-label">Full Name</label>
                 <input type="text" id="userName" name="userName" class="form-control" placeholder="ex: Juan Dela Cruz" required />
