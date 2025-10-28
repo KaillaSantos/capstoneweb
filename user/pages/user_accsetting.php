@@ -11,6 +11,7 @@ require_once __DIR__ . '/../../conn/dbconn.php';
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
     <link rel="stylesheet" href="../../user-admin.css">
+    <link rel="stylesheet" href="../../user-admin1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
     <!-- bootstrap -->
