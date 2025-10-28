@@ -38,13 +38,13 @@ if (isset($_POST['submit'])) {
         } else {
             // ❌ Incorrect password
             $_SESSION['login_error'] = "Email or password didn't match.";
-            header("Location:login.php");
+            header("Location: ../login.php");
             exit();
         }
     } else {
         // ❌ No user found
         $_SESSION['login_error'] = "Unregistered account.";
-        header("Location: login.php");
+        header("Location: ../login.php");
         exit();
     }
 }
@@ -61,7 +61,7 @@ if (isset($_POST['signup'])) {
     // 🧩 Check password match
     if ($passWord !== $rePassword) {
         $_SESSION['registerError'] = "Passwords do not match.";
-        header("Location: /capstoneweb/pages/signUp.php");
+        header("Location: /capstoneweb/signUp.php");
         exit();
     }
 
@@ -71,7 +71,7 @@ if (isset($_POST['signup'])) {
 
     if ($result->num_rows > 0) {
         $_SESSION['registerError'] = "Email already exists.";
-        header("Location: /capstoneweb/pages/signUp.php");
+        header("Location: /capstoneweb/signUp.php");
         exit();
     }
 
@@ -82,16 +82,16 @@ if (isset($_POST['signup'])) {
 
         if (mysqli_query($conn, $query2)) {
             $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
-            header("Location: /capstoneweb/pages/login.php");
+            header("Location: /capstoneweb/login.php");
             exit();
         } else {
             $_SESSION['registerError'] = "Database error: " . mysqli_error($conn);
-            header("Location: /capstoneweb/pages/signUp.php");
+            header("Location: /capstoneweb/signUp.php");
             exit();
         }
     } else {
         $_SESSION['registerError'] = "All fields are required.";
-        header("Location: /capstoneweb/pages/signUp.php");
+        header("Location: /capstoneweb/signUp.php");
         exit();
     }
 }
