@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="Landing.css">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="icon" type="image/x-icon" href="capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
+    <link rel="icon" type="image/x-icon" href="assets\Flag_of_San_Ildefonso_Bulacan.png">
     <title>E-Recycle</title>
     <style>
         html {
