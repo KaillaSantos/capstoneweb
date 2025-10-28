@@ -160,6 +160,30 @@ $userid = $_SESSION['userid'];
                 width: 100%;
             }
             }
+            .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            }
+
+            .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 18px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.3s;
+            }
+
+            .cancel-btn:hover {
+            background-color: #999;
+            color: white;
+            }
+
     </style>
 </head>
 <body>
