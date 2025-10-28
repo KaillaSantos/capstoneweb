@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="../assets/style.css">
-  <link rel="stylesheet" href="../Landing.css">
+  <link rel="stylesheet" href="Landing.css">
   <link rel="stylesheet" href="../assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
   <link rel="stylesheet" href="../assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
