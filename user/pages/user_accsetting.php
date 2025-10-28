@@ -118,6 +118,8 @@ $userid = $_SESSION['userid'];
     <!-- Overlay (for mobile view) -->
     <div class="overlay"></div>
 
+    <div class="content">
+
     <header class="dashboard-header">
       <div class="header-left">
         <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
@@ -170,6 +172,7 @@ $userid = $_SESSION['userid'];
             <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
         </form>
         <?php }  ?>
+    </div>
     </div>
 
     <script>
