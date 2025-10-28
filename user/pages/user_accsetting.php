@@ -134,8 +134,6 @@ $userid = $_SESSION['userid'];
         </div>
         </header>
 
-    <!-- Updated Close Button -->
-    <button type="button" class="close-btn" onclick="window.history.back();">Cancel</button>
            
     <div class="settings-panel">
 
