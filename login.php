@@ -46,7 +46,7 @@
                             unset($_SESSION['login_error']);
                         }
                         ?>
-                        <form method="post" action="/function/function.php">
+                        <form method="post" action="/capstoneweb/function/function.php">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required />
