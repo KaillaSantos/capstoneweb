@@ -10,7 +10,7 @@ require_once __DIR__ . '/../conn/dbconn.php';
 // Check login session
 if (!isset($_SESSION['userid'])) {
     echo "<script>alert('Unauthorized access. Please login.');
-          window.location.href='/../../login.php';</script>";
+          window.location.href='/capstoneweb/login.php';</script>";
     exit();
 }
 
