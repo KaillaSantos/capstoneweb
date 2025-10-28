@@ -120,25 +120,24 @@ $userid = $_SESSION['userid'];
 
     <div class="content">
 
-    <header class="dashboard-header">
-      <div class="header-left">
-        <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
-        <div class="header-text">
-          <h1>E-Recycle Account Settings</h1>
-          <p>Municipality of San Ildefonso</p>
+        <header class="dashboard-header">
+        <div class="header-left">
+            <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
+            <div class="header-text">
+            <h1>E-Recycle Account Settings</h1>
+            <p>Municipality of San Ildefonso</p>
+            </div>
         </div>
-      </div>
 
-      <div class="header-right">
-        <span class="date-display"><?php echo date("F j, Y"); ?></span>
-      </div>
-    </header>
+        <div class="header-right">
+            <span class="date-display"><?php echo date("F j, Y"); ?></span>
+        </div>
+        </header>
 
     <!-- Updated Close Button -->
     <button type="button" class="close-btn" onclick="window.history.back();">Cancel</button>
            
     <div class="settings-panel">
-        <h2>Account Settings</h2>
 
         <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
 
