@@ -171,6 +171,11 @@ $userid = $_SESSION['userid'];
        
            $data = mysqli_num_rows($run);
            $rows = mysqli_fetch_assoc($run);
+
+           $userImage = !empty($rows['userimg']) 
+            ? "/capstoneweb/image/" . $rows['userimg'] 
+            : "/capstoneweb/image/placeholder.jpg";
+
        ?>
 
 
@@ -208,12 +213,13 @@ $userid = $_SESSION['userid'];
             
             <!-- Profile Image Section -->
             <div class="profile-left">
-            <div class="profile-img-wrapper">
-                <img id="profilePreview" src="/capstoneweb/assets/default-profile.png" alt="Profile Image">
+                <div class="profile-img-wrapper">
+                    <img id="profilePreview" src="<?= $userImage ?>" alt="Profile Image">
+                </div>
+                <input type="file" id="uploadProfile" name="userimg" accept="image/*" onchange="previewImage(event)">
+                <small>Allowed types: jpg, png | Max: 5MB</small>
             </div>
-            <input type="file" id="uploadProfile" name="userimg" accept="image/*" onchange="previewImage(event)">
-            <small>Allowed types: jpg, png | Max: 5MB</small>
-            </div>
+
 
             <!-- Form Section -->
             <div class="profile-right">
