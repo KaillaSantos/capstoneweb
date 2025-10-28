@@ -111,11 +111,14 @@ if (isset($_POST['submitsetting'])) {
         exit();
     }
 
+
+    if (empty($_FILES['userimg']['name'])) {
     // ✅ Update user info (excluding image first)
     $updateInfo = "UPDATE account 
                    SET userName = '$userName', email = '$email', passWord = '$passWord' 
                    WHERE userid = '$userid'";
     mysqli_query($conn, $updateInfo);
+    }
 
     // ✅ handle image upload
     if (!empty($_FILES['userimg']['name'])) {
