@@ -120,7 +120,7 @@ if (isset($_POST['submitsetting'])) {
     // ✅ handle image upload
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = basename($_FILES['userimg']['name']);
-        $targetDir = __DIR__ . "/../image/"; // absolute path to /capstoneweb/image/
+        $targetDir = __DIR__ . "/../user/image/"; // absolute path to /capstoneweb/image/
         $target = $targetDir . $userimg;
 
         if (!file_exists($targetDir)) {
