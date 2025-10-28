@@ -80,6 +80,7 @@ $userid = $_SESSION['userid'];
             flex: 1;
             min-width: 250px;
             text-align: center;
+            justify-content: center;
             }
 
             .profile-img-wrapper {
