@@ -24,6 +24,8 @@ body {
   align-items: center;
   transition: width 0.3s ease;
   z-index: 100;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /* === COLLAPSED SIDEBAR === */
