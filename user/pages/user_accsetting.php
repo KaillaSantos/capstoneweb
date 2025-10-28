@@ -246,7 +246,10 @@ $userid = $_SESSION['userid'];
                 <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
                 </div>
 
-                <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
+                <div class="form-buttons">
+                    <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
+                    <button type="button" class="cancel-btn" onclick="cancelChanges()">Cancel</button>
+                </div>
             </form>
             </div>
         </div>
@@ -283,6 +286,15 @@ $userid = $_SESSION['userid'];
         }
         reader.readAsDataURL(event.target.files[0]);
         }
+
+        // Cancel button → confirm and redirect or reset
+        function cancelChanges() {
+        const confirmCancel = confirm("Are you sure you want to cancel your changes?");
+        if (confirmCancel) {
+            window.history.back();
+        }
+        }
+        
     </script>
 
     <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
