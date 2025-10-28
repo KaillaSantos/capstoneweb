@@ -1,5 +1,16 @@
 <?php
 require_once __DIR__ . '/../../conn/dbconn.php';
+require_once __DIR__ . '/../../includes/authSession.php';
+require_once __DIR__ . '/../includes/passwordVerification.php';
+
+// ✅ Check session
+if (!isset($_SESSION['userid'])) {
+    echo "<script>alert('Unauthorized access. Please login.');
+    window.location.href='../login.php';</script>";
+    exit();
+}
+
+$userid = $_SESSION['userid'];
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +21,8 @@ require_once __DIR__ . '/../../conn/dbconn.php';
     <title>Account Settings | E-Recycle</title>
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../user-admin.css">
-    <link rel="stylesheet" href="../../user-admin1.css">
+    <link rel="stylesheet" href="\capstoneweb/user-admin.css">
+    <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
     <!-- bootstrap -->
@@ -98,17 +109,17 @@ require_once __DIR__ . '/../../conn/dbconn.php';
        ?>
 
 
-  <!-- Sidebar -->
-  <?php include '../includes/sidebar.php'; ?>
+    <!-- Sidebar -->
+    <?php include '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle Button (visible on all screens) -->
-  <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
+    <!-- Sidebar Toggle Button (visible on all screens) -->
+    <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-  <!-- Overlay (for mobile view) -->
-  <div class="overlay"></div>
+    <!-- Overlay (for mobile view) -->
+    <div class="overlay"></div>
 
-           <!-- Updated Close Button -->
-           <button type="button" class="close-btn" onclick="window.history.back();">Cancel</button>
+    <!-- Updated Close Button -->
+    <button type="button" class="close-btn" onclick="window.history.back();">Cancel</button>
            
     <div class="settings-panel">
         <h2>Account Settings</h2>
