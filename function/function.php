@@ -118,39 +118,41 @@ if (isset($_POST['submitsetting'])) {
     mysqli_query($conn, $updateInfo);
 
 
-    // ✅ handle image upload
+    // ✅ Handle image upload
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = basename($_FILES['userimg']['name']);
-        
-        // choose where to save: adjust as needed
-        $targetDir = __DIR__ . "/../user/image/"; // or "../image/" if you prefer
+        $targetDir = __DIR__ . "/../user/image/"; // absolute path to /capstoneweb/user/image/
         $targetPath = $targetDir . $userimg;
+
+        // Check file type
         $fileType = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
 
-        // Allowed extensions
-        $allowed = ['jpg', 'jpeg', 'png'];
+        if (!in_array($fileType, $allowedTypes)) {
+            echo "<script>alert('Only JPG, JPEG, PNG images are allowed.'); history.back();</script>";
+            exit();
+        }
 
-        if (!in_array($fileType, $allowed)) {
-            echo "<script>alert('Invalid file type. Only JPG, JPEG, PNG allowed.');</script>";
+        // Make sure directory exists
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // Try moving uploaded file
+        if (move_uploaded_file($_FILES['userimg']['tmp_name'], $targetPath)) {
+            $query = "UPDATE account 
+                    SET userName = '$userName', email = '$email', passWord = '$passWord', userimg = '$userimg' 
+                    WHERE userid = '$userid'";
+            if (!mysqli_query($conn, $query)) {
+                echo "<script>alert('Database update failed: " . mysqli_error($conn) . "');</script>";
+                exit();
+            }
         } else {
-            if (!file_exists($targetDir)) {
-                mkdir($targetDir, 0777, true);
-            }
-
-            if (move_uploaded_file($_FILES['userimg']['tmp_name'], $targetPath)) {
-                $query = "UPDATE account 
-                        SET userName = '$userName', email = '$email', passWord = '$passWord', userimg = '$userimg' 
-                        WHERE userid = '$userid'";
-                
-                if (!mysqli_query($conn, $query)) {
-                    echo "<script>alert('Database update error: " . mysqli_error($conn) . "');</script>";
-                }
-            } else {
-                echo "<script>alert('Failed to upload file. Check folder permissions.');</script>";
-            }
+            echo "<script>alert('File upload failed. Please check permissions on /user/image/.'); history.back();</script>";
+            exit();
         }
     } else {
-        // ✅ If no new image, just update text fields
+        // ✅ No image — just update info
         $updateInfo = "UPDATE account 
                     SET userName = '$userName', email = '$email', passWord = '$passWord' 
                     WHERE userid = '$userid'";
