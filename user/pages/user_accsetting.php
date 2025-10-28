@@ -99,7 +99,7 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 
 
   <!-- Sidebar -->
-  <?php include '../includes/sidebar.php'; ?>
+  <?php include '/../includes/sidebar.php'; ?>
 
   <!-- Sidebar Toggle Button (visible on all screens) -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
