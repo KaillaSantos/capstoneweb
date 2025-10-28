@@ -47,25 +47,25 @@ if (isset($_POST['reset_password'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recover Password | E-Recycle</title>
-    <link rel="icon" type="image/x-icon" href="../assets/Flag_of_San_Ildefonso_Bulacan.png">
-    <link rel="stylesheet" href="../assets/bootstrap-5.3.7-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/style.css">
-    <link rel="stylesheet" href="/capstoneweb/Landing.css">
+    <link rel="icon" type="image/x-icon" href="assets/Flag_of_San_Ildefonso_Bulacan.png">
+    <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="Landing.css">
 </head>
 
 <body>
     <!-- Header -->
     <header>
         <div class="header">
-            <a href="login.php"><img src="../assets/logo_circle.jpeg" alt="" style="border-radius: 50%;"></a>
+            <a href="login.php"><img src="assets/logo_circle.jpeg" alt="" style="border-radius: 50%;"></a>
             <div class="nav-text">
                 <h2>E-Recycle</h2>
             </div> 
             <nav>
-                <a href="/capstoneweb/pages/LandingPage.php#home">Home</a>
-                <a href="/capstoneweb/pages/LandingPage.php#services">Services</a>
-                <a href="/capstoneweb/pages/LandingPage.php#contact">Contact</a>
+                <a href="/capstoneweb/index.php#home">Home</a>
+                <a href="/capstoneweb/index.php#services">Services</a>
+                <a href="/capstoneweb/index.php#contact">Contact</a>
             </nav>
         </div>
     </header>
