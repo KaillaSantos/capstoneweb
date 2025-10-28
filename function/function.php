@@ -105,30 +105,40 @@ if (isset($_POST['submitsetting'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
 
-    // ✅ check password match
+    // ✅ Password check
     if ($passWord !== $rePassword) {
         echo "<script>alert('Passwords do not match! Please try again.'); history.back();</script>";
         exit();
     }
 
-    // ✅ update user info
-    $query1 = "UPDATE account 
-               SET userName = '$userName', email = '$email', passWord = '$passWord' 
-               WHERE userid = $userid";
-    mysqli_query($conn, $query1);
+    // ✅ Update user info (excluding image first)
+    $updateInfo = "UPDATE account 
+                   SET userName = '$userName', email = '$email', passWord = '$passWord' 
+                   WHERE userid = '$userid'";
+    mysqli_query($conn, $updateInfo);
 
-    // ✅ handle image upload
+    // ✅ Handle profile image upload
     if (!empty($_FILES['userimg']['name'])) {
         $userimg = $_FILES['userimg']['name'];
-        $target  = "../image/" . basename($userimg);
+        $tmpName = $_FILES['userimg']['tmp_name'];
+        $targetDir = "../../image/";
+        $targetFile = $targetDir . basename($userimg);
+        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-        if (move_uploaded_file($_FILES['userimg']['tmp_name'], $target)) {
-            $query = "UPDATE account SET userimg = '$userimg' WHERE userid = $userid";
-            mysqli_query($conn, $query);
+        // Validate image file type (optional but safer)
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
+        if (in_array($fileType, $allowedTypes)) {
+            if (move_uploaded_file($tmpName, $targetFile)) {
+                $updateImage = "UPDATE account SET userimg = '$userimg' WHERE userid = '$userid'";
+                mysqli_query($conn, $updateImage);
+            }
+        } else {
+            echo "<script>alert('Invalid image type. Only JPG and PNG are allowed.'); history.back();</script>";
+            exit();
         }
     }
 
-    // ✅ get role from database
+    // ✅ Fetch user role
     function getUserInfo($conn, $userid) {
         $query = "SELECT role FROM account WHERE userid = '$userid'";
         $result = mysqli_query($conn, $query);
@@ -138,27 +148,32 @@ if (isset($_POST['submitsetting'])) {
     $user = getUserInfo($conn, $_SESSION['userid']);
     $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
 
-    // ✅ redirect based on role
-    if ($user && $user['role'] == 'admin') {
-        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-            $previousPage = '/capstoneweb/admin/pages/dashboard.php';
+    // ✅ Redirect based on role
+    if ($user) {
+        if ($user['role'] === 'admin') {
+            if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+                $previousPage = '/capstoneweb/admin/pages/dashboard.php';
+            }
+        } elseif ($user['role'] === 'user') {
+            if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
+                $previousPage = '/capstoneweb/user/pages/user_announcement.php';
+            }
+        } else {
+            echo "<script>alert('Error: user role not found');</script>";
+            exit();
         }
-    } elseif ($user && $user['role'] == 'user') {
-        if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-            $previousPage = '/capstoneweb/user/pages/user_announcement.php';
-        }
+
+        echo "<script>
+            alert('Account updated successfully!');
+            window.location.href = '$previousPage';
+        </script>";
+        exit();
     } else {
-        echo "<script>alert('Error: user role not found');</script>";
+        echo "<script>alert('Error: unable to fetch user info.'); history.back();</script>";
         exit();
     }
-
-    // ✅ final redirect
-    echo "<script>
-        alert('Account updated successfully!');
-        window.location.href = '$previousPage';
-    </script>";
-    exit();
 }
+
 
 
 // Back-End for Announcement
