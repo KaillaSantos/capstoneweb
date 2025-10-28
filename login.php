@@ -15,7 +15,7 @@
 <body>
         <header>
             <div class="header">
-                <a href="login.php"><img src="/assets/logo_circle.jpeg" alt="" style="border-radius: 50%;"></a>
+                <a href="login.php"><img src="assets/logo_circle.jpeg" alt="" style="border-radius: 50%;"></a>
                 <div class="nav-text">
                     <h2>E-Recycle</h2>
                 </div> 
