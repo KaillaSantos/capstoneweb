@@ -28,73 +28,138 @@ $userid = $_SESSION['userid'];
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* body {
+        /* === Layout === */
+            body {
+            background: #f5f6f7;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fff;
+            padding: 0;
+            }
+
+            .profile-header {
+            background-color: #1A4314;
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            margin-bottom: 20px;
+            }
+
+            .profile-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            }
+
+            .profile-header p {
+            margin: 5px 0 0;
+            font-size: 15px;
+            }
+
+            /* === Profile Card === */
+            .profile-container {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-        } */
+            align-items: flex-start;
+            padding: 30px;
+            }
 
-        .settings-panel {
+            .profile-card {
+            display: flex;
+            flex-wrap: wrap;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 950px;
             width: 100%;
-            max-width: 500px;
-            padding: 40px 30px;
+            padding: 30px;
+            gap: 30px;
+            }
+
+            /* === Left (Profile Image) === */
+            .profile-left {
+            flex: 1;
+            min-width: 250px;
             text-align: center;
-            position: relative;
-        }
+            }
 
-        .settings-panel h2 {
-            margin-bottom: 25px;
-            font-size: 28px;
-            font-weight: bold;
-        }
+            .profile-img-wrapper {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px;
+            border: 3px solid #1A4314;
+            }
 
-        .settings-panel label {
+            .profile-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            }
+
+            .profile-left input[type="file"] {
             display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            text-align: left;
-        }
+            margin: 10px auto;
+            font-size: 14px;
+            }
 
-        .settings-panel input {
+            .profile-left small {
+            color: #888;
+            font-size: 12px;
+            }
+
+            /* === Right (Form Fields) === */
+            .profile-right {
+            flex: 2;
+            min-width: 300px;
+            }
+
+            .form-group {
+            margin-bottom: 15px;
+            }
+
+            .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            }
+
+            .form-group input {
             width: 100%;
-            padding: 12px;
-            margin-top: 5px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+            border-radius: 6px;
+            font-size: 14px;
+            }
 
-        .settings-panel button.save-btn {
-            margin-top: 25px;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            background: #1A4314;
+            /* === Buttons === */
+            .save-btn {
+            background-color: #1A4314;
             color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .settings-panel button.save-btn:hover {
-            background: #2C5E1A;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 22px;
-            background: none;
             border: none;
+            border-radius: 6px;
+            padding: 12px 18px;
+            width: 100%;
             cursor: pointer;
-            color: #000;
-            text-decoration: none;
-        }
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.3s;
+            }
+
+            .save-btn:hover {
+            background-color: #2C5E1A;
+            }
+
+            /* === Responsive === */
+            @media (max-width: 768px) {
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-right {
+                width: 100%;
+            }
+            }
     </style>
 </head>
 <body>
@@ -137,65 +202,87 @@ $userid = $_SESSION['userid'];
            
     <div class="settings-panel">
 
-        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
-
-            <input type="hidden" name="userid" value="<?= $rows['userid'] ?>">
-
-            <label for="userimg">Upload Profile:</label>
-            <input class="form-control" type="file" name="userimg">
-
-            <label for="userName">Name:</label>
-            <input type="text" name="userName" placeholder="Juan Dela Cruz" value="<?= $rows['userName'] ?>">
-
-            <label for="email">Email:</label>
-            <input type="email" name="email" placeholder="juandelacruz@gmail.com" value="<?= $rows['email'] ?>">
-
-            <label for="password">Password:</label>
-            <div class="input-group mb-3">
-                <input type="password" id="password" name="passWord" class="form-control" placeholder="Enter new password" value="<?= $rows['passWord'] ?>">
-                <span class="input-group-text">
-                    <i class="fa fa-eye" id="togglePassword" style="cursor: pointer;"></i>
-                </span>
+        <!-- Profile Card -->
+        <div class="profile-container">
+        <div class="profile-card">
+            
+            <!-- Profile Image Section -->
+            <div class="profile-left">
+            <div class="profile-img-wrapper">
+                <img id="profilePreview" src="/capstoneweb/assets/default-profile.png" alt="Profile Image">
+            </div>
+            <input type="file" id="uploadProfile" name="userimg" accept="image/*" onchange="previewImage(event)">
+            <small>Allowed types: jpg, png | Max: 5MB</small>
             </div>
 
-            <label for="repassword">Re-Enter your new Password:</label>
-            <div class="input-group mb-3">
-                <input type="password" id="repassword" name="rePassword" class="form-control" placeholder="Re-Enter your new password">
-                <span class="input-group-text">
-                    <i class="fa fa-eye" id="toggleRePassword" style="cursor: pointer;"></i>
-                </span>
-            </div>
+            <!-- Form Section -->
+            <div class="profile-right">
+            <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+                <input type="hidden" name="userid" value="<?= $rows['userid'] ?>">
 
-            <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
-        </form>
+                <div class="form-group">
+                <label for="userName">Full Name:</label>
+                <input type="text" name="userName" value="<?= $rows['userName'] ?>" placeholder="Enter full name">
+                </div>
+
+                <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="<?= $rows['email'] ?>" placeholder="Enter email">
+                </div>
+
+                <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
+                </div>
+
+                <div class="form-group">
+                <label for="repassword">Re-enter Password:</label>
+                <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
+                </div>
+
+                <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
+            </form>
+            </div>
+        </div>
+        </div>
         <?php }  ?>
     </div>
     </div>
 
     <script>
-    // Toggle first password
-    const togglePassword = document.querySelector("#togglePassword");
-    const password = document.querySelector("#password");
-    togglePassword.addEventListener("click", function () {
-        const type = password.getAttribute("type") === "password" ? "text" : "password";
-        password.setAttribute("type", type);
-        this.classList.toggle("fa-eye-slash");
-    });
+        // Toggle first password
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+        togglePassword.addEventListener("click", function () {
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            this.classList.toggle("fa-eye-slash");
+        });
 
-    // Toggle re-enter password
-    const toggleRePassword = document.querySelector("#toggleRePassword");
-    const repassword = document.querySelector("#repassword");
-    toggleRePassword.addEventListener("click", function () {
-        const type = repassword.getAttribute("type") === "password" ? "text" : "password";
-        repassword.setAttribute("type", type);
-        this.classList.toggle("fa-eye-slash");
-    });
-</script>
+        // Toggle re-enter password
+        const toggleRePassword = document.querySelector("#toggleRePassword");
+        const repassword = document.querySelector("#repassword");
+        toggleRePassword.addEventListener("click", function () {
+            const type = repassword.getAttribute("type") === "password" ? "text" : "password";
+            repassword.setAttribute("type", type);
+            this.classList.toggle("fa-eye-slash");
+        });
 
- <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+        //Profile Image Preview
+        function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('profilePreview');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
- <!-- toggle -->
-  <script src="../../assets/sidebarToggle.js"></script>
+    <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- toggle -->
+    <script src="../../assets/sidebarToggle.js"></script>
 
   <!-- 🔐 Password Verification Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
