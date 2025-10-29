@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2025 at 12:37 PM
+-- Generation Time: Oct 29, 2025 at 01:17 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,7 +45,8 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`) VALUES
 (6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmmin123', 'admin', 'not verified'),
 (8, NULL, 'Geb Micahel', 'user@gmail.com', 1, 'Samic57', 'user', 'not verified'),
-(9, NULL, 'Kailla', 'user123@gmail.com', 3, '1234567', 'user', 'not verified');
+(9, NULL, 'Kailla', 'user123@gmail.com', 3, '1234567', 'user', 'not verified'),
+(10, NULL, 'Miguel', 'j@gmail.com', 3, '12345', 'user', 'not verified');
 
 -- --------------------------------------------------------
 
@@ -190,6 +191,20 @@ INSERT INTO `rewards` (`reward_id`, `product_name`, `product_description`, `prod
 (3, 'Rice', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id sed reiciendis, molestias vitae consequatur in debitis cupiditate. Sint vitae ratione harum labore delectus sunt reprehenderit, eos repellat et. Distinctio, qui.', 100, '2025-10-14 16:00:00', 'roice.jpg'),
 (4, 'bigas', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id sed reiciendis, molestias vitae consequatur in debitis cupiditate. Sint vitae ratione harum labore delectus sunt reprehenderit, eos repellat et. Distinctio, qui.', 129381, '2025-11-14 16:00:00', '');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_rewards`
+--
+
+CREATE TABLE `user_rewards` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `reward_id` int(11) NOT NULL,
+  `status` varchar(50) DEFAULT 'Pending',
+  `date_redeemed` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -232,6 +247,14 @@ ALTER TABLE `rewards`
   ADD PRIMARY KEY (`reward_id`);
 
 --
+-- Indexes for table `user_rewards`
+--
+ALTER TABLE `user_rewards`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `reward_id` (`reward_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -239,7 +262,7 @@ ALTER TABLE `rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `announcement`
@@ -270,6 +293,23 @@ ALTER TABLE `recyclable`
 --
 ALTER TABLE `rewards`
   MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user_rewards`
+--
+ALTER TABLE `user_rewards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `user_rewards`
+--
+ALTER TABLE `user_rewards`
+  ADD CONSTRAINT `user_rewards_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `account` (`userid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_rewards_ibfk_2` FOREIGN KEY (`reward_id`) REFERENCES `rewards` (`reward_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
