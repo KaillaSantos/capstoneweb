@@ -83,7 +83,7 @@ if (isset($_POST['signup'])) {
             $userId = mysqli_insert_id($conn);
 
             // ✅ QR code generation
-            require_once __DIR__ . '/../phpqrcode/qrlib.php';
+            require_once __DIR__ . '/../includes/phpqrcode/qrlib.php';
             $qrDir = __DIR__ . '/../uploads/qrcodes/';
 
             // Create folder if missing
