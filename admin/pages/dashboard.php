@@ -9,9 +9,11 @@ $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
 
-$total_households = 124;
+$query2 = "SELECT COUNT(role) FROM account WHERE role = 'user'";
+$result1 = mysqli_query($conn, $query2);
+$total_households = $result1;
+
 $total_requests = 57;
-$total_points = 3200;
 $pending_notifications = 3;
 ?>
 
@@ -42,19 +44,19 @@ $pending_notifications = 3;
   <div class="content" id="content">
 
     <!-- content header -->
-     <header class="dashboard-header">
-      <div class="header-left">
-      <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
-      <div class="header-text">
-          <h1>E-Recycle Dashboard Page</h1>
-          <p>Municipality of San Ildefonso</p>
-      </div>
-      </div>
+      <header class="dashboard-header">
+        <div class="header-left">
+          <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
+          <div class="header-text">
+              <h1>E-Recycle Dashboard Page</h1>
+              <p>Municipality of San Ildefonso</p>
+          </div>
+        </div>
 
-      <div class="header-right">
-      <span class="date-display"><?php echo date("F j, Y"); ?></span>
-      </div>
-  </header>
+        <div class="header-right">
+          <span class="date-display"><?php echo date("F j, Y"); ?></span>
+        </div>
+      </header>
 
     <!-- ===== STAT CARDS ===== -->
     <section class="stats-grid">
