@@ -66,7 +66,7 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
         </select>
       </form>
 
-      <a href="/capstoneweb/admin/pages/newannounce.php" class="btn btn-success"> 
+      <a href="/capstoneweb/admin/pages/newannounce.php" class="btn btn-md btn-success"> 
         <i class="fa fa-plus"></i> Add New Announcement
       </a>
 
