@@ -99,54 +99,51 @@
 
 }
 
-/* ===== RANKING CARDS ONLY ===== */
-.card.ranking {
-  display: flex;
-  flex-direction: column;
-  height: auto; /* 👈 allow card to expand naturally */
-}
+/* ===== CHART + RANKING ===== */ 
+.dashboard-grid { 
+  display: grid; 
+  grid-template-columns: 2fr 1fr; gap: 20px; 
+} 
 
-.card.ranking h2 {
-  font-size: 18px;
-  color: #2e7d32;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 8px;
-  margin-bottom: 15px;
-}
+.card { 
+  background: #fff; 
+  border-radius: 12px; 
+  padding: 20px; 
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); 
+} 
 
-/* Ranking list layout */
-.card.ranking ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.card h2 { 
+  font-size: 18px; 
+  color: #2e7d32; 
+  border-bottom: 2px solid #e0e0e0; 
+  padding-bottom: 8px; 
+  margin-bottom: 15px; 
+} 
 
-.card.ranking li {
-  display: flex;
-  justify-content: space-between;
-  background: #f9fafc;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
+/* Ranking list */ 
+.ranking ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+} 
 
-.card.ranking li:hover {
-  transform: scale(1.02);
-  background: #eef7ee;
-}
+.ranking li { 
+  display: flex; 
+  justify-content: space-between; 
+  background: #f9fafc; 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  margin-bottom: 8px; 
+  font-weight: 500; 
+} 
 
-.card.ranking li span:first-child {
-  color: #2c5e1a;
-}
+.ranking li span:first-child { 
+  color: #2c5e1a; 
+} 
 
-.card.ranking li span:last-child {
-  color: #2e7d32;
+.ranking li span:last-child { 
+  color: #2e7d32; 
 }
-
 
 /* ===================== */
 /* SIDEBAR & TOGGLE */
