@@ -121,6 +121,12 @@
 } 
 
 /* Ranking list */ 
+.card.ranking {
+  display: flex;
+  flex-direction: column;
+  height: auto; /* 👈 allow card to expand naturally */
+}
+
 .ranking ul { 
   list-style: none; 
   padding: 0; 
