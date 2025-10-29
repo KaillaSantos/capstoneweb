@@ -93,14 +93,14 @@ if($result3) {
           <p>Registered Households</p>
         </div>
       </a>
-      <a href="recyclables.php" class="stat-card">
+      <a href="recyclables.php" class="stat-card" style="text-decoration: none;">
         <div class="stat-icon"><i class="fa fa-recycle"></i></div>
         <div class="stat-info">
           <h3><?php echo $total_recyclables; ?></h3>
           <p>Total Recyclables Gathered</p>
         </div>
       </a>
-      <a href="notification.php" class="stat-card">
+      <a href="notification.php" class="stat-card" style="text-decoration: none;">
         <div class="stat-icon"><i class="fa fa-bell"></i></div>
         <div class="stat-info">
           <h3><?php echo $pending_notifications; ?></h3>
