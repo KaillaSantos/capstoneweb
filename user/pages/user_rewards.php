@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 $user_id = $_SESSION['userid'];
 
 // Get total recyclables collected (kg)
-$kgQuery = "SELECT SUM(weight) AS total_kg FROM recyclable WHERE user_id = '$user_id'";
+$kgQuery = "SELECT SUM(weight) AS total_kg FROM records WHERE user_id = '$user_id'";
 $kgResult = $conn->query($kgQuery);
 $kgData = $kgResult->fetch_assoc();
 $totalKg = $kgData['total_kg'] ?? 0;
