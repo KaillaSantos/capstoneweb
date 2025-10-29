@@ -35,19 +35,9 @@ require_once __DIR__ . '/../../includes/fetchData.php';
 
   <!-- Page Content -->
   <div class="content" id="content">
-    <header class="dashboard-header">
-      <div class="header-left">
-        <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
-        <div class="header-text">
-          <h1>E-Recycle Household User Records</h1>
-          <p>Municipality of San Ildefonso</p>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <span class="date-display"><?php echo date("F j, Y"); ?></span>
-      </div>
-    </header>
+    
+    <!-- content header -->
+    <?php include '../includes/header.php'; ?>
 
     <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 5px;">
       <h3 style="padding-left: 50px;"> </h3>
