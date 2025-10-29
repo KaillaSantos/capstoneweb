@@ -212,6 +212,10 @@ $userid = $_SESSION['userid'];
       .form-buttons {
         flex-direction: column;
       }
+
+      .form-group {
+        width: 80%;
+      }
     }
 
     /* Large Phones */
@@ -232,6 +236,7 @@ $userid = $_SESSION['userid'];
       .form-group input {
         font-size: 14px;
         padding: 10px 36px 10px 10px;
+        width: 100%;
       }
 
       .toggle-password {
