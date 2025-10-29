@@ -63,6 +63,7 @@ nav a:hover {
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(135deg, #cce8e4, #e6f7f4);
+  margin-top: 50px;
 }
 
 .home-img img {
