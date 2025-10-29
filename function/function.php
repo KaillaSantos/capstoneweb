@@ -243,7 +243,7 @@ if (isset($_POST['submit_announcement'])) {
           VALUES ( '$announce_name', '$announce_text', '$announce_date', '$filename')";
 
     if (mysqli_query($conn, $query)) {
-        header("Location: ../pages/announcement.php?userid={$userid}");
+        header("Location: ../admin/pages/announcement.php?userid={$userid}");
         exit();
     } else {
         echo "<script>alert('Adding announcement failed.');</script>";

@@ -105,8 +105,7 @@ $result = mysqli_query($conn, $query);
 
             <!-- Auto-filled household name (record_name) -->
             <div class="mb-3">
-                <label for="record_name" class="form-label">Household Name:</label>
-                <input type="text" id="recordName" name="record_name" class="form-control" readonly required>
+                <input type="hidden" id="recordName" name="record_name" class="form-control" readonly required>
             </div>
 
             <div class="mb-3">

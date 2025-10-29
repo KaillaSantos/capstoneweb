@@ -10,9 +10,9 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 
 // ✅ Check session early
 if (!isset($_SESSION['userid'])) {
-    echo "<script>alert('Unauthorized access. Please login.');
+  echo "<script>alert('Unauthorized access. Please login.');
     window.location.href='../login.php';</script>";
-    exit();
+  exit();
 }
 
 $userid = $_SESSION['userid']; // ✅ define first
@@ -25,11 +25,11 @@ $user = mysqli_fetch_assoc($result);
 // include helpers
 require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
-require_once __DIR__ . '/../../includes/archiveHandling.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, maximum-scale=1.0">
@@ -57,17 +57,17 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
   <div class="content" id="content">
     <header class="dashboard-header">
       <div class="header-left">
-      <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
-      <div class="header-text">
+        <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
+        <div class="header-text">
           <h1>E-Recycle Announcement Page</h1>
           <p>Municipality of San Ildefonso</p>
-      </div>
+        </div>
       </div>
 
       <div class="header-right">
-      <span class="date-display"><?php echo date("F j, Y"); ?></span>
+        <span class="date-display"><?php echo date("F j, Y"); ?></span>
       </div>
-  </header>
+    </header>
 
     <div style="display:flex; justify-content:flex-end; ">
       <form method="get" action="announcement.php" class="d-flex align-items-center mb-3">
@@ -77,32 +77,30 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
         </select>
       </form>
 
-      <a href="/capstoneweb/admin/pages/newannounce.php" class="btn btn-md btn-success"> 
-        <i class="fa fa-plus"></i> Add New Announcement
-      </a>
-
-      <!-- 🔐 Open password modal instead of submitting -->
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#verifyPasswordModal" data-redirect="/capstoneweb/admin/pages/accsetting.php">
-        <i class="fa-solid fa-box-archive"></i> Archive
-      </button>
+      <form method="post" action="announcement.php">
+        <a href="/capstoneweb/admin/pages/newannounce.php" class="btn btn-md btn-success">
+          <i class="fa fa-plus"></i> Add New Announcement
+        </a>
+        <button type="submit" class="btn btn-danger" name="archive_selected"><i class="fa-solid fa-box-archive"></i> Archive</button>
+      </form>
     </div>
 
     <div class="announcement-container">
       <?php
-        $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'Posted';
+      $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'Posted';
 
-        if ($statusFilter === 'All') {
-          $sql = "SELECT * FROM announcement ORDER BY announce_date DESC";
-        } else {
-          $sql = "SELECT * FROM announcement WHERE status = '$statusFilter' ORDER BY announce_date DESC";
-        }
-        $run = mysqli_query($conn, $sql);
+      if ($statusFilter === 'All') {
+        $sql = "SELECT * FROM announcement ORDER BY announce_date DESC";
+      } else {
+        $sql = "SELECT * FROM announcement WHERE status = '$statusFilter' ORDER BY announce_date DESC";
+      }
+      $run = mysqli_query($conn, $sql);
 
-        if (mysqli_num_rows($run) > 0) {
-          while ($rows = mysqli_fetch_assoc($run)) {
-            $announceImage = !empty($rows['announce_img'])
-              ? "../announceImg/" . $rows['announce_img']
-              : "../announceImg/announcementPlaceholder.jpg";
+      if (mysqli_num_rows($run) > 0) {
+        while ($rows = mysqli_fetch_assoc($run)) {
+          $announceImage = !empty($rows['announce_img'])
+            ? "../announceImg/" . $rows['announce_img']
+            : "../announceImg/announcementPlaceholder.jpg";
       ?>
           <div class="announcement-card">
             <input type="checkbox" name="archive_ids[]" value="<?= $rows['announce_id'] ?>">
@@ -129,10 +127,10 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
             </div>
           </div>
       <?php
-          }
-        } else {
-          echo "<p>No announcements yet.</p>";
         }
+      } else {
+        echo "<p>No announcements yet.</p>";
+      }
       ?>
     </div>
   </div>
@@ -208,4 +206,5 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
   </script>
 
 </body>
+
 </html>
