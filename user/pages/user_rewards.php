@@ -9,7 +9,7 @@ $user_id = $_SESSION['userid'];
 $kgQuery = "SELECT SUM(weight) AS total_kg FROM recyclable WHERE user_id = '$user_id'";
 $kgResult = $conn->query($kgQuery);
 $kgData = $kgResult->fetch_assoc();
-$totalKg = $kgData['total_kg'] ?? 0;
+$totalKg = 0;
 
 // Fetch all available rewards
 $rewardQuery = "SELECT * FROM rewards";
