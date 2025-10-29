@@ -71,7 +71,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       <h4 style="padding-left: 50px;">  </h4>
       <div style="display:flex; justify-content:flex-end; gap:10px;">
         <form method="post" action="announcement.php">
-          <a href="/capstoneweb/admin/pages/newreward.php" class="btn btn-success"> <i class="fa fa-plus"></i> Add New</a>
+          <a href="newreward.php" class="btn btn-success"> <i class="fa fa-plus"></i> Add New</a>
         </form>
         <form action="/capstoneweb/function/function.php" method="post" class="d-inline">
           <button type="submit" name="reset_rewards" class="btn btn-danger" onclick="return confirm('Are you sure you want to reset all data? This cannot be undone.');"><i class="fa-solid fa-trash-can-arrow-up"></i> Reset </button>
@@ -107,7 +107,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                     data-image="<?= $rewardImage ?>">
                     Read More »
                   </button>
-                  <a href="/capstoneweb/pages/editreward.php?id=<?= $rows['reward_id'] ?>" class="btn btn-warning btn-sm" style="margin-left: auto;">
+                  <a href="/capstoneweb/admin/pages/editreward.php?id=<?= $rows['reward_id'] ?>" class="btn btn-warning btn-sm" style="margin-left: auto;">
                     <i class="fa fa-edit"></i> Edit
                   </a>
                 </div>

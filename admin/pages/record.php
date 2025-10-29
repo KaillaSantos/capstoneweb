@@ -19,38 +19,38 @@ require_once __DIR__ . '/../../includes/fetchData.php';
   <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-  
+
 </head>
 
 <body>
 
   <!-- Sidebar -->
- <?php include '../includes/sidebar.php'; ?>
+  <?php include '../includes/sidebar.php'; ?>
 
-   <!-- Sidebar Toggle Button (visible on all screens) -->
+  <!-- Sidebar Toggle Button (visible on all screens) -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
   <!-- Overlay (for mobile view) -->
   <div class="overlay"></div>
 
   <!-- Page Content -->
-    <div class="content" id="content">
-      <header class="dashboard-header">
-        <div class="header-left">
-          <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
-          <div class="header-text">
-            <h1>E-Recycle Household User Records</h1>
-            <p>Municipality of San Ildefonso</p>
-          </div>
+  <div class="content" id="content">
+    <header class="dashboard-header">
+      <div class="header-left">
+        <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
+        <div class="header-text">
+          <h1>E-Recycle Household User Records</h1>
+          <p>Municipality of San Ildefonso</p>
         </div>
+      </div>
 
-        <div class="header-right">
-          <span class="date-display"><?php echo date("F j, Y"); ?></span>
-        </div>
-      </header>
+      <div class="header-right">
+        <span class="date-display"><?php echo date("F j, Y"); ?></span>
+      </div>
+    </header>
 
     <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 5px;">
-      <h3 style="padding-left: 50px;">      </h3>
+      <h3 style="padding-left: 50px;"> </h3>
 
       <div class="d-flex gap-2">
         <a href="\capstoneweb\admin\pages\redeem.php" class="btn btn-success" name="add"><i class="fa-solid fa-plus"></i> Add </a>
@@ -111,9 +111,9 @@ require_once __DIR__ . '/../../includes/fetchData.php';
               </th>
             <?php endforeach; ?>
 
-
             <th>Image</th>
           </tr>
+        </thead>
         </thead>
         <tbody>
           <?php if (!empty($records)): ?>
@@ -233,8 +233,8 @@ require_once __DIR__ . '/../../includes/fetchData.php';
     </div>
   </div>
 
- <!-- toggle -->
-<script src="\capstoneweb/assets/sidebarToggle.js"></script>
+  <!-- toggle -->
+  <script src="\capstoneweb/assets/sidebarToggle.js"></script>
 
 
 </body>

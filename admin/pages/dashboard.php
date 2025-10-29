@@ -125,6 +125,14 @@ $pending_notifications = 3;
         </div>
       </div>
 
+      <div class="card ranking">
+        <h2>Top Performing Users</h2>
+        <ul>
+          <li><span>User 1</span><span>⭐ 231</span></li>
+          <li><span>User 3</span><span>⭐ 192</span></li>
+        </ul>
+      </div>
+
     </section>
 
   </div>
