@@ -53,7 +53,6 @@ $pending_notifications = 3;
     <!-- content header -->
       <header class="dashboard-header">
         <div class="header-left">
-          <img src="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png" alt="E-Recycle Logo" class="header-logo">
           <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
           <div class="header-text">
               <h1>E-Recycle Dashboard Page</h1>
