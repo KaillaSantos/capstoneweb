@@ -56,14 +56,14 @@ if (isset($_POST['signup'])) {
     $role       = mysqli_real_escape_string($conn, $_POST['role']);
     $purok      = mysqli_real_escape_string($conn, $_POST['purok']);
 
-    // 🧩 Check password match
+    //  Check password match
     if ($passWord !== $rePassword) {
         $_SESSION['registerError'] = "Passwords do not match.";
         header("Location: /capstoneweb/signUp.php");
         exit();
     }
 
-    // 🧩 Check if email already exists
+    //  Check if email already exists
     $checkEmail = "SELECT * FROM account WHERE email = '$email'";
     $result = $conn->query($checkEmail);
 
@@ -73,17 +73,17 @@ if (isset($_POST['signup'])) {
         exit();
     }
 
-    // 🧩 Insert new user
+    // Insert new user
     if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) && !empty($purok)) {
         $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
                    VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
         if (mysqli_query($conn, $query2)) {
-            // ✅ Get new user ID
+            // Get new user ID
             $userId = mysqli_insert_id($conn);
 
-            // ✅ QR code generation
-            require_once __DIR__ . '/../phpqrcode/qrlib.php';
+            // QR code generation
+            require_once __DIR__ . '/../includes/phpqrcode/qrlib.php';
             $qrDir = __DIR__ . '/../uploads/qrcodes/';
 
             // Create folder if missing
@@ -96,10 +96,10 @@ if (isset($_POST['signup'])) {
             $qrFileName = "qr_" . $userId . ".png";
             $qrFilePath = $qrDir . $qrFileName;
 
-            // ✅ Generate QR code
+            // Generate QR code
             QRcode::png($qrData, $qrFilePath, QR_ECLEVEL_L, 5);
 
-            // ✅ Save QR file name in database
+            // Save QR file name in database
             $updateQr = "UPDATE account SET qr_code = '$qrFileName' WHERE userid = '$userId'";
             mysqli_query($conn, $updateQr);
 
@@ -563,3 +563,29 @@ if (isset($_POST['update_reward'])) {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
 }
+function getUserQRCode($conn, $userid) {
+    $sql = "SELECT qr_code FROM account WHERE userid = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    if ($row && !empty($row['qr_code'])) {
+        $qrFile = trim($row['qr_code']);
+        
+        // Web-accessible path (for <img src="">)
+        $qrPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
+        
+        // Absolute file path (for PHP file_exists)
+        $absolutePath = "C:/xampp/htdocs/capstoneweb/uploads/qrcodes/" . $qrFile;
+
+        if (file_exists($absolutePath)) {
+            return $qrPath; // Return the web path so browser can load it
+        }
+    }
+
+    return null; // Not found
+}
+
+

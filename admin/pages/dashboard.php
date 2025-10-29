@@ -19,16 +19,17 @@ if ($result1) {
     $total_households = 0; 
 }
 
-$query3 = "SELECT SUM(quantity) AS total_quantity FROM record_details;";
+$query3 = "SELECT SUM(quantity) AS total_quantity FROM record_items;";
 $result2 = mysqli_query($conn, $query3);
-if($result2) {
+
+if ($result2) {
   $row1 = mysqli_fetch_assoc($result2);
-  $total_recyclables = $row['total'];
+  $total_recyclables = $row1['total_quantity']; 
 } else {
-  $total_recyclables = 0 ; 
+  $total_recyclables = 0; 
 }
 
-$pending_notifications = 3;
+// $pending_notifications = 3;
 ?>
 
 <!DOCTYPE html>
