@@ -99,11 +99,13 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
               <img src="<?php echo $rewardImage; ?>" alt="Reward" class="reward-img">
               <div class="reward-body">
                 <h5><?= htmlspecialchars($rows['product_name']) ?></h5>
+                <p><?= htmlspecialchars($rows['product_points']) ?></p>
                 <p class="date"><?= date("m/d/Y", strtotime($rows['product_date'])) ?></p>
                 <p><?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
                 <div class="reward-actions">
                   <button type="button" class="btn btn-link read-more-btn"
                     data-title="<?= htmlspecialchars($rows['product_name']) ?>"
+                    data-points="<?= htmlspecialchars($rows['product_points']) ?>"
                     data-date="<?= date("m/d/Y", strtotime($rows['product_date'])) ?>"
                     data-text="<?= htmlspecialchars($rows['product_description']) ?>"
                     data-image="<?= $rewardImage ?>">
