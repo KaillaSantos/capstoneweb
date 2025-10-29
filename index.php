@@ -46,7 +46,7 @@
             <h1>Welcome to <span style="color: green;">E-Recycle</span></h1>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus labore dolores esse. Odit similique doloribus tenetur doloremque, sunt commodi in ipsa repudiandae debitis deleniti blanditiis quibusdam quaerat neque asperiores ea.</p>
             <div class="social-icons">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.facebook.com/photo/?fbid=122096508476984820&set=a.122096505560984820"><i class="fa-brands fa-facebook"></i></a>
             </div>
             <a href="login.php" class="btn">Log in</a> 
             <a href="signUp.php" class="btn">Register Now!</a> 

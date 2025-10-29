@@ -11,7 +11,7 @@
     </div>
 
     <div class="social-links">
-      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://www.facebook.com/photo/?fbid=122096508476984820&set=a.122096505560984820"><i class="fa-brands fa-facebook"></i></a>
     </div>
 
     <p class="copyright">© 2025 E-Recycle. All rights reserved.</p>
