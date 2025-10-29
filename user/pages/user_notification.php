@@ -16,7 +16,6 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
-  
 </head>
 
 <body>
@@ -29,7 +28,6 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
 
   <!-- Overlay (for mobile view) -->
   <div class="overlay"></div>
-
 
   <!-- Content -->
   <div class="content" id="content">
@@ -47,9 +45,29 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
       </div>
     </header>
 
+    <!-- QR Code Section -->
+    <div class="container mt-4 text-center">
+      <?php
+      $user_id = $_SESSION['userid'];
+      $qrQuery = "SELECT qr_code_path FROM account WHERE userid = '$user_id'";
+      $qrResult = mysqli_query($conn, $qrQuery);
+
+      if ($qrResult && mysqli_num_rows($qrResult) > 0) {
+          $qrRow = mysqli_fetch_assoc($qrResult);
+          $qrPath = $qrRow['qr_code_path'];
+
+          if (!empty($qrPath) && file_exists(__DIR__ . '/../../' . $qrPath)) {
+              echo "<h4>Your QR Code</h4>";
+              echo "<img src='/capstoneweb/$qrPath' alt='Your QR Code' class='img-fluid' style='max-width: 250px; border: 2px solid #0d6efd; border-radius: 10px; padding: 10px;'>";
+          } else {
+              echo "<div class='alert alert-warning'>QR code not found. Please contact the administrator.</div>";
+          }
+      } else {
+          echo "<div class='alert alert-danger'>Failed to load QR code data.</div>";
+      }
+      ?>
+    </div>
   </div>
-
-
 
   <!-- Verify Password Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
@@ -78,5 +96,4 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
   <script src="../../assets/sidebarToggle.js"></script>
 
 </body>
-
 </html>
