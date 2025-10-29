@@ -20,7 +20,7 @@ if ($result1) {
 }
 
 
-$total_requests = 57;
+$total_recyclables = 57;
 $pending_notifications = 3;
 ?>
 
@@ -77,8 +77,8 @@ $pending_notifications = 3;
       <div class="stat-card">
         <div class="stat-icon"><i class="fa fa-recycle"></i></div>
         <div class="stat-info">
-          <h3><?php echo $total_requests; ?></h3>
-          <p>Recycling Requests</p>
+          <h3><?php echo $total_recyclables; ?></h3>
+          <p>Total Recyclables Gather</p>
         </div>
       </div>
       <div class="stat-card">
