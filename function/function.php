@@ -304,7 +304,7 @@ if (isset($_POST['submit_redeem'])) {
     }
 
     // Redirect after success
-    header("Location: ../pages/record.php?userid={$userid}");
+    header("Location: ../admin/pages/record.php?userid={$userid}");
     exit();
 }
 
