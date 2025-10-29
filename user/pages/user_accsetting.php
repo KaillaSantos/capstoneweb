@@ -21,8 +21,8 @@ $userid = $_SESSION['userid'];
     <title>Account Settings | E-Recycle</title>
     <link rel="stylesheet" href="\capstoneweb\user-admin.css">
     <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
-    <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
+    <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">  
+    <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
@@ -217,7 +217,7 @@ $userid = $_SESSION['userid'];
 
         <header class="dashboard-header">
         <div class="header-left">
-            <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
+            <img src="\capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
             <div class="header-text">
             <h1>E-Recycle Account Settings</h1>
             <p>Municipality of San Ildefonso</p>
@@ -229,7 +229,6 @@ $userid = $_SESSION['userid'];
         </div>
         </header>
 
-           
     <div class="settings-panel">
 
         <!-- Profile Card -->
