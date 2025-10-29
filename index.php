@@ -40,7 +40,7 @@
     <!-- HOME SECTION -->
     <section id="#uphome" class="home">
         <div class="home-img">
-            <img src="assets/E-Recycle Logo with Green and Blue Palette.png" alt="">
+            <img src="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png" alt="">
         </div>
         <div class="home-content">
             <h1>Welcome to <span style="color: green;">E-Recycle</span></h1>
