@@ -79,12 +79,14 @@ $rewards = $conn->query($rewardQuery);
                 <h5 class="card-title"><?php echo $reward['product_name']; ?></h5>
                 <p class="card-text"><?php echo $reward['product_description']; ?></p>
                 <div class="progress mb-2">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: <?php echo $progress; ?>%"
-                       aria-valuenow="<?php echo $progress; ?>"
-                       aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar"
+                      role="progressbar"
+                      data-progress="<?php echo $progress; ?>"
+                      style="width: 0%"
+                      aria-valuemin="0" aria-valuemax="100">
                   </div>
                 </div>
+
                 <p><?php echo $totalKg; ?>kg / <?php echo $requiredPoints; ?>kg collected</p>
               </div>
               <div class="card-footer text-center">
@@ -162,5 +164,24 @@ $rewards = $conn->query($rewardQuery);
   </div>
 
   <script src="../../assets/sidebarToggle.js"></script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const bars = document.querySelectorAll('.progress-bar');
+
+  bars.forEach(bar => {
+    const target = parseFloat(bar.getAttribute('data-progress')) || 0;
+    let current = 0;
+
+    const animate = setInterval(() => {
+      if (current >= target) {
+        clearInterval(animate);
+      } else {
+        current += 1; // Speed — increase for faster animation
+        bar.style.width = current + "%";
+      }
+    }, 10); // Interval speed (ms)
+  });
+});
+</script>
 </body>
 </html>
