@@ -86,7 +86,7 @@ if($result3) {
 
     <!-- ===== STAT CARDS ===== -->
     <section class="stats-grid">
-      <a href="#" class="stat-card">
+      <a href="#" class="stat-card" style="text-decoration: none;">
         <div class="stat-icon"><i class="fa fa-users"></i></div>
         <div class="stat-info">
           <h3><?php echo $total_households; ?></h3>
