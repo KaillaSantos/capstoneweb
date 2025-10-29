@@ -20,7 +20,7 @@ if ($result1) {
 }
 
 
-$total_requests = 57;
+$total_recyclables = 57;
 $pending_notifications = 3;
 ?>
 
@@ -53,6 +53,7 @@ $pending_notifications = 3;
     <!-- content header -->
       <header class="dashboard-header">
         <div class="header-left">
+          <img src="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png" alt="E-Recycle Logo" class="header-logo">
           <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
           <div class="header-text">
               <h1>E-Recycle Dashboard Page</h1>
@@ -77,8 +78,8 @@ $pending_notifications = 3;
       <div class="stat-card">
         <div class="stat-icon"><i class="fa fa-recycle"></i></div>
         <div class="stat-info">
-          <h3><?php echo $total_requests; ?></h3>
-          <p>Recycling Requests</p>
+          <h3><?php echo $total_recyclables; ?></h3>
+          <p>Total Recyclables Gather</p>
         </div>
       </div>
       <div class="stat-card">
