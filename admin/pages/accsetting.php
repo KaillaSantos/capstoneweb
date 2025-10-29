@@ -256,7 +256,7 @@ $userid = $_SESSION['userid'];
             }
 
             .form-group input {
-            width: 60%;
+            width: 80%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
@@ -291,7 +291,7 @@ $userid = $_SESSION['userid'];
                 width: 80%;
             }
             .form-group {
-              width: 60%;
+              width: 80%;
             }
             }
             .form-buttons {
