@@ -217,7 +217,7 @@ $userid = $_SESSION['userid'];
 
         <header class="dashboard-header">
         <div class="header-left">
-            <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
+            <img src="\capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
             <div class="header-text">
             <h1>E-Recycle Account Settings</h1>
             <p>Municipality of San Ildefonso</p>
