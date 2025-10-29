@@ -31,7 +31,7 @@
         </header>
 
 
-    <div class="break" style="margin-top: 200px;"></div>
+    <div class="break" style="margin-top: 150px;"></div>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
