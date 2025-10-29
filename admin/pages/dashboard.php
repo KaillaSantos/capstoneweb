@@ -19,8 +19,15 @@ if ($result1) {
     $total_households = 0; 
 }
 
+$query3 = "SELECT SUM(quantity) AS total_quantity FROM record_details;";
+$result2 = mysqli_query($conn, $query3);
+if($result2) {
+  $row1 = mysqli_fetch_assoc($result2);
+  $total_recyclables = $row['total'];
+} else {
+  $total_recyclables = 0 ; 
+}
 
-$total_recyclables = 57;
 $pending_notifications = 3;
 ?>
 
@@ -78,7 +85,7 @@ $pending_notifications = 3;
         <div class="stat-icon"><i class="fa fa-recycle"></i></div>
         <div class="stat-info">
           <h3><?php echo $total_recyclables; ?></h3>
-          <p>Total Recyclables Gather</p>
+          <p>Total Recyclables Gathered</p>
         </div>
       </div>
       <div class="stat-card">
