@@ -14,7 +14,7 @@ $result = mysqli_query($conn, $query);
     <link rel="stylesheet" href="../user-admin.css">
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-    <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
     <link rel="stylesheet" href="../assets/fontawesome-free-7.0.1-web/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
