@@ -250,6 +250,26 @@ if (isset($_POST['submit_announcement'])) {
     }
 }
 
+if (isset($_POST['archive_selected'])) {
+  if (!empty($_POST['archive_ids'])) {
+    $archive_ids = $_POST['archive_ids'];
+    $id_list = implode(",", array_map('intval', $archive_ids));
+
+    $archive_query = "UPDATE announcement SET status = 'Archived' WHERE announce_id IN ($id_list)";
+    if (mysqli_query($conn, $archive_query)) {
+      $_SESSION['message'] = 'Selected announcements archived successfully.';
+    } else {
+      $_SESSION['message'] = 'Failed to archive announcements.';
+    }
+  } else {
+    $_SESSION['message'] = 'No announcements selected.';
+  }
+
+  $userid = $_SESSION['userid'] ?? 0;
+  header("Location: ../admin/pages/announcement.php?userid={$userid}");
+  exit();
+}
+
 // <!-- add material -->
 if (isset($_POST['add_material'])) {
     $RM_name = mysqli_real_escape_string($conn, $_POST['RM_name']);
