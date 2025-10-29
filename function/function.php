@@ -563,7 +563,7 @@ if (isset($_POST['update_reward'])) {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
 }
-// ✅ Function to get user QR code path
+// Function to get user QR code path
 function getUserQRCode($conn, $userid) {
     $sql = "SELECT qr_code FROM account WHERE userid = ?";
     $stmt = $conn->prepare($sql);
@@ -574,10 +574,19 @@ function getUserQRCode($conn, $userid) {
 
     if ($row && !empty($row['qr_code'])) {
         $qrFile = $row['qr_code'];
+
+        // Public URL (for <img src="">)
         $qrPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
-        if (file_exists(__DIR__ . "/../uploads/qrcodes/" . $qrFile)) {
-            return $qrPath;
+
+        //  Absolute path for server-side check
+        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . "/capstoneweb/uploads/qrcodes/" . $qrFile;
+
+        if (file_exists($absolutePath)) {
+            return $qrPath; // return the web-accessible path
+        } else {
+            error_log("QR file not found: " . $absolutePath);
         }
     }
+
     return null; // if not found
 }
