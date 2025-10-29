@@ -86,27 +86,27 @@ if($result3) {
 
     <!-- ===== STAT CARDS ===== -->
     <section class="stats-grid">
-      <div class="stat-card">
+      <a href="# class="stat-card">
         <div class="stat-icon"><i class="fa fa-users"></i></div>
         <div class="stat-info">
           <h3><?php echo $total_households; ?></h3>
           <p>Registered Households</p>
         </div>
-      </div>
-      <div class="stat-card">
+      </a>
+      <a href="recyclables.php" class="stat-card">
         <div class="stat-icon"><i class="fa fa-recycle"></i></div>
         <div class="stat-info">
           <h3><?php echo $total_recyclables; ?></h3>
           <p>Total Recyclables Gathered</p>
         </div>
-      </div>
-      <div class="stat-card">
+      </a>
+      <a href="notification.php" class="stat-card">
         <div class="stat-icon"><i class="fa fa-bell"></i></div>
         <div class="stat-info">
           <h3><?php echo $pending_notifications; ?></h3>
           <p>New Notifications</p>
         </div>
-      </div>
+      </a>
     </section>
 
     <!-- ===== MAIN DASHBOARD ===== -->

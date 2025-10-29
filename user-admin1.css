@@ -59,18 +59,23 @@
 }
 
 .stat-card {
+  text-decoration: none;
+  color: inherit;
   background: #fff;
-  border-radius: 12px;
-  padding: 18px;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
   gap: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  background: #eaf5ea;
+  cursor: pointer;
 }
 
 .stat-icon {
