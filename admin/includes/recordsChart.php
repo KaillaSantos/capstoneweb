@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!chartInstance) {
       chartInstance = new Chart(chartCtx, {
-        type: "pie",
+        type: "bar",
         data: {
           labels: labels,
           datasets: [{
