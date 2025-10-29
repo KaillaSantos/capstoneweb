@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2025 at 01:17 PM
+-- Generation Time: Oct 29, 2025 at 04:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -35,18 +35,20 @@ CREATE TABLE `account` (
   `purok` int(11) NOT NULL,
   `passWord` varchar(20) NOT NULL,
   `role` varchar(10) NOT NULL,
-  `status` varchar(20) NOT NULL DEFAULT 'not verified'
+  `status` varchar(20) NOT NULL DEFAULT 'not verified',
+  `qr_code` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`) VALUES
-(6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmmin123', 'admin', 'not verified'),
-(8, NULL, 'Geb Micahel', 'user@gmail.com', 1, 'Samic57', 'user', 'not verified'),
-(9, NULL, 'Kailla', 'user123@gmail.com', 3, '1234567', 'user', 'not verified'),
-(10, NULL, 'Miguel', 'j@gmail.com', 3, '12345', 'user', 'not verified');
+INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
+(6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmmin123', 'admin', 'not verified', NULL),
+(8, NULL, 'Geb Micahel', 'user@gmail.com', 1, 'Samic57', 'user', 'not verified', NULL),
+(15, NULL, 'Miguel', 'j@gmail.com', 3, '12345', 'user', 'not verified', NULL),
+(16, NULL, 'guel', 'g@gmail.com', 3, '12345', 'user', 'not verified', 'qr_16.png'),
+(17, NULL, 'kailla', 'k@gmail.com', 6, '12345', 'user', 'not verified', 'qr_17.png');
 
 -- --------------------------------------------------------
 
@@ -262,7 +264,7 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `announcement`
