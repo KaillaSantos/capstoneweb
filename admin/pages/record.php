@@ -55,7 +55,7 @@ require_once __DIR__ . '/../../includes/fetchData.php';
       <h3 style="padding-left: 50px;"> </h3>
 
       <div class="d-flex gap-2">
-        <a href="\capstoneweb\admin\pages\redeem.php" class="btn btn-success" name="add"><i class="fa-solid fa-plus"></i> Add </a>
+        <a href="\capstoneweb\admin\pages\addRecord.php" class="btn btn-success" name="add"><i class="fa-solid fa-plus"></i> Add </a>
         <form action="\capstoneweb\function/function.php" method="post" class="d-inline">
           <button type="submit" name="reset_data" class="btn btn-danger" onclick="return confirm('Are you sure you want to reset all data? This cannot be undone.');"><i class="fa-solid fa-trash-can-arrow-up"></i> Reset </button>
         </form>
