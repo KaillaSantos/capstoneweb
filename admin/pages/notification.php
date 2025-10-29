@@ -55,14 +55,14 @@ $notifications = getNotifications($conn, $userid);
 
 <body>
 
-  <!-- Sidebar -->
-  <?php include '../includes/sidebar.php'; ?>
-  
-  <!-- Sidebar Toggle Button (visible on all screens) -->
+   <!-- ===== SIDEBAR ===== -->
+  <?php include  '../includes/sidebar.php'; ?>
+
+  <!-- ===== TOGGLE BUTTON ===== -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-  <!-- Overlay (for mobile view) -->
-  <div class="overlay"></div>
+  <!-- ===== CONTENT AREA ===== -->
+  <div class="content" id="content">
 
   <!-- Page Content -->
   <div class="content" id="content">
@@ -135,8 +135,9 @@ $notifications = getNotifications($conn, $userid);
 
 <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- toggle -->
-<script src="../assets/sidebarToggle.js"></script>
+<!-- toggle -->  
+ <script src="/capstoneweb/assets/sidebarToggle.js"></script>
+
 
 </body>
 </html>
