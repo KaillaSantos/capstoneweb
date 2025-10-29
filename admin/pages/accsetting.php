@@ -217,11 +217,6 @@ $userid = $_SESSION['userid'];
 
         <?php include '../includes/header.php'; ?>
 
-        <div class="header-right">
-            <span class="date-display"><?php echo date("F j, Y"); ?></span>
-        </div>
-        </header>
-
            
     <div class="settings-panel">
 
