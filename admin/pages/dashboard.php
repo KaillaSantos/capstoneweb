@@ -9,9 +9,16 @@ $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
 
-$query2 = "SELECT COUNT(role) FROM account WHERE role = 'user'";
+$query2 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
 $result1 = mysqli_query($conn, $query2);
-$total_households = $result1;
+
+if ($result1) {
+    $row = mysqli_fetch_assoc($result1);
+    $total_households = $row['total'];
+} else {
+    $total_households = 0; 
+}
+
 
 $total_requests = 57;
 $pending_notifications = 3;
