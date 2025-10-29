@@ -220,7 +220,7 @@ $userid = $_SESSION['userid'];
       .save-btn,
       .cancel-btn {
         font-size: 14px;
-        width: 100%;
+        width: 80%;
       }
     }
 
@@ -253,7 +253,7 @@ $userid = $_SESSION['userid'];
       .save-btn,
       .cancel-btn {
         font-size: 14px;
-        width: 100%;
+        width: 80%;
       }
     }
 
@@ -271,7 +271,7 @@ $userid = $_SESSION['userid'];
       .save-btn,
       .cancel-btn {
         font-size: 14px;
-        width: 100%;
+        width: 80%;
       }
 
       .toggle-password {
