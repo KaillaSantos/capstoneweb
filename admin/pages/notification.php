@@ -63,9 +63,6 @@ $notifications = getNotifications($conn, $userid);
 
   <!-- ===== CONTENT AREA ===== -->
   <div class="content" id="content">
-
-  <!-- Page Content -->
-  <div class="content" id="content">
     
     <!-- content header -->
      <header class="dashboard-header">
