@@ -127,14 +127,15 @@ if($result3) {
         </div>
       </div>
       
-      <div class="card ranking">
-        <h2>Top Performing Users</h2>
-        <ul>
-          <li><span>User 1</span><span>⭐ 231</span></li>
-          <li><span>User 3</span><span>⭐ 192</span></li>
-        </ul>
+      <div class="card">
+        <div class="ranking">
+          <h2>Top Performing Users</h2>
+          <ul>
+            <li><span>User 1</span><span>⭐ 231</span></li>
+            <li><span>User 3</span><span>⭐ 192</span></li>
+          </ul>
+        </div>
       </div>
-      
       
       <div class="card chart">
         <h2>Recycling Overview</h2>
