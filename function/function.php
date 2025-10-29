@@ -380,7 +380,7 @@ if (isset($_POST['submit_pickup'])) {
                VALUES ('$userid', '$address', '$imagePath', '$pickupDate', '$pickupTime', 'Pending')";
 
     if (mysqli_query($conn, $insert)) {
-        header("Location: ../pages/notification.php?userid=$userid");
+        header("Location: ../admin/pages/notification.php?userid=$userid");
         exit();
     } else {
         echo "<script>alert('Failed to submit pickup request.');</script>";
@@ -426,7 +426,7 @@ if (isset($_POST['update_announcement'])) {
     }
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Announcement updated successfully.'); window.location.href='../pages/announcement.php?userid={$_SESSION['userid']}';</script>";
+        echo "<script>alert('Announcement updated successfully.'); window.location.href='../admin/pages/announcement.php?userid={$_SESSION['userid']}';</script>";
     } else {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
@@ -475,7 +475,7 @@ if (isset($_POST['submit_redeem'])) {
         }
     }
 
-    header("Location: ../pages/record.php?userid={$userid}");
+    header("Location: ../admin/pages/record.php?userid={$userid}");
     exit();
 }
 
