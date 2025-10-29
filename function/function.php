@@ -53,8 +53,8 @@ if (isset($_POST['signup'])) {
     $email      = mysqli_real_escape_string($conn, $_POST['email']);
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
-    $role = mysqli_real_escape_string($conn, $_POST['role']);
-    $purok = mysqli_real_escape_string($conn, $_POST['purok']);
+    $role       = mysqli_real_escape_string($conn, $_POST['role']);
+    $purok      = mysqli_real_escape_string($conn, $_POST['purok']);
 
     // 🧩 Check password match
     if ($passWord !== $rePassword) {
@@ -79,6 +79,30 @@ if (isset($_POST['signup'])) {
                    VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
         if (mysqli_query($conn, $query2)) {
+            // ✅ Get new user ID
+            $userId = mysqli_insert_id($conn);
+
+            // ✅ QR code generation
+            require_once __DIR__ . '/../phpqrcode/qrlib.php';
+            $qrDir = __DIR__ . '/../uploads/qrcodes/';
+
+            // Create folder if missing
+            if (!file_exists($qrDir)) {
+                mkdir($qrDir, 0777, true);
+            }
+
+            // QR code data and path
+            $qrData = "UserID: $userId | Name: $userName | Email: $email";
+            $qrFileName = "qr_" . $userId . ".png";
+            $qrFilePath = $qrDir . $qrFileName;
+
+            // ✅ Generate QR code
+            QRcode::png($qrData, $qrFilePath, QR_ECLEVEL_L, 5);
+
+            // ✅ Save QR file name in database
+            $updateQr = "UPDATE account SET qr_code = '$qrFileName' WHERE userid = '$userId'";
+            mysqli_query($conn, $updateQr);
+
             $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
             header("Location: /capstoneweb/login.php");
             exit();
@@ -93,6 +117,7 @@ if (isset($_POST['signup'])) {
         exit();
     }
 }
+
 
 
 // For Account Editing
