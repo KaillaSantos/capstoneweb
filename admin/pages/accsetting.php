@@ -185,6 +185,19 @@ $userid = $_SESSION['userid'];
             color: white;
             }
 
+            .toggle-password {
+              position: absolute;
+              right: 15px;
+              top: 38px;
+              cursor: pointer;
+              color: #666;
+              transition: color 0.3s;
+            }
+
+            .toggle-password:hover {
+              color: #1A4314;
+            }
+
     </style>
 </head>
 <body>
@@ -259,14 +272,16 @@ $userid = $_SESSION['userid'];
                 <input type="email" name="email" value="<?= $rows['email'] ?>" placeholder="Enter email">
                 </div>
 
-                <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
+                <div class="form-group position-relative">
+                  <label for="password">Password:</label>
+                  <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
+                  <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
                 </div>
 
-                <div class="form-group">
-                <label for="repassword">Re-enter Password:</label>
-                <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
+                <div class="form-group position-relative">
+                  <label for="repassword">Re-enter Password:</label>
+                  <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
+                  <i class="fa-solid fa-eye toggle-password" id="toggleRePassword"></i>
                 </div>
 
                 <div class="form-buttons">
@@ -282,22 +297,14 @@ $userid = $_SESSION['userid'];
     </div>
 
     <script>
-        // Toggle first password
-        const togglePassword = document.querySelector("#togglePassword");
-        const password = document.querySelector("#password");
-        togglePassword.addEventListener("click", function () {
-            const type = password.getAttribute("type") === "password" ? "text" : "password";
-            password.setAttribute("type", type);
-            this.classList.toggle("fa-eye-slash");
-        });
-
-        // Toggle re-enter password
-        const toggleRePassword = document.querySelector("#toggleRePassword");
-        const repassword = document.querySelector("#repassword");
-        toggleRePassword.addEventListener("click", function () {
-            const type = repassword.getAttribute("type") === "password" ? "text" : "password";
-            repassword.setAttribute("type", type);
-            this.classList.toggle("fa-eye-slash");
+        // Handle all toggle-password icons
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+          icon.addEventListener('click', () => {
+            const input = icon.previousElementSibling;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('fa-eye-slash', isPassword);
+          });
         });
 
         //Profile Image Preview
