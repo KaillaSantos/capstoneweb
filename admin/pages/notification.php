@@ -50,8 +50,7 @@ $notifications = getNotifications($conn, $userid);
   <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">  
-  <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
-  
+  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
 </head>
 
 <body>
@@ -67,19 +66,9 @@ $notifications = getNotifications($conn, $userid);
 
   <!-- Page Content -->
   <div class="content" id="content">
-    <header class="dashboard-header">
-      <div class="header-left">
-        <img src="\capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
-        <div class="header-text">
-          <h1>E-Recycle Notification Page</h1>
-          <p>Municipality of San Ildefonso</p>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <span class="date-display"><?php echo date("F j, Y"); ?></span>
-      </div>
-    </header>
+    
+    <!-- content header -->
+    <?php include '../includes/header.php'; ?>
 
     <?php if (!empty($notifications)): ?>
       <?php foreach ($notifications as $notif): ?>

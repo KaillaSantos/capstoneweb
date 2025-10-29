@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Landing.css">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="icon" type="image/x-icon" href="assets\assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
     <title>E-Recycle</title>
     <style>
 
@@ -40,7 +40,7 @@
     <!-- HOME SECTION -->
     <section id="#uphome" class="home">
         <div class="home-img">
-            <img src="assets/E-Recycle Logo with Green and Blue Palette.png" alt="">
+            <img src="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png" alt="">
         </div>
         <div class="home-content">
             <h1>Welcome to <span style="color: green;">E-Recycle</span></h1>
