@@ -9,26 +9,26 @@ $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
 
-$query2 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
-$result1 = mysqli_query($conn, $query2);
+// $query2 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
+// $result1 = mysqli_query($conn, $query2);
 
-if ($result1) {
-    $row = mysqli_fetch_assoc($result1);
-    $total_households = $row['total'];
-} else {
-    $total_households = 0; 
-}
+// if ($result1) {
+//     $row = mysqli_fetch_assoc($result1);
+//     $total_households = $row['total'];
+// } else {
+//     $total_households = 0; 
+// }
 
-$query3 = "SELECT SUM(quantity) AS total_quantity FROM record_details;";
-$result2 = mysqli_query($conn, $query3);
-if($result2) {
-  $row1 = mysqli_fetch_assoc($result2);
-  $total_recyclables = $row['total'];
-} else {
-  $total_recyclables = 0 ; 
-}
+// $query3 = "SELECT SUM(quantity) AS total_quantity FROM record_details;";
+// $result2 = mysqli_query($conn, $query3);
+// if($result2) {
+//   $row1 = mysqli_fetch_assoc($result2);
+//   $total_recyclables = $row['total'];
+// } else {
+//   $total_recyclables = 0 ; 
+// }
 
-$pending_notifications = 3;
+// $pending_notifications = 3;
 ?>
 
 <!DOCTYPE html>
