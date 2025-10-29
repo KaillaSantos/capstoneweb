@@ -104,7 +104,7 @@ if (mysqli_num_rows($result) > 0) {
 </head>
 <body>
     
-    <a href="\capstoneweb\pages\reward.php?userid=<?=$userid?>" class="close-btn">✖</a>
+    <a href="\capstoneweb\admin\pages\reward.php?userid=<?=$userid?>" class="close-btn">✖</a>
 
     <div class="reward-panel">
     <h2 style="color:black; display:block; font-size:28px; font-weight:bold;">
