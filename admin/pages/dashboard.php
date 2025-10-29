@@ -90,7 +90,32 @@ $pending_notifications = 3;
             <option value="">Total Recycled</option>
           </select>
         </div>
-
+        
+        <!-- Chart -->
+        <div class="chart-wrapper" style="margin-top: 20px;">
+          <canvas id="recordChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="card ranking">
+        <h2>Top Performing Users</h2>
+        <ul>
+          <li><span>User 1</span><span>⭐ 231</span></li>
+          <li><span>User 3</span><span>⭐ 192</span></li>
+        </ul>
+      </div>
+      
+      
+      <div class="card chart">
+        <h2>Recycling Overview</h2>
+        
+        <!-- Dropdown -->
+        <div style="margin-bottom: 20px;">
+          <select id="householdSelect" class="form-select" style="max-width: 300px;">
+            <option value="">Total Recycled</option>
+          </select>
+        </div>
+        
         <!-- Chart -->
         <div class="chart-wrapper" style="margin-top: 20px;">
           <canvas id="recordChart"></canvas>
@@ -106,23 +131,6 @@ $pending_notifications = 3;
           <li><span>Purok 2</span><span>⭐ 255</span></li>
           <li><span>Purok 5</span><span>⭐ 245</span></li>
         </ul>
-      </div>
-      
-
-      <div class="card chart">
-        <h2>Recycling Overview</h2>
-
-        <!-- Dropdown -->
-        <div style="margin-bottom: 20px;">
-          <select id="householdSelect" class="form-select" style="max-width: 300px;">
-            <option value="">Total Recycled</option>
-          </select>
-        </div>
-
-        <!-- Chart -->
-        <div class="chart-wrapper" style="margin-top: 20px;">
-          <canvas id="recordChart"></canvas>
-        </div>
       </div>
 
     </section>

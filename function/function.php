@@ -25,16 +25,14 @@ if (isset($_POST['submit'])) {
             $_SESSION['email']  = $row['email'];
             $_SESSION['role'] = $row['role'];
 
-            if($row['role'] == "admin") {
+            if ($row['role'] == "admin") {
                 header("Location: ../admin/pages/dashboard.php?userid={$row['userid']}");
                 exit();
-            } 
-            if($row['role'] == "user") {
+            }
+            if ($row['role'] == "user") {
                 header("Location: ../user/pages/user_announcement.php?userid={$row['userid']}");
                 exit();
             }
-
-            
         } else {
             // ❌ Incorrect password
             $_SESSION['login_error'] = "Email or password didn't match.";
@@ -160,7 +158,8 @@ if (isset($_POST['submitsetting'])) {
     }
 
     // ✅ Fetch user role
-    function getUserInfo($conn, $userid) {
+    function getUserInfo($conn, $userid)
+    {
         $query = "SELECT role FROM account WHERE userid = '$userid'";
         $result = mysqli_query($conn, $query);
         return mysqli_fetch_assoc($result);
@@ -305,7 +304,7 @@ if (isset($_POST['submit_redeem'])) {
     }
 
     // Redirect after success
-    header("Location: ../pages/record.php?userid={$userid}");
+    header("Location: ../admin/pages/record.php?userid={$userid}");
     exit();
 }
 
@@ -329,7 +328,7 @@ if (isset($_POST['reset_data'])) {
     }
 
     $userid = $_SESSION['userid'] ?? 0;
-    header("Location: ../pages/record.php?userid={$userid}");
+    header("Location: ../admin/pages/record.php?userid={$userid}");
     exit();
 }
 
@@ -409,7 +408,6 @@ if (isset($_POST['update_announcement'])) {
 }
 
 if (isset($_POST['submit_redeem'])) {
-    require_once __DIR__ . '/../conn/dbconn.php';
     session_start();
 
     // Get selected user from dropdown
@@ -456,6 +454,45 @@ if (isset($_POST['submit_redeem'])) {
     exit();
 }
 
+// submitting rewards to database
+if (isset($_POST['submit_rewards'])) {
+    $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
+    $product_description = mysqli_real_escape_string($conn, $_POST['product_description']);
+    $product_points = mysqli_real_escape_string($conn, $_POST['product_points']);
+    $product_date = mysqli_real_escape_string($conn, $_POST['product_date']);
+
+    // Handle image upload (optional)
+    $product_img = "";
+    if (!empty($_FILES['product_img']['name'])) {
+        $filename = time() . "_" . basename($_FILES['product_img']['name']);
+        $tempname = $_FILES['product_img']['tmp_name'];
+        $folder   = "../admin/productImg/" . $filename;
+
+        // Create folder if not exists
+        if (!file_exists("../admin/productImg/")) {
+            mkdir("../admin/productImg/", 0777, true);
+        }
+
+        // Move uploaded file
+        if (move_uploaded_file($tempname, $folder)) {
+            $product_img = $filename;
+        }
+    }
+
+    // Insert reward into database
+    $insert = "INSERT INTO rewards (product_name, product_description, product_points, product_date, product_img)
+               VALUES ('$product_name', '$product_description', '$product_points', '$product_date', '$product_img')";
+
+    if (mysqli_query($conn, $insert)) {
+        echo "<script>alert('Reward Added Successfully')</script>";
+    } else {
+        echo "<script>alert('Failed to add reward. Please try again.'); window.history.back();</script>";
+    }
+
+    $userid = $_SESSION['userid'] ?? 0;
+    header("Location:  ../admin/pages/reward.php?userid={$userid}");
+    exit();
+}
 
 // Reset Button for rewards
 if (isset($_POST['reset_rewards'])) {
@@ -468,7 +505,7 @@ if (isset($_POST['reset_rewards'])) {
     }
 
     $userid = $_SESSION['userid'] ?? 0;
-    header("Location: ../pages/reward.php?userid={$userid}");
+    header("Location: ../admin/pages/reward.php?userid={$userid}");
     exit();
 }
 
@@ -483,7 +520,7 @@ if (isset($_POST['update_reward'])) {
     $img = "";
     if (!empty($_FILES['product_img']['name'])) {
         $img = basename($_FILES['product_img']['name']);
-        $target = "../productImg/" . $img;
+        $target = "../admin/productImg/" . $img;
         move_uploaded_file($_FILES['product_img']['tmp_name'], $target);
 
         $sql = "UPDATE rewards 
@@ -496,7 +533,7 @@ if (isset($_POST['update_reward'])) {
     }
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Reward updated successfully.'); window.location.href='../pages/reward.php?userid={$_SESSION['userid']}';</script>";
+        echo "<script>alert('Reward updated successfully.'); window.location.href='../admin/pages/reward.php?userid={$_SESSION['userid']}';</script>";
     } else {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
