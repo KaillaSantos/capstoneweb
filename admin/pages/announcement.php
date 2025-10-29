@@ -34,7 +34,6 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, maximum-scale=1.0">
   <title>Announcement | E-Recycle</title>
-
   <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">

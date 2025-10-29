@@ -19,8 +19,15 @@ if ($result1) {
     $total_households = 0; 
 }
 
+$query3 = "SELECT SUM(quantity) AS total_quantity FROM record_details;";
+$result2 = mysqli_query($conn, $query3);
+if($result2) {
+  $row1 = mysqli_fetch_assoc($result2);
+  $total_recyclables = $row['total'];
+} else {
+  $total_recyclables = 0 ; 
+}
 
-$total_recyclables = 57;
 $pending_notifications = 3;
 ?>
 
@@ -32,7 +39,7 @@ $pending_notifications = 3;
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Dashboard | E-Recycle</title>
   <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
-  <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link rel="stylesheet" href="/capstoneweb/user-admin.css">
@@ -78,7 +85,7 @@ $pending_notifications = 3;
         <div class="stat-icon"><i class="fa fa-recycle"></i></div>
         <div class="stat-info">
           <h3><?php echo $total_recyclables; ?></h3>
-          <p>Total Recyclables Gather</p>
+          <p>Total Recyclables Gathered</p>
         </div>
       </div>
       <div class="stat-card">
