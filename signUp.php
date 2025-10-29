@@ -103,7 +103,7 @@
 
   <script src="../function/js/loginEyeToggle.js"></script>
 
-    <!-- ✅ Toggle Purok Visibility Script -->
+    <!--  Toggle Purok Visibility Script -->
   <script>
     const roleUser = document.getElementById('roleUser');
     const roleAdmin = document.getElementById('roleAdmin');
@@ -120,13 +120,10 @@
       }
     }
 
-    // Run on page load and whenever the radio changes
     document.addEventListener('DOMContentLoaded', togglePurokVisibility);
     roleUser.addEventListener('change', togglePurokVisibility);
     roleAdmin.addEventListener('change', togglePurokVisibility);
   </script>
 
-
 </body>
-
 </html>
