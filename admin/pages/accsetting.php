@@ -216,6 +216,12 @@ $userid = $_SESSION['userid'];
       .form-group {
         width: 80%;
       }
+
+      .save-btn,
+      .cancel-btn {
+        font-size: 14px;
+        width: 100%;
+      }
     }
 
     /* Large Phones */
@@ -243,6 +249,12 @@ $userid = $_SESSION['userid'];
         right: 10px;
         font-size: 0.9rem;
       }
+
+      .save-btn,
+      .cancel-btn {
+        font-size: 14px;
+        width: 100%;
+      }
     }
 
     /* Small Phones */
@@ -259,6 +271,7 @@ $userid = $_SESSION['userid'];
       .save-btn,
       .cancel-btn {
         font-size: 14px;
+        width: 100%;
       }
 
       .toggle-password {
