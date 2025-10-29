@@ -90,12 +90,15 @@
   margin: 0;
   font-size: 26px;
   color: #2e7d32;
+  text-decoration: none;
 }
 
 .stat-info p {
   margin: 0;
   font-size: 14px;
   color: #555;
+  text-decoration: none;
+
 }
 
 /* ===== CHART + RANKING ===== */
