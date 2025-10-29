@@ -99,21 +99,14 @@
 
 }
 
-/* ===== CHART + RANKING ===== */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+/* ===== RANKING CARDS ONLY ===== */
+.card.ranking {
+  display: flex;
+  flex-direction: column;
+  height: auto; /* 👈 allow card to expand naturally */
 }
 
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-}
-
-.card h2 {
+.card.ranking h2 {
   font-size: 18px;
   color: #2e7d32;
   border-bottom: 2px solid #e0e0e0;
@@ -121,30 +114,39 @@
   margin-bottom: 15px;
 }
 
-/* Ranking list */
-.ranking ul {
+/* Ranking list layout */
+.card.ranking ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.ranking li {
+.card.ranking li {
   display: flex;
   justify-content: space-between;
   background: #f9fafc;
   padding: 10px 14px;
   border-radius: 8px;
-  margin-bottom: 8px;
   font-weight: 500;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.ranking li span:first-child {
+.card.ranking li:hover {
+  transform: scale(1.02);
+  background: #eef7ee;
+}
+
+.card.ranking li span:first-child {
   color: #2c5e1a;
 }
 
-.ranking li span:last-child {
+.card.ranking li span:last-child {
   color: #2e7d32;
 }
+
 
 /* ===================== */
 /* SIDEBAR & TOGGLE */
