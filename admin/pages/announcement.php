@@ -56,19 +56,7 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
 
   <!-- Content -->
   <div class="content" id="content">
-    <header class="dashboard-header">
-      <div class="header-left">
-        <img src="/capstoneweb/assets/logo_circle.jpeg" alt="E-Recycle Logo" class="header-logo">
-        <div class="header-text">
-          <h1>E-Recycle Announcement Page</h1>
-          <p>Municipality of San Ildefonso</p>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <span class="date-display"><?php echo date("F j, Y"); ?></span>
-      </div>
-    </header>
+    <?php include '../includes/header.php'; ?>
 
     <div style="display:flex; justify-content:flex-end; ">
       <form method="get" action="announcement.php" class="d-flex align-items-center mb-3">
