@@ -248,7 +248,7 @@ if (isset($_POST['add_material'])) {
     if (mysqli_query($conn, $insert)) {
 
         $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : 0;
-        header("Location: ../pages/recyclables.php?userid={$userid}");
+        header("Location: ../admin/pages/recyclables.php?userid={$userid}");
         exit();
     } else {
         echo "<script>alert('Failed to add material.');</script>";
