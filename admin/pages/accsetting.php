@@ -275,6 +275,7 @@ $userid = $_SESSION['userid'];
       }
 
       .toggle-password {
+        padding-top: 5px;
         right: 8px;
         font-size: 0.85rem;
       }
