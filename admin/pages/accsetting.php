@@ -214,10 +214,20 @@ $userid = $_SESSION['userid'];
     <div class="overlay"></div>
 
     <div class="content">
+      <header class="dashboard-header">
+          <div class="header-left">
+          <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
+          <div class="header-text">
+              <h1>E-Recycle Account Settings</h1>
+              <p>Municipality of San Ildefonso</p>
+          </div>
+          </div>
 
-        <?php include '../includes/header.php'; ?>
+          <div class="header-right">
+          <span class="date-display"><?php echo date("F j, Y"); ?></span>
+          </div>
+      </header>
 
-           
     <div class="settings-panel">
 
         <!-- Profile Card -->
