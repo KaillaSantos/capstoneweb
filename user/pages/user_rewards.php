@@ -1,6 +1,19 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
+require_once __DIR__ . '/../../conn/dbconn.php';
+
+$user_id = $_SESSION['userid'];
+
+// Get total recyclables collected (kg)
+$kgQuery = "SELECT SUM(weight) AS total_kg FROM recyclable WHERE user_id = '$user_id'";
+$kgResult = $conn->query($kgQuery);
+$kgData = $kgResult->fetch_assoc();
+$totalKg = $kgData['total_kg'] ?? 0;
+
+// Fetch all available rewards
+$rewardQuery = "SELECT * FROM rewards";
+$rewards = $conn->query($rewardQuery);
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +29,6 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="\capstoneweb\assets\Flag_of_San_Ildefonso_Bulacan.png">
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
-  
 </head>
 
 <body>
@@ -24,12 +36,9 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
   <!-- Sidebar -->
   <?php include '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle Button (visible on all screens) -->
+  <!-- Sidebar Toggle Button -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
-
-  <!-- Overlay (for mobile view) -->
   <div class="overlay"></div>
-
 
   <!-- Content -->
   <div class="content" id="content">
@@ -41,17 +50,90 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
           <p>Municipality of San Ildefonso</p>
         </div>
       </div>
-
       <div class="header-right">
         <span class="date-display"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
 
+    <!--  Rewards Section -->
+    <div class="container mt-4">
+      <h3 class="mb-3">Available Rewards</h3>
+      <p><strong>Total Collected:</strong> <?php echo $totalKg; ?> kg</p>
+
+      <div class="row">
+        <?php while ($reward = $rewards->fetch_assoc()): ?>
+          <?php
+            $requiredPoints = $reward['product_points'];
+            $canRedeem = $totalKg >= $requiredPoints;
+            $progress = min(100, ($totalKg / $requiredPoints) * 100);
+          ?>
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img src="\capstoneweb\uploads\<?php echo $reward['product_img']; ?>" class="card-img-top" alt="Reward">
+              <div class="card-body">
+                <h5 class="card-title"><?php echo $reward['product_name']; ?></h5>
+                <p class="card-text"><?php echo $reward['product_description']; ?></p>
+                <div class="progress mb-2">
+                  <div class="progress-bar" role="progressbar"
+                       style="width: <?php echo $progress; ?>%"
+                       aria-valuenow="<?php echo $progress; ?>"
+                       aria-valuemin="0" aria-valuemax="100">
+                  </div>
+                </div>
+                <p><?php echo $totalKg; ?>kg / <?php echo $requiredPoints; ?>kg collected</p>
+              </div>
+              <div class="card-footer text-center">
+                <form method="POST" action="redeem_reward.php">
+                  <input type="hidden" name="reward_id" value="<?php echo $reward['reward_id']; ?>">
+                  <button type="submit" class="btn btn-success w-100" <?php echo $canRedeem ? '' : 'disabled'; ?>>
+                    <?php echo $canRedeem ? 'Redeem Reward' : 'Keep Collecting'; ?>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <?php endwhile; ?>
+      </div>
+
+      <!-- Redeemed Rewards Tracking -->
+      <h3 class="mt-5 mb-3">My Redeemed Rewards</h3>
+      <table class="table table-bordered table-striped">
+        <thead class="table-success">
+          <tr>
+            <th>Reward</th>
+            <th>Status</th>
+            <th>Date Redeemed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            $track = $conn->query("
+              SELECT r.product_name, ur.status, ur.date_redeemed
+              FROM user_rewards ur
+              JOIN rewards r ON ur.reward_id = r.reward_id
+              WHERE ur.user_id = '$user_id'
+              ORDER BY ur.date_redeemed DESC
+            ");
+            if ($track->num_rows > 0):
+              while ($row = $track->fetch_assoc()):
+          ?>
+            <tr>
+              <td><?php echo $row['product_name']; ?></td>
+              <td><?php echo $row['status']; ?></td>
+              <td><?php echo date("F j, Y", strtotime($row['date_redeemed'])); ?></td>
+            </tr>
+          <?php
+              endwhile;
+            else:
+              echo "<tr><td colspan='3' class='text-center'>No redeemed rewards yet.</td></tr>";
+            endif;
+          ?>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-
-
-  <!-- Verify Password Modal -->
+  <!-- Password Verify Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -74,9 +156,6 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
     </div>
   </div>
 
-  <!-- toggle -->
   <script src="../../assets/sidebarToggle.js"></script>
-
 </body>
-
 </html>
