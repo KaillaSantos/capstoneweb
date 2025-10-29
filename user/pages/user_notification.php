@@ -49,16 +49,20 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
     <div class="container mt-4 text-center">
       <?php
       $user_id = $_SESSION['userid'];
-      $qrQuery = "SELECT qr_code_path FROM account WHERE userid = '$user_id'";
-      $qrResult = mysqli_query($conn, $qrQuery);
+      $qrQuery = "SELECT qr_code FROM account WHERE userid = ?";
+      $stmt = $conn->prepare($qrQuery);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $result = $stmt->get_result();
 
-      if ($qrResult && mysqli_num_rows($qrResult) > 0) {
-          $qrRow = mysqli_fetch_assoc($qrResult);
-          $qrPath = $qrRow['qr_code_path'];
+      if ($result && $row = $result->fetch_assoc()) {
+          $qrFile = trim($row['qr_code']);
+          $absolutePath = "C:/xampp/htdocs/capstoneweb/uploads/qrcodes/" . $qrFile;
+          $webPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
 
-          if (!empty($qrPath) && file_exists(__DIR__ . '/../../' . $qrPath)) {
+          if (!empty($qrFile) && file_exists($absolutePath)) {
               echo "<h4>Your QR Code</h4>";
-              echo "<img src='/capstoneweb/$qrPath' alt='Your QR Code' class='img-fluid' style='max-width: 250px; border: 2px solid #0d6efd; border-radius: 10px; padding: 10px;'>";
+              echo "<img src='" . htmlspecialchars($webPath) . "' alt='Your QR Code' class='img-fluid' style='max-width: 250px; border: 2px solid #0d6efd; border-radius: 10px; padding: 10px;'>";
           } else {
               echo "<div class='alert alert-warning'>QR code not found. Please contact the administrator.</div>";
           }
@@ -67,6 +71,7 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
       }
       ?>
     </div>
+
   </div>
 
   <!-- Verify Password Modal -->
