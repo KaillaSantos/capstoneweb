@@ -9,8 +9,8 @@ $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
 
-$query2 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
-$result1 = mysqli_query($conn, $query2);
+$query1 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
+$result1 = mysqli_query($conn, $query1);
 
 if ($result1) {
     $row = mysqli_fetch_assoc($result1);
@@ -19,8 +19,8 @@ if ($result1) {
     $total_households = 0; 
 }
 
-$query3 = "SELECT SUM(quantity) AS total_quantity FROM record_items;";
-$result2 = mysqli_query($conn, $query3);
+$query2 = "SELECT SUM(quantity) AS total_quantity FROM record_items;";
+$result2 = mysqli_query($conn, $query2);
 
 if ($result2) {
   $row1 = mysqli_fetch_assoc($result2);
@@ -28,6 +28,17 @@ if ($result2) {
 } else {
   $total_recyclables = 0; 
 }
+
+$query3 = "SELECT COUNT(status) AS pending_notif FROM notifications WHERE status = 'Unread';";
+$result3 = mysqli_query($conn, $query3);
+
+if($result3) {
+  $row2 = mysqli_fetch_assoc($result3);
+  $pending_notifications = $row2['pending_notif'];
+} else {
+  $pending_notifications = 0;
+}
+
 
 // $pending_notifications = 3;
 ?>
