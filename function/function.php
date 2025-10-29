@@ -573,16 +573,19 @@ function getUserQRCode($conn, $userid) {
 
     if ($row && !empty($row['qr_code'])) {
         $qrFile = trim($row['qr_code']);
-        // Web path (used for <img src="">)
+        
+        // Web-accessible path (for <img src="">)
         $qrPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
-        // Absolute path for PHP file_exists()
-        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . $qrPath;
+        
+        // Absolute file path (for PHP file_exists)
+        $absolutePath = "C:/xampp/htdocs/capstoneweb/uploads/qrcodes/" . $qrFile;
 
         if (file_exists($absolutePath)) {
-            return $qrPath; // Return the correct web-accessible path
+            return $qrPath; // Return the web path so browser can load it
         }
     }
 
-    return null; // if not found
+    return null; // Not found
 }
+
 
