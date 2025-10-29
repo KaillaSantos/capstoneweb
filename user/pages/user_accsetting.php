@@ -275,13 +275,13 @@ $userid = $_SESSION['userid'];
                 <div class="form-group position-relative">
                   <label for="password">Password:</label>
                   <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
-                  <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+                  <i class="fa-solid fa-eye toggle-password" id="togglePassword" style="justify-content: center;"></i>
                 </div>
 
                 <div class="form-group position-relative">
                   <label for="repassword">Re-enter Password:</label>
                   <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
-                  <i class="fa-solid fa-eye toggle-password" id="toggleRePassword"></i>
+                  <i class="fa-solid fa-eye toggle-password" id="toggleRePassword" style="justify-content: center;"></i>
                 </div>
 
                 <div class="form-buttons">
