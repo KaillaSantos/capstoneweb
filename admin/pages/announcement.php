@@ -70,7 +70,7 @@ require_once __DIR__ . '/../../includes/archiveHandling.php';
       </div>
     </header>
 
-    <div style="display:flex; justify-content:flex-end; gap:10px;">
+    <div style="display:flex; justify-content:flex-end; ">
       <form method="get" action="announcement.php" class="d-flex align-items-center mb-3">
         <select name="status" id="status_filter" class="form-select w-auto" onchange="this.form.submit()">
           <option value="Posted" <?= (isset($_GET['status']) && $_GET['status'] == 'Posted') ? 'selected' : '' ?>>All</option>
