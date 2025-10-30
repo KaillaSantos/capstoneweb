@@ -329,11 +329,12 @@ $userid = $_SESSION['userid'];
       </header>
 
     <div class="settings-panel">
+        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+
 
         <!-- Profile Card -->
         <div class="profile-container">
         <div class="profile-card">
-          <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
             
             <!-- Profile Image Section -->
             <div class="profile-left">
@@ -375,11 +376,11 @@ $userid = $_SESSION['userid'];
                     <button type="submit" class="save-btn" name="submitsetting">Save Changes</button>
                     <button type="button" class="cancel-btn" onclick="cancelChanges()">Cancel</button>
                 </div>
-            </form>
             </div>
         </div>
         </div>
         <?php }  ?>
+            </form>
     </div>
     </div>
 
