@@ -9,7 +9,7 @@ if (isset($_GET['id'])) {
     $userid = intval($_GET['userid']);
 }
 if (!$userid) {
-    die("❌ Missing user ID in URL. Provide ?id=18 or ?userid=18");
+    die("❌ Missing user ID in URL. Provide ?id= or ?userid=");
 }
 
 // ✅ Fetch user info
