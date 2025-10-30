@@ -92,7 +92,7 @@ if (isset($_POST['signup'])) {
             }
 
             // Dynamic QR Code that links to user's record viewer
-            $qrData = "http://192.168.0.208/capstoneweb/user/pages/view_user_record.php?userid=" . $userId;
+            $qrData = "http://192.168.0.208/capstoneweb/user/pages/view_user_records.php?userid=" . $userId;
             $qrFileName = "qr_" . $userId . ".png";
             $qrFilePath = $qrDir . $qrFileName;
 
