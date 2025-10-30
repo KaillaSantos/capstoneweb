@@ -29,68 +29,33 @@ $userid = $_SESSION['userid'];
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* === Global Layout === */
-    body {
-      background: #f5f6f7;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    /* === Profile Header === */
-    .profile-header {
-      background-color: #1A4314;
-      color: white;
-      text-align: center;
-      padding: 25px 10px;
-    }
-
-    .profile-header h2 {
-      margin: 0;
-      font-size: clamp(20px, 2.5vw, 26px);
-      font-weight: 700;
-    }
-
-    .profile-header p {
-      margin: 5px 0 0;
-      font-size: clamp(13px, 1.8vw, 15px);
-    }
-
     /* === Profile Container === */
     .profile-container {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 20px;  
-      flex-wrap: wrap;
+      align-items: center;
+      padding: 40px 20px;
+      background-color: #f5f6f7;
     }
 
     /* === Profile Card === */
-    form {
-      display: flex;
-      justify-content: center ;
-    }
-
     .profile-card {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 950px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       width: 100%;
-      padding: 25px;
-      gap: 25px;
-      justify-content: center;
+      max-width: 900px;
+      padding: 40px 50px;
+      gap: 50px;
     }
 
-    /* === Left (Profile Image) === */
-      .profile-left {
+    /* === Left Section (Profile Image) === */
+    .profile-left {
       flex: 1;
-      min-width: 220px;
       text-align: center;
-      justify-content: center;
     }
 
     .profile-img-wrapper {
@@ -119,58 +84,44 @@ $userid = $_SESSION['userid'];
       font-size: 12px;
     }
 
-    /* === Right (Form Fields) === */
+    /* === Right Section (Form Fields) === */
     .profile-right {
       flex: 2;
-      min-width: 280px;
     }
 
     .form-group {
       margin-bottom: 15px;
-      position: relative;
-      width: 100%;
     }
 
     .form-group label {
-      font-weight: 600;
-      margin-bottom: 6px;
       display: block;
-      font-size: clamp(13px, 1.8vw, 15px);
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 14px;
     }
 
     .form-group input {
       width: 100%;
-      padding: 10px 40px 10px 10px;
-      /* extra space for eye icon */
+      padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: clamp(13px, 2vw, 15px);
-      box-sizing: border-box;
-    }
-
-    /* === Password Toggle === */
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #666;
-      transition: color 0.3s;
-      font-size: 1rem;
-    }
-
-    .toggle-password:hover {
-      color: #1A4314;
+      font-size: 14px;
     }
 
     /* === Buttons === */
+    .form-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
     .save-btn,
     .cancel-btn {
       border: none;
       border-radius: 6px;
       padding: 12px 18px;
-      width: 100%;
+      width: auto;
       cursor: pointer;
       font-size: 15px;
       font-weight: 600;
@@ -196,102 +147,26 @@ $userid = $_SESSION['userid'];
       color: white;
     }
 
-    .form-buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* === Responsive Design === */
-
-    /* Tablet */
-    @media (max-width: 992px) {
+    /* === Responsive Adjustments === */
+    @media (max-width: 768px) {
       .profile-card {
         flex-direction: column;
-        align-items: center;
         text-align: center;
-      }
-
-      .profile-right {
-        width: 100%;
+        padding: 30px 25px;
+        gap: 25px;
       }
 
       .form-buttons {
         flex-direction: column;
-      }
-
-      .form-group {
-        width: 80%;
+        align-items: center;
       }
 
       .save-btn,
       .cancel-btn {
-        font-size: 14px;
-        width: 80%;
-      }
-    }
-
-    /* Large Phones */
-    @media (max-width: 600px) {
-      .profile-container {
-        padding: 15px;
-      }
-
-      .profile-card {
-        padding: 20px;
-      }
-
-      .profile-img-wrapper {
-        width: 130px;
-        height: 130px;
-      }
-
-      .form-group input {
-        font-size: 14px;
-        padding: 10px 36px 10px 10px;
         width: 100%;
       }
-
-      .toggle-password {
-        right: 10px;
-        font-size: 0.9rem;
-      }
-
-      .save-btn,
-      .cancel-btn {
-        font-size: 14px;
-        width: 80%;
-      }
     }
 
-    /* Small Phones */
-    @media (max-width: 400px) {
-      .profile-card {
-        padding: 15px;
-      }
-
-      .profile-img-wrapper {
-        width: 110px;
-        height: 110px;
-      }
-
-      .save-btn,
-      .cancel-btn {
-        font-size: 14px;
-        width: 80%;
-      }
-
-      .toggle-password {
-        padding-top: 5px;
-        right: 8px;
-        font-size: 0.85rem;
-      }
-
-      .profile-header h2 {
-        font-size: 18px;
-      }
-    }
   </style>
 
 </head>
