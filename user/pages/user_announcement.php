@@ -4,9 +4,9 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
 
 // ✅ Check session
 if (!isset($_SESSION['userid'])) {
-    echo "<script>alert('Unauthorized access. Please login.');
-    window.location.href='../login.php';</script>";
-    exit();
+  echo "<script>alert('Unauthorized access. Please login.');
+  window.location.href='../login.php';</script>";
+  exit();
 }
 
 $userid = $_SESSION['userid'];
@@ -25,6 +25,144 @@ $userid = $_SESSION['userid'];
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
+
+  <style>
+    /* ================================
+       TWO-COLUMN ANNOUNCEMENT LAYOUT
+       ================================ */
+
+    .announcement-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      padding: 20px 10px;
+    }
+
+    .section-title {
+      font-weight: 700;
+      color: #0b3d0b;
+      margin-bottom: 15px;
+      border-left: 5px solid #2b7a0b;
+      padding-left: 10px;
+    }
+
+    /* --- Left (Latest Announcements / News Style) --- */
+    .latest-announcements .announcement-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      border: 1px solid #e2e2e2;
+      transition: all 0.25s ease;
+    }
+
+    .latest-announcements .announcement-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .announcement-img {
+      width: 160px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-left: 10px;
+    }
+
+    .announcement-body {
+      flex: 1;
+      padding: 10px 15px;
+    }
+
+    .announcement-body h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #184e1e;
+      margin-bottom: 5px;
+    }
+
+    .announcement-body .date {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .announcement-text {
+      color: #333;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      max-height: 4.2em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .read-more-btn {
+      font-weight: 500;
+      color: #2b7a0b;
+      text-decoration: none;
+      padding: 5px 0;
+    }
+
+    .read-more-btn:hover {
+      color: #1e5e07;
+      text-decoration: underline;
+    }
+
+    /* --- Right (Previous Announcements Sidebar) --- */
+    .previous-announcements {
+      background: #f7fdf8;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #e2e2e2;
+      height: fit-content;
+    }
+
+    .previous-announcement-card {
+      background: #ffffff;
+      border-left: 4px solid #2b7a0b;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: background 0.25s ease;
+    }
+
+    .previous-announcement-card:hover {
+      background: #eef8f0;
+    }
+
+    .previous-announcement-card h6 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #155c12;
+      margin-bottom: 4px;
+    }
+
+    .previous-announcement-card .date {
+      font-size: 0.8rem;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    .previous-announcement-card p {
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 992px) {
+      .announcement-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .previous-announcements {
+        margin-top: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -32,10 +170,8 @@ $userid = $_SESSION['userid'];
   <!-- Sidebar -->
   <?php include '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle Button (visible on all screens) -->
+  <!-- Sidebar Toggle Button -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
-
-  <!-- Overlay (for mobile view) -->
   <div class="overlay"></div>
 
   <!-- Content -->
@@ -54,25 +190,28 @@ $userid = $_SESSION['userid'];
       </div>
     </header>
 
-    <!-- ✅ User view header -->
-    <div class="user-announcement-header mb-3" style="text-align:right;">
-      <h5 class="text-muted" style="font-weight:400;">Latest Announcements</h5>
-    </div>
+    <!-- === MAIN ANNOUNCEMENT LAYOUT === -->
+    <div class="announcement-layout">
 
-    <div class="announcement-container">
-      <?php
-        // ✅ Only show posted announcements
-        $sql = "SELECT * FROM announcement WHERE status='Posted' ORDER BY announce_date DESC";
-        $run = mysqli_query($conn, $sql);
+      <!-- === Latest Announcements (Left) === -->
+      <div class="latest-announcements">
+        <h4 class="section-title">Latest Announcements</h4>
+        <?php
+          $sql = "SELECT * FROM announcement WHERE status='Posted' ORDER BY announce_date DESC";
+          $run = mysqli_query($conn, $sql);
 
-        if (mysqli_num_rows($run) > 0) {
-          while ($rows = mysqli_fetch_assoc($run)) {
-            $announceImage = !empty($rows['announce_img'])
-              ? "../announceImg/" . $rows['announce_img']
-              : "../announceImg/announcementPlaceholder.jpg";
-      ?>
+          if (mysqli_num_rows($run) > 0) {
+            $count = 0;
+            while ($rows = mysqli_fetch_assoc($run)) {
+              $announceImage = !empty($rows['announce_img'])
+                ? "../announceImg/" . $rows['announce_img']
+                : "../announceImg/announcementPlaceholder.jpg";
+              $count++;
+
+              if ($count <= 3) { // latest 3 announcements
+        ?>
           <div class="announcement-card">
-            <img src="<?php echo $announceImage; ?>" alt="Announcement" class="announcement-img" style="height: 150px;">
+            <img src="<?php echo $announceImage; ?>" alt="Announcement" class="announcement-img">
             <div class="announcement-body">
               <h2><?= htmlspecialchars($rows['announce_name']) ?></h2>
               <p class="date"><?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
@@ -89,12 +228,36 @@ $userid = $_SESSION['userid'];
               </div>
             </div>
           </div>
-      <?php
+        <?php
+              }
+            }
+            mysqli_data_seek($run, 3); // move pointer for next loop
+          } else {
+            echo "<p>No announcements yet.</p>";
           }
-        } else {
-          echo "<p>No announcements yet.</p>";
-        }
-      ?>
+        ?>
+      </div>
+
+      <!-- === Previous Announcements (Right) === -->
+      <div class="previous-announcements">
+        <h4 class="section-title">Previous Announcements</h4>
+        <?php
+          $index = 0;
+          while ($rows = mysqli_fetch_assoc($run)) {
+            $announceImage = !empty($rows['announce_img'])
+              ? "../announceImg/" . $rows['announce_img']
+              : "../announceImg/announcementPlaceholder.jpg";
+        ?>
+          <div class="previous-announcement-card">
+            <h6><?= htmlspecialchars($rows['announce_name']) ?></h6>
+            <p class="date"><?= date("F d, Y", strtotime($rows['announce_date'])) ?></p>
+            <p class="text-truncate"><?= substr(htmlspecialchars($rows['announce_text']), 0, 80) ?>...</p>
+          </div>
+        <?php
+            $index++;
+          }
+        ?>
+      </div>
     </div>
   </div>
 
@@ -132,47 +295,7 @@ $userid = $_SESSION['userid'];
         modal.show();
       });
     });
-
-    // Only show Read More button if text is truncated
-    document.querySelectorAll('.announcement-text').forEach(textBlock => {
-      const readMoreBtn = textBlock.closest('.announcement-body')
-        .querySelector('.read-more-btn');
-      if (readMoreBtn) {
-        if (textBlock.scrollHeight > textBlock.offsetHeight) {
-          readMoreBtn.style.display = "inline-block";
-        } else {
-          readMoreBtn.style.display = "none";
-        }
-      }
-    });
   </script>
-
-  <!-- toggle -->
-  <script src="../../assets/sidebarToggle.js"></script>
-
-  <!-- 🔐 Password Verification Modal -->
-  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form method="post" action="">
-          <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
-          <div class="modal-header">
-            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="verifyPassword" class="form-label">Enter Password</label>
-              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
 
 </body>
 </html>
