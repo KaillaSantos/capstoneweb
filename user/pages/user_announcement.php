@@ -30,7 +30,7 @@ $userid = $_SESSION['userid'];
     /* ============ Announcement Layout ============ */
     .announcement-layout {
       display: grid;
-      grid-template-columns: 2fr 1fr; /* Latest is larger */
+      grid-template-columns: 2 fr;/* Latest is larger */
       gap: 30px;
       padding: 20px;
     }
@@ -162,12 +162,13 @@ $userid = $_SESSION['userid'];
 
 <body>
 
-  <!-- Sidebar -->
-  <?php include '../includes/sidebar.php'; ?>
+  <!-- ===== SIDEBAR ===== -->
+  <?php include  '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle -->
+  <!-- ===== TOGGLE BUTTON ===== -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
-  <div class="overlay"></div>
+
+
 
   <!-- Content -->
   <div class="content" id="content">
@@ -284,7 +285,7 @@ $userid = $_SESSION['userid'];
   </div>
 
   <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/sidebarToggle.js"></script>
+  <script src="../../assets/sidebarToggle.js"></script>
 
   <script>
     // Handle Read More modal for both sections
