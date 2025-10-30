@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/authSession.php';
+require_once '../../includes/authSession.php';
 
 if (!isset($_GET['id'])) {
     echo "<script>alert('No announcement selected.'); window.location.href='../pages/announcement.php?userid=$userid';</script>";
@@ -51,7 +51,7 @@ if (!isset($_GET['id'])) {
         }
 
         .announce-panel h2 {
-            margin-top: 200px;   /* push it down from the close button */
+            margin-top: 25px;   /* push it down from the close button */
             margin-bottom: 25px;
             font-size: 28px;
             font-weight: bold;
