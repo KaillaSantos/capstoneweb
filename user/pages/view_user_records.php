@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../../conn/dbconn.php'; // keep your original DB connect
+require_once __DIR__ . '/../../conn/dbconn.php'; 
 
-// Accept either `id` or `userid` parameter (QR might use either)
 $userid = null;
 if (isset($_GET['id'])) {
     $userid = intval($_GET['id']);
@@ -14,8 +13,6 @@ if (!$userid) {
 }
 
 /*
- * 1) Fetch user info (use actual column names in your `account` table)
- *    Your table uses `userid` and `userName` (based on your screenshots).
  */
 $userQuery = "SELECT userid, userName AS name, email, purok FROM account WHERE userid = ?";
 $stmt = $conn->prepare($userQuery);
@@ -33,8 +30,6 @@ if (!$user) {
 }
 
 /*
- * 2) Fetch records for that user (use your `records` table column names)
- *    Your `records` table (from screenshot) uses: id, record_name, date, rec_img, user_id
  */
 $recordsQuery = "
     SELECT r.id, r.record_name, r.date, r.rec_img
@@ -52,12 +47,11 @@ $records = $stmt2->get_result();
 $stmt2->close();
 
 /**
- * Helper to resolve image URL (checks common upload folders used in your project)
+ * 
  */
 function resolveRecordImageUrl($filename) {
     if (empty($filename)) return null;
 
-    // possible locations (adjust if your project stores rec_img elsewhere)
     $paths = [
         $_SERVER['DOCUMENT_ROOT'] . '/capstoneweb/assets/proofs/' . $filename,    // used in some inserts
         $_SERVER['DOCUMENT_ROOT'] . '/capstoneweb/uploads/' . $filename,          // common uploads folder
@@ -75,7 +69,6 @@ function resolveRecordImageUrl($filename) {
         }
     }
 
-    // if we couldn't find it on disk, still return a sensible web path to try
     return '/capstoneweb/assets/proofs/' . rawurlencode($filename);
 }
 ?>
