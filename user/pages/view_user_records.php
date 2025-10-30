@@ -5,7 +5,7 @@ if (!isset($_GET['userid'])) {
     die("❌ Missing user ID.");
 }
 
-$userid = intval($_GET['user']);
+$userid = intval($_GET['userName']);
 
 // Fetch user info
 $userQuery = "SELECT name, email FROM account WHERE userid = ?";
