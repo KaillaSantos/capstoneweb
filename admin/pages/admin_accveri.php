@@ -20,7 +20,7 @@ $user = mysqli_fetch_assoc($result);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Dashboard | E-Recycle</title>
+  <title>Account Verification | E-Recycle</title>
   <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
@@ -45,7 +45,7 @@ $user = mysqli_fetch_assoc($result);
         <div class="header-left">
           <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
           <div class="header-text">
-              <h1>E-Recycle Dashboard Page</h1>
+              <h1>E-Recycle Account Verification</h1>
               <p>Municipality of San Ildefonso</p>
           </div>
         </div>
