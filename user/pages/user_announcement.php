@@ -168,8 +168,6 @@ $userid = $_SESSION['userid'];
   <!-- ===== TOGGLE BUTTON ===== -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-  <!-- ===== CONTENT AREA ===== -->
-  <div class="content" id="content">
 
 
   <!-- Content -->
@@ -287,7 +285,7 @@ $userid = $_SESSION['userid'];
   </div>
 
   <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/sidebarToggle.js"></script>
+  <script src="../../assets/sidebarToggle.js"></script>
 
   <script>
     // Handle Read More modal for both sections
