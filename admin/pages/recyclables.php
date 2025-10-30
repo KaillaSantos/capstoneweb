@@ -17,7 +17,60 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+  <style>
+    /* === Recyclables Cards === */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e6f4ea;
+  border-left: 6px solid #2c5e1a; /* green accent */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(44, 94, 26, 0.15);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(44, 94, 26, 0.25);
+}
+
+/* Card Body */
+.card-body {
+  padding: 25px;
+  text-align: center;
+}
+
+/* Title Style */
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c5e1a;
+  margin-bottom: 15px;
+}
+
+/* Image Styling */
+.card-img {
+  width: 120px;
+  height: auto;
+  margin: 10px 0;
+}
+
+/* Total Text */
+.card-body p {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 15px;
+  }
+  .card-img {
+    width: 100px;
+  }
+}
+  </style>
 </head>
 
 <body>
