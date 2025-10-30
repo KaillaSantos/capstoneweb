@@ -201,14 +201,25 @@ $userid = $_SESSION['userid'];
           $run = mysqli_query($conn, $sql);
 
           if (mysqli_num_rows($run) > 0) {
+            $latest = [];
+            $previous = [];
             $count = 0;
-            while ($rows = mysqli_fetch_assoc($run)) {
+
+            // Split results: latest = top 1, previous = rest
+            while ($row = mysqli_fetch_assoc($run)) {
+              if ($count < 1) {
+                $latest[] = $row;
+              } else {
+                $previous[] = $row;
+              }
+              $count++;
+            }
+
+            // === Display Latest Announcement (Top 1) ===
+            foreach ($latest as $rows) {
               $announceImage = !empty($rows['announce_img'])
                 ? "../announceImg/" . $rows['announce_img']
                 : "../announceImg/announcementPlaceholder.jpg";
-              $count++;
-
-              if ($count <= 3) { // latest 3 announcements
         ?>
           <div class="announcement-card">
             <img src="<?php echo $announceImage; ?>" alt="Announcement" class="announcement-img">
@@ -216,7 +227,6 @@ $userid = $_SESSION['userid'];
               <h2><?= htmlspecialchars($rows['announce_name']) ?></h2>
               <p class="date"><?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
               <p class="announcement-text"><?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
-
               <div class="announcement-actions">
                 <button type="button" class="btn btn-link read-more-btn"
                   data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
@@ -229,9 +239,7 @@ $userid = $_SESSION['userid'];
             </div>
           </div>
         <?php
-              }
             }
-            mysqli_data_seek($run, 3); // move pointer for next loop
           } else {
             echo "<p>No announcements yet.</p>";
           }
@@ -242,11 +250,11 @@ $userid = $_SESSION['userid'];
       <div class="previous-announcements">
         <h4 class="section-title">Previous Announcements</h4>
         <?php
-          $index = 0;
-          while ($rows = mysqli_fetch_assoc($run)) {
-            $announceImage = !empty($rows['announce_img'])
-              ? "../announceImg/" . $rows['announce_img']
-              : "../announceImg/announcementPlaceholder.jpg";
+          if (!empty($previous)) {
+            foreach ($previous as $rows) {
+              $announceImage = !empty($rows['announce_img'])
+                ? "../announceImg/" . $rows['announce_img']
+                : "../announceImg/announcementPlaceholder.jpg";
         ?>
           <div class="previous-announcement-card">
             <h6><?= htmlspecialchars($rows['announce_name']) ?></h6>
@@ -254,11 +262,13 @@ $userid = $_SESSION['userid'];
             <p class="text-truncate"><?= substr(htmlspecialchars($rows['announce_text']), 0, 80) ?>...</p>
           </div>
         <?php
-            $index++;
+            }
+          } else {
+            echo "<p>No previous announcements.</p>";
           }
         ?>
       </div>
-    </div>
+
   </div>
 
   <!-- Read More Modal -->
