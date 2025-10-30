@@ -74,7 +74,7 @@ if (isset($_POST['signup'])) {
     }
 
     // Insert new user
-    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role)) {
+    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) && !empty($purok)) {
         $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
                    VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
@@ -111,7 +111,7 @@ if (isset($_POST['signup'])) {
             header("Location: /capstoneweb/signUp.php");
             exit();
         }
-    } else {
+    }  else {
         $_SESSION['registerError'] = "All fields are required.";
         header("Location: /capstoneweb/signUp.php");
         exit();
