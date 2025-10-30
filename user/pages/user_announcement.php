@@ -15,7 +15,6 @@ $userid = $_SESSION['userid'];
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -23,20 +22,17 @@ $userid = $_SESSION['userid'];
   <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
+  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
 
   <style>
-    /* ================================
-       TWO-COLUMN ANNOUNCEMENT LAYOUT
-       ================================ */
-
+    /* ============ Announcement Layout ============ */
     .announcement-layout {
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 2fr 1fr; /* Latest is larger */
       gap: 30px;
-      padding: 20px 10px;
+      padding: 20px;
     }
 
     .section-title {
@@ -47,7 +43,7 @@ $userid = $_SESSION['userid'];
       padding-left: 10px;
     }
 
-    /* --- Left (Latest Announcements / News Style) --- */
+    /* Latest Announcements */
     .latest-announcements .announcement-card {
       display: flex;
       align-items: flex-start;
@@ -66,8 +62,8 @@ $userid = $_SESSION['userid'];
     }
 
     .announcement-img {
-      width: 160px;
-      height: 120px;
+      width: 220px;
+      height: 150px;
       object-fit: cover;
       border-radius: 10px;
       margin-left: 10px;
@@ -79,23 +75,23 @@ $userid = $_SESSION['userid'];
     }
 
     .announcement-body h2 {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: 600;
       color: #184e1e;
       margin-bottom: 5px;
     }
 
     .announcement-body .date {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #777;
       margin-bottom: 8px;
     }
 
     .announcement-text {
       color: #333;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      max-height: 4.2em;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-height: 5.2em;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -112,7 +108,7 @@ $userid = $_SESSION['userid'];
       text-decoration: underline;
     }
 
-    /* --- Right (Previous Announcements Sidebar) --- */
+    /* Previous Announcements Sidebar */
     .previous-announcements {
       background: #f7fdf8;
       border-radius: 12px;
@@ -153,12 +149,10 @@ $userid = $_SESSION['userid'];
       color: #444;
     }
 
-    /* --- Responsive --- */
     @media (max-width: 992px) {
       .announcement-layout {
         grid-template-columns: 1fr;
       }
-
       .previous-announcements {
         margin-top: 20px;
       }
@@ -171,7 +165,7 @@ $userid = $_SESSION['userid'];
   <!-- Sidebar -->
   <?php include '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle Button -->
+  <!-- Sidebar Toggle -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
   <div class="overlay"></div>
 
@@ -185,91 +179,90 @@ $userid = $_SESSION['userid'];
           <p>Municipality of San Ildefonso</p>
         </div>
       </div>
-
       <div class="header-right">
         <span class="date-display"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
 
-    <!-- === MAIN ANNOUNCEMENT LAYOUT === -->
+    <!-- === ANNOUNCEMENT LAYOUT === -->
     <div class="announcement-layout">
 
-      <!-- === Latest Announcements (Left) === -->
+      <!-- === Latest Announcement (Top 1) === -->
       <div class="latest-announcements">
-        <h4 class="section-title">Latest Announcements</h4>
+        <h4 class="section-title">Latest Announcement</h4>
         <?php
-          $sql = "SELECT * FROM announcement WHERE status='Posted' ORDER BY announce_date DESC";
-          $run = mysqli_query($conn, $sql);
+        $sql = "SELECT * FROM announcement WHERE status='Posted' ORDER BY announce_date DESC";
+        $run = mysqli_query($conn, $sql);
 
-          if (mysqli_num_rows($run) > 0) {
-            $latest = [];
-            $previous = [];
-            $count = 0;
+        if (mysqli_num_rows($run) > 0) {
+          $latest = [];
+          $previous = [];
+          $count = 0;
 
-            // Split results: latest = top 1, previous = rest
-            while ($row = mysqli_fetch_assoc($run)) {
-              if ($count < 1) {
-                $latest[] = $row;
-              } else {
-                $previous[] = $row;
-              }
-              $count++;
+          while ($row = mysqli_fetch_assoc($run)) {
+            if ($count < 1) {
+              $latest[] = $row;
+            } else {
+              $previous[] = $row;
             }
-
-            // === Display Latest Announcement (Top 1) ===
-            foreach ($latest as $rows) {
-              $announceImage = !empty($rows['announce_img'])
-                ? "../announceImg/" . $rows['announce_img']
-                : "../announceImg/announcementPlaceholder.jpg";
-        ?>
-          <div class="announcement-card">
-            <img src="<?php echo $announceImage; ?>" alt="Announcement" class="announcement-img">
-            <div class="announcement-body">
-              <h2><?= htmlspecialchars($rows['announce_name']) ?></h2>
-              <p class="date"><?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
-              <p class="announcement-text"><?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
-              <div class="announcement-actions">
-                <button type="button" class="btn btn-link read-more-btn"
-                  data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
-                  data-date="<?= date("m/d/Y", strtotime($rows['announce_date'])) ?>"
-                  data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
-                  data-image="<?= $announceImage ?>">
-                  Read More »
-                </button>
-              </div>
-            </div>
-          </div>
-        <?php
-            }
-          } else {
-            echo "<p>No announcements yet.</p>";
+            $count++;
           }
+
+          foreach ($latest as $rows) {
+            $announceImage = !empty($rows['announce_img'])
+              ? "../announceImg/" . $rows['announce_img']
+              : "../announceImg/announcementPlaceholder.jpg";
+        ?>
+        <div class="announcement-card">
+          <img src="<?php echo $announceImage; ?>" alt="Announcement" class="announcement-img">
+          <div class="announcement-body">
+            <h2><?= htmlspecialchars($rows['announce_name']) ?></h2>
+            <p class="date"><?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
+            <p class="announcement-text"><?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
+            <button type="button" class="btn btn-link read-more-btn"
+              data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
+              data-date="<?= date("m/d/Y", strtotime($rows['announce_date'])) ?>"
+              data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
+              data-image="<?= $announceImage ?>">Read More »</button>
+          </div>
+        </div>
+        <?php
+          }
+        } else {
+          echo "<p>No announcements yet.</p>";
+        }
         ?>
       </div>
 
-      <!-- === Previous Announcements (Right) === -->
+      <!-- === Previous Announcements === -->
       <div class="previous-announcements">
         <h4 class="section-title">Previous Announcements</h4>
         <?php
-          if (!empty($previous)) {
-            foreach ($previous as $rows) {
-              $announceImage = !empty($rows['announce_img'])
-                ? "../announceImg/" . $rows['announce_img']
-                : "../announceImg/announcementPlaceholder.jpg";
+        if (!empty($previous)) {
+          foreach ($previous as $rows) {
+            $announceImage = !empty($rows['announce_img'])
+              ? "../announceImg/" . $rows['announce_img']
+              : "../announceImg/announcementPlaceholder.jpg";
         ?>
-          <div class="previous-announcement-card">
-            <h6><?= htmlspecialchars($rows['announce_name']) ?></h6>
-            <p class="date"><?= date("F d, Y", strtotime($rows['announce_date'])) ?></p>
-            <p class="text-truncate"><?= substr(htmlspecialchars($rows['announce_text']), 0, 80) ?>...</p>
-          </div>
+        <div class="previous-announcement-card">
+          <h6><?= htmlspecialchars($rows['announce_name']) ?></h6>
+          <p class="date"><?= date("F d, Y", strtotime($rows['announce_date'])) ?></p>
+          <p class="text-truncate"><?= substr(htmlspecialchars($rows['announce_text']), 0, 80) ?>...</p>
+          <button type="button" class="btn btn-sm btn-link read-more-btn"
+            data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
+            data-date="<?= date("m/d/Y", strtotime($rows['announce_date'])) ?>"
+            data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
+            data-image="<?= $announceImage ?>">Read More »</button>
+        </div>
         <?php
-            }
-          } else {
-            echo "<p>No previous announcements.</p>";
           }
+        } else {
+          echo "<p>No previous announcements.</p>";
+        }
         ?>
       </div>
 
+    </div>
   </div>
 
   <!-- Read More Modal -->
@@ -294,19 +287,16 @@ $userid = $_SESSION['userid'];
   <script src="../assets/sidebarToggle.js"></script>
 
   <script>
-    // Handle Read More modal
+    // Handle Read More modal for both sections
     document.querySelectorAll('.read-more-btn').forEach(button => {
       button.addEventListener('click', function() {
         document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
         document.getElementById('modalDate').textContent = this.getAttribute('data-date');
         document.getElementById('modalText').textContent = this.getAttribute('data-text');
         document.getElementById('modalImage').src = this.getAttribute('data-image');
-
-        const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
-        modal.show();
+        new bootstrap.Modal(document.getElementById('readMoreModal')).show();
       });
     });
   </script>
-
 </body>
 </html>
