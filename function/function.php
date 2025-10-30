@@ -20,6 +20,14 @@ if (isset($_POST['submit'])) {
         $row = mysqli_fetch_assoc($result);
 
         if ($row['passWord'] === $passWord) {
+
+            // ✅ Block unapproved users (only for regular users)
+            if ($row['role'] === 'user' && $row['status'] !== 'approved') {
+                $_SESSION['login_error'] = "Your account is not approved yet. Please wait for admin verification.";
+                header("Location: ../login.php");
+                exit();
+            }
+
             // ✅ Save user details in session
             $_SESSION['userid'] = $row['userid'];
             $_SESSION['email']  = $row['email'];
@@ -33,6 +41,7 @@ if (isset($_POST['submit'])) {
                 header("Location: ../user/pages/user_announcement.php?userid={$row['userid']}");
                 exit();
             }
+
         } else {
             // ❌ Incorrect password
             $_SESSION['login_error'] = "Email or password didn't match.";
@@ -47,7 +56,7 @@ if (isset($_POST['submit'])) {
     }
 }
 
-// 🔹 SIGN UP
+
 if (isset($_POST['signup'])) {
     $userName   = mysqli_real_escape_string($conn, $_POST['userName']);
     $email      = mysqli_real_escape_string($conn, $_POST['email']);
@@ -55,7 +64,6 @@ if (isset($_POST['signup'])) {
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role       = mysqli_real_escape_string($conn, $_POST['role']);
     
-    // Purok may come from select (user) or hidden input (admin)
     $purok = isset($_POST['purok']) ? mysqli_real_escape_string($conn, $_POST['purok']) : null;
 
     // Check required fields
@@ -65,7 +73,7 @@ if (isset($_POST['signup'])) {
         exit();
     }
 
-    // Check Purok for users only
+    // Purok required only for users
     if ($role === 'user' && empty($purok)) {
         $_SESSION['registerError'] = "Please select a Purok.";
         header("Location: /capstoneweb/signUp.php");
@@ -79,7 +87,7 @@ if (isset($_POST['signup'])) {
         exit();
     }
 
-    // Check if email exists
+    // Check email uniqueness
     $checkEmail = "SELECT * FROM account WHERE email = '$email'";
     $result = $conn->query($checkEmail);
     if ($result->num_rows > 0) {
@@ -88,11 +96,17 @@ if (isset($_POST['signup'])) {
         exit();
     }
 
-    // Insert new user
-    $query = "INSERT INTO account (userName, passWord, email, role, purok)
-              VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
+    // ✅ Set status
+    $status = ($role === 'user') ? 'pending' : 'approved';
+
+    // Insert user
+    $query = "INSERT INTO account (userName, passWord, email, role, purok, status)
+              VALUES ('$userName', '$passWord', '$email', '$role', '$purok', '$status')";
+
     if (mysqli_query($conn, $query)) {
-        $_SESSION['registerSuccess'] = "Account created successfully!";
+        $_SESSION['registerSuccess'] = ($role === 'user') 
+            ? "Account created successfully! Please wait for admin approval."
+            : "Admin account created successfully!";
         header("Location: /capstoneweb/login.php");
         exit();
     } else {
