@@ -91,6 +91,10 @@ body.sidebar-collapsed .sidenav a {
   background-color: #1a4314;
 }
 
+body.sidebar-collapssed .sidenav {
+  padding-top: 50px;
+}
+
 /* === ACTIVE LINK === */
 .sidenav a.active {
   background-color: #4caf50;
