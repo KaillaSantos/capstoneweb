@@ -1,27 +1,27 @@
 <?php
-// print out error
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// ===== REQUIRED FILES =====
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
 include __DIR__ . '/../includes/sidebar.php';
 
-
+// ===== FETCH LOGGED IN USER =====
 $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Account Verification | E-Recycle</title>
+
+  <!-- ===== STYLES ===== -->
   <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css">
   <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
@@ -39,32 +39,32 @@ $user = mysqli_fetch_assoc($result);
 <body>
 
   <!-- ===== SIDEBAR ===== -->
-  <?php include  '../includes/sidebar.php'; ?>
+  <?php include '../includes/sidebar.php'; ?>
 
   <!-- ===== TOGGLE BUTTON ===== -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-  <!-- ===== CONTENT AREA ===== -->
+  <!-- ===== MAIN CONTENT ===== -->
   <div class="content" id="content">
 
-    <!-- content header -->
-    <header class="dashboard-header">
-      <div class="header-left">
+    <!-- ===== HEADER ===== -->
+    <header class="dashboard-header d-flex justify-content-between align-items-center">
+      <div class="header-left d-flex align-items-center">
         <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
-        <div class="header-text">
-          <h1>E-Recycle Account Verification</h1>
-          <p>Municipality of San Ildefonso</p>
+        <div class="header-text ms-3">
+          <h1 class="h4 mb-0">E-Recycle Account Verification</h1>
+          <p class="mb-0 text-muted">Municipality of San Ildefonso</p>
         </div>
       </div>
-
       <div class="header-right">
-        <span class="date-display"><?php echo date("F j, Y"); ?></span>
+        <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
 
-    <div class="table-responsive mt-3">
-      <table class="table table-bordered table-striped table-hover">
-        <thead class="table-dark align-middle">
+    <!-- ===== USERS TABLE ===== -->
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
           <tr>
             <th style="width: 80px;">Image</th>
             <th>User Name</th>
@@ -76,20 +76,18 @@ $user = mysqli_fetch_assoc($result);
         </thead>
         <tbody>
           <?php
-          // Pagination setup
+          // ===== PAGINATION =====
           $records_per_page = 5;
-
-          // Get current page from URL (default 1)
-          $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
+          $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
           $offset = ($page - 1) * $records_per_page;
 
-          // Count total records
+          // ===== COUNT TOTAL RECORDS =====
           $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'User' AND status = 'not verified'";
           $countResult = mysqli_query($conn, $countQuery);
           $total_records = mysqli_fetch_assoc($countResult)['total'];
           $total_pages = ceil($total_records / $records_per_page);
 
-          // Fetch paginated records
+          // ===== FETCH USERS =====
           $sql = "
             SELECT userid, userimg, userName, email, purok, status 
             FROM account 
@@ -98,82 +96,82 @@ $user = mysqli_fetch_assoc($result);
             LIMIT $records_per_page OFFSET $offset
           ";
           $result = mysqli_query($conn, $sql);
-          ?>
 
-          <?php if (mysqli_num_rows($result) > 0): ?>
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
-              <?php
-              $imagePath = !empty($row['userimg'])
-                ? "../../image/" . $row['userimg']
+          if (mysqli_num_rows($result) > 0):
+            while ($row = mysqli_fetch_assoc($result)):
+              $imagePath = !empty($row['userimg']) 
+                ? "../../image/" . htmlspecialchars($row['userimg']) 
                 : "../../image/placeholder.jpg";
-              ?>
+          ?>
               <tr>
                 <td>
-                  <img src="<?= htmlspecialchars($imagePath) ?>" alt="User Image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                  <img src="<?= $imagePath ?>" alt="User Image" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
                 </td>
-                <td style="text-transform: capitalize;"><?= htmlspecialchars($row['userName']) ?></td>
+                <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
                 <td><?= htmlspecialchars($row['email']) ?></td>
                 <td><?= htmlspecialchars($row['purok']) ?></td>
                 <td>
                   <span class="badge bg-warning text-dark">Pending</span>
                 </td>
                 <td>
-                  <?php if ($row['status'] === "not verified"): ?>
-                    <form action="../../function/function.php" method="POST" class="d-inline">
-                      <input type="hidden" name="userid" value="<?= $row['userid'] ?>">
-                      <button type="submit" name="approve_user" class="btn btn-success btn-sm">
-                        <i class="fa fa-check"></i>
-                      </button>
-                    </form>
-                    <form action="../../function/function.php" method="POST" class="d-inline">
-                      <input type="hidden" name="userid" value="<?= $row['userid'] ?>">
-                      <button type="submit" name="reject_user" class="btn btn-danger btn-sm">
-                        <i class="fa fa-times"></i>
-                      </button>
-                    </form>
-                  <?php else: ?>
-                    <span class="text-muted">No Action Available</span>
-                  <?php endif; ?>
+                  <form action="../../function/function.php" method="POST" class="d-inline">
+                    <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
+                    <button type="submit" name="approve_user" class="btn btn-success btn-sm" title="Approve">
+                      <i class="fa fa-check"></i>
+                    </button>
+                  </form>
+                  <form action="../../function/function.php" method="POST" class="d-inline">
+                    <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
+                    <button type="submit" name="reject_user" class="btn btn-danger btn-sm" title="Reject">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </form>
                 </td>
               </tr>
-            <?php endwhile; ?>
-          <?php else: ?>
+          <?php 
+            endwhile;
+          else: 
+          ?>
             <tr>
-              <td colspan="6" class="text-center text-muted">No users found.</td>
+              <td colspan="6" class="text-center text-muted py-4">No unverified users found.</td>
             </tr>
           <?php endif; ?>
         </tbody>
       </table>
 
-      <!-- PAGINATION -->
-      <div class="d-flex justify-content-center mt-3">
-        <nav>
-          <ul class="pagination">
-            <!-- Previous button -->
-            <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
-            </li>
-
-            <!-- Page numbers -->
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-              <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+      <!-- ===== PAGINATION ===== -->
+      <?php if ($total_pages > 1): ?>
+        <div class="d-flex justify-content-center mt-3">
+          <nav>
+            <ul class="pagination">
+              <!-- Prev -->
+              <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
               </li>
-            <?php endfor; ?>
 
-            <!-- Next button -->
-            <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+              <!-- Page numbers -->
+              <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+
+              <!-- Next -->
+              <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 
+  <!-- ===== JS ===== -->
   <script src="/capstoneweb/assets/sidebarToggle.js"></script>
+  <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Verify Password Modal -->
+  <!-- ===== PASSWORD VERIFY MODAL ===== -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -197,5 +195,4 @@ $user = mysqli_fetch_assoc($result);
   </div>
 
 </body>
-
 </html>
