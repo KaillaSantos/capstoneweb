@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2025 at 01:46 PM
+-- Generation Time: Oct 30, 2025 at 01:49 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -44,11 +44,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
-(6, 'kailla.jpg', 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kai123', 'admin', 'not verified', NULL),
-(19, 'images.jpg', 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'user', 'approved', 'qr_19.png'),
-(20, NULL, 'mico', 'gg@gmail.com', 6, '12345', 'user', 'approved', 'qr_20.png'),
-(24, NULL, 'Rafael Fernandez', 'niggaz@gmail.com', 1, '12345', 'user', 'approved', NULL),
-(25, NULL, 'Kailla Santos', 'kaillasantos@gmail.com', 0, 'kailla123', 'admin', 'approved', NULL);
+(19, NULL, 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'user', 'approved', 'qr_19.png');
 
 -- --------------------------------------------------------
 
@@ -64,16 +60,6 @@ CREATE TABLE `announcement` (
   `announce_date` date NOT NULL,
   `announce_img` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `announcement`
---
-
-INSERT INTO `announcement` (`announce_id`, `announce_name`, `announce_text`, `status`, `announce_date`, `announce_img`) VALUES
-(1, 'Test Title', 'here lies the test part of the web and mobile', 'Posted', '2025-09-12', 'HiPaint_1745812131005.png'),
-(2, 'Test Title2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Posted', '2025-09-12', 'announcement1.jpg'),
-(3, 'archived title', 'nice ', 'Archived', '2025-02-02', 'curtain.jpg'),
-(5, 'test pic ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu mi et purus porttitor tristique. Nulla dapibus semper ipsum ut scelerisque. Sed quis mi orci. Donec iaculis convallis fringilla. Nam placerat mattis volutpat. Duis condimentum justo at malesuada consectetur. Integer ac hendrerit enim, vel posuere enim. Donec at erat lorem. Donec rutrum, lectus eu ullamcorper vehicula, ex augue ultricies turpis, nec finibus orci turpis sed velit. Mauris gravida malesuada turpis, eget mollis dolor. Sed ac suscipit nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum elementum, ligula aliquet eleifend faucibus, urna ante faucibus nisl, ut egestas libero tortor eu enim. Pellentesque vitae sem metus.\r\n\r\nSed pharetra auctor risus, ac laoreet urna semper a. Sed lectus tortor, finibus sit amet lacinia vitae, posuere ac nibh. Sed luctus, ante ac sagittis varius, magna diam faucibus felis, ut ullamcorper nulla lacus vel ligula. Morbi at ligula eu urna egestas ultrices. Sed eu gravida quam. Morbi vitae convallis purus, eu pellentesque purus. Sed scelerisque magna vel rhoncus malesuada. Morbi sed mi arcu. Nam imperdiet nisi nec euismod accumsan.\r\n\r\nSuspendisse purus libero, porta non imperdiet vitae, ultricies sed eros. Aenean pellentesque vel enim a pellentesque. Quisque a odio est. Sed imperdiet lobortis tellus, ac tempus felis ullamcorper in. Donec fringilla turpis ut nibh aliquet blandit. In hac habitasse platea dictumst. Mauris ultrices lorem sed aliquet mattis. Maecenas sed magna ipsum. Cras convallis ipsum dolor, non suscipit urna tincidunt non. Integer porta pellentesque dolor. Phasellus rhoncus consequat hendrerit. Sed a neque et urna gravida finibus. Proin nec facilisis turpis. In aliquam tempus ex vel facilisis. Pellentesque rhoncus neque maximus, laoreet ante ac, ullamcorper purus. Praesent sit amet tristique velit.', 'Posted', '2025-11-01', 'plastic-recycling-guide.png');
 
 -- --------------------------------------------------------
 
@@ -92,13 +78,6 @@ CREATE TABLE `notifications` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `notifications`
---
-
-INSERT INTO `notifications` (`id`, `user_id`, `address`, `image_path`, `pickup_date`, `pickup_time`, `status`, `created_at`) VALUES
-(2, 1, 'User address here', '1759277896_pickup.jpg', '2025-10-03', '09:30:00', 'Approved', '2025-10-01 00:18:16');
-
 -- --------------------------------------------------------
 
 --
@@ -112,20 +91,6 @@ CREATE TABLE `records` (
   `rec_img` varchar(100) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `records`
---
-
-INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
-(21, 'Geb Micahel', '2025-10-27', '', 8),
-(22, 'Kailla', '2025-10-26', '', 9),
-(23, 'Plastic Bottles', '2025-10-30', '', 17),
-(24, 'throy', '2025-10-30', '', 18),
-(25, 'Throy Dafielmoto', '2025-10-30', '', 19),
-(26, 'Throy Dafielmoto', '2025-10-30', '', 19),
-(27, 'Throy Dafielmoto', '2025-11-02', '', 19),
-(28, 'mico', '2025-10-30', '', 20);
 
 -- --------------------------------------------------------
 
@@ -141,34 +106,6 @@ CREATE TABLE `record_items` (
   `unit` varchar(10) NOT NULL DEFAULT 'kg'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `record_items`
---
-
-INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `unit`) VALUES
-(0, 21, 4, 21, 'kg'),
-(0, 21, 5, 18, 'kg'),
-(0, 21, 6, 15, 'kg'),
-(0, 21, 9, 9, 'kg'),
-(0, 22, 4, 32, 'pcs'),
-(0, 22, 5, 14, 'kg'),
-(0, 22, 6, 21, 'kg'),
-(0, 22, 9, 7, 'kg'),
-(0, 25, 4, 21, 'kg'),
-(0, 25, 5, 16, 'pcs'),
-(0, 26, 4, 100, 'kg'),
-(0, 26, 5, 21, 'pcs'),
-(0, 26, 6, 13, 'kg'),
-(0, 26, 9, 5, 'kg'),
-(0, 27, 4, 12, 'kg'),
-(0, 27, 5, 34, 'pcs'),
-(0, 27, 6, 10, 'kg'),
-(0, 27, 9, 10, 'kg'),
-(0, 28, 4, 23, 'kg'),
-(0, 28, 5, 13, 'kg'),
-(0, 28, 6, 4, 'kg'),
-(0, 28, 9, 5, 'kg');
-
 -- --------------------------------------------------------
 
 --
@@ -180,16 +117,6 @@ CREATE TABLE `recyclable` (
   `RM_name` varchar(20) NOT NULL COMMENT '20',
   `RM_img` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `recyclable`
---
-
-INSERT INTO `recyclable` (`id`, `RM_name`, `RM_img`) VALUES
-(4, 'Plastic Bottle', 'plastic-bottle.jpg'),
-(5, 'CardBoard', 'cardboard.jpg'),
-(6, 'Tin Cans', 'tincans.jpg'),
-(9, 'Bakal', '1757030543_1757030494_OIP.webp');
 
 -- --------------------------------------------------------
 
@@ -206,14 +133,6 @@ CREATE TABLE `rewards` (
   `product_img` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `rewards`
---
-
-INSERT INTO `rewards` (`reward_id`, `product_name`, `product_description`, `product_points`, `product_date`, `product_img`) VALUES
-(3, 'Rice', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id sed reiciendis, molestias vitae consequatur in debitis cupiditate. Sint vitae ratione harum labore delectus sunt reprehenderit, eos repellat et. Distinctio, qui.', 100, '2025-10-14 16:00:00', 'roice.jpg'),
-(4, 'bigas', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id sed reiciendis, molestias vitae consequatur in debitis cupiditate. Sint vitae ratione harum labore delectus sunt reprehenderit, eos repellat et. Distinctio, qui.', 129381, '2025-11-14 16:00:00', '');
-
 -- --------------------------------------------------------
 
 --
@@ -227,13 +146,6 @@ CREATE TABLE `user_rewards` (
   `status` varchar(50) DEFAULT 'Pending',
   `date_redeemed` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user_rewards`
---
-
-INSERT INTO `user_rewards` (`id`, `user_id`, `reward_id`, `status`, `date_redeemed`) VALUES
-(1, 19, 3, 'Pending', '2025-10-30 04:06:01');
 
 --
 -- Indexes for dumped tables
@@ -261,6 +173,12 @@ ALTER TABLE `notifications`
 -- Indexes for table `records`
 --
 ALTER TABLE `records`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `record_items`
+--
+ALTER TABLE `record_items`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -292,13 +210,13 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -310,7 +228,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
