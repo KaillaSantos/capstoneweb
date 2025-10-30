@@ -38,18 +38,18 @@ $userid = $_SESSION['userid'];
       background-color: #f5f6f7;
     }
 
-    /* === Profile Card === */
+    /* === Profile Card (white box) === */
     .profile-card {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      align-items: flex-start;
+      justify-content: center;
       background: #fff;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 900px;
-      padding: 40px 50px;
-      gap: 50px;
+      max-width: 950px;
+      padding: 40px 60px;
+      gap: 60px;
     }
 
     /* === Left Section (Profile Image) === */
@@ -59,8 +59,8 @@ $userid = $_SESSION['userid'];
     }
 
     .profile-img-wrapper {
-      width: 150px;
-      height: 150px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
       overflow: hidden;
       margin: 0 auto 15px;
@@ -86,7 +86,7 @@ $userid = $_SESSION['userid'];
 
     /* === Right Section (Form Fields) === */
     .profile-right {
-      flex: 2;
+      flex: 1.5;
     }
 
     .form-group {
@@ -111,17 +111,16 @@ $userid = $_SESSION['userid'];
     /* === Buttons === */
     .form-buttons {
       display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 10px;
+      justify-content: flex-start;
+      gap: 15px;
+      margin-top: 20px;
     }
 
     .save-btn,
     .cancel-btn {
       border: none;
       border-radius: 6px;
-      padding: 12px 18px;
-      width: auto;
+      padding: 12px 25px;
       cursor: pointer;
       font-size: 15px;
       font-weight: 600;
@@ -153,19 +152,21 @@ $userid = $_SESSION['userid'];
         flex-direction: column;
         text-align: center;
         padding: 30px 25px;
-        gap: 25px;
+        gap: 30px;
       }
 
       .form-buttons {
+        justify-content: center;
         flex-direction: column;
         align-items: center;
       }
 
       .save-btn,
       .cancel-btn {
-        width: 100%;
+        width: 80%;
       }
     }
+
 
   </style>
 
