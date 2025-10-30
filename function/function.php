@@ -54,19 +54,34 @@ if (isset($_POST['signup'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role       = mysqli_real_escape_string($conn, $_POST['role']);
-    $purok      = mysqli_real_escape_string($conn, $_POST['purok']);
+    
+    // Purok may come from select (user) or hidden input (admin)
+    $purok = isset($_POST['purok']) ? mysqli_real_escape_string($conn, $_POST['purok']) : null;
 
-    //  Check password match
+    // Check required fields
+    if (empty($userName) || empty($email) || empty($passWord) || empty($rePassword) || empty($role)) {
+        $_SESSION['registerError'] = "All fields are required.";
+        header("Location: /capstoneweb/signUp.php");
+        exit();
+    }
+
+    // Check Purok for users only
+    if ($role === 'user' && empty($purok)) {
+        $_SESSION['registerError'] = "Please select a Purok.";
+        header("Location: /capstoneweb/signUp.php");
+        exit();
+    }
+
+    // Password match
     if ($passWord !== $rePassword) {
         $_SESSION['registerError'] = "Passwords do not match.";
         header("Location: /capstoneweb/signUp.php");
         exit();
     }
 
-    //  Check if email already exists
+    // Check if email exists
     $checkEmail = "SELECT * FROM account WHERE email = '$email'";
     $result = $conn->query($checkEmail);
-
     if ($result->num_rows > 0) {
         $_SESSION['registerError'] = "Email already exists.";
         header("Location: /capstoneweb/signUp.php");
@@ -74,49 +89,19 @@ if (isset($_POST['signup'])) {
     }
 
     // Insert new user
-    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role)) {
-        $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
-                   VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
-
-        if (mysqli_query($conn, $query2)) {
-            // Get new user ID
-            $userId = mysqli_insert_id($conn);
-
-            // QR code generation
-            require_once __DIR__ . '/../includes/phpqrcode/qrlib.php';
-            $qrDir = __DIR__ . '/../uploads/qrcodes/';
-
-            // Create folder if missing
-            if (!file_exists($qrDir)) {
-                mkdir($qrDir, 0777, true);
-            }
-
-            // Dynamic QR Code that links to user's record viewer
-            $qrData = "http://192.168.0.208/capstoneweb/user/pages/view_user_records.php?userid=" . $userId;
-            $qrFileName = "qr_" . $userId . ".png";
-            $qrFilePath = $qrDir . $qrFileName;
-
-            // Generate QR code
-            QRcode::png($qrData, $qrFilePath, QR_ECLEVEL_L, 5);
-
-            // Save QR file name in database
-            $updateQr = "UPDATE account SET qr_code = '$qrFileName' WHERE userid = '$userId'";
-            mysqli_query($conn, $updateQr);
-
-            $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
-            header("Location: /capstoneweb/login.php");
-            exit();
-        } else {
-            $_SESSION['registerError'] = "Database error: " . mysqli_error($conn);
-            header("Location: /capstoneweb/signUp.php");
-            exit();
-        }
+    $query = "INSERT INTO account (userName, passWord, email, role, purok)
+              VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
+    if (mysqli_query($conn, $query)) {
+        $_SESSION['registerSuccess'] = "Account created successfully!";
+        header("Location: /capstoneweb/login.php");
+        exit();
     } else {
-        $_SESSION['registerError'] = "All fields are required.";
+        $_SESSION['registerError'] = "Database error: " . mysqli_error($conn);
         header("Location: /capstoneweb/signUp.php");
         exit();
     }
 }
+
 
 
 
@@ -586,7 +571,7 @@ if (isset($_POST['approve_user'])) {
         $_SESSION['message'] = "Error Approving Account" . mysqli_error($conn);
     }
 
-    header("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
 
@@ -601,7 +586,7 @@ if (isset($_POST['reject_user'])) {
         $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
     }
 
-    header("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
 

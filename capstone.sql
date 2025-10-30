@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2025 at 04:21 PM
+-- Generation Time: Oct 30, 2025 at 09:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -47,8 +47,8 @@ INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passW
 (6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmmin123', 'admin', 'not verified', NULL),
 (8, NULL, 'Geb Micahel', 'user@gmail.com', 1, 'Samic57', 'user', 'not verified', NULL),
 (15, NULL, 'Miguel', 'j@gmail.com', 3, '12345', 'user', 'not verified', NULL),
-(16, NULL, 'guel', 'g@gmail.com', 3, '12345', 'user', 'not verified', 'qr_16.png'),
-(17, NULL, 'kailla', 'k@gmail.com', 6, '12345', 'user', 'not verified', 'qr_17.png');
+(19, NULL, 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'user', 'approved', 'qr_19.png'),
+(20, NULL, 'mico', 'gg@gmail.com', 6, '12345', 'user', 'approved', 'qr_20.png');
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,12 @@ CREATE TABLE `records` (
 
 INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
 (21, 'Geb Micahel', '2025-10-27', '', 8),
-(22, 'Kailla', '2025-10-26', '', 9);
+(22, 'Kailla', '2025-10-26', '', 9),
+(23, 'Plastic Bottles', '2025-10-30', '', 17),
+(24, 'throy', '2025-10-30', '', 18),
+(25, 'Throy Dafielmoto', '2025-10-30', '', 19),
+(26, 'Throy Dafielmoto', '2025-10-30', '', 19),
+(27, 'Throy Dafielmoto', '2025-11-02', '', 19);
 
 -- --------------------------------------------------------
 
@@ -146,7 +151,17 @@ INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `uni
 (0, 22, 4, 32, 'pcs'),
 (0, 22, 5, 14, 'kg'),
 (0, 22, 6, 21, 'kg'),
-(0, 22, 9, 7, 'kg');
+(0, 22, 9, 7, 'kg'),
+(0, 25, 4, 21, 'kg'),
+(0, 25, 5, 16, 'pcs'),
+(0, 26, 4, 100, 'kg'),
+(0, 26, 5, 21, 'pcs'),
+(0, 26, 6, 13, 'kg'),
+(0, 26, 9, 5, 'kg'),
+(0, 27, 4, 12, 'kg'),
+(0, 27, 5, 34, 'pcs'),
+(0, 27, 6, 10, 'kg'),
+(0, 27, 9, 10, 'kg');
 
 -- --------------------------------------------------------
 
@@ -208,6 +223,13 @@ CREATE TABLE `user_rewards` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `user_rewards`
+--
+
+INSERT INTO `user_rewards` (`id`, `user_id`, `reward_id`, `status`, `date_redeemed`) VALUES
+(1, 19, 3, 'Pending', '2025-10-30 04:06:01');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -264,7 +286,7 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `announcement`
@@ -282,7 +304,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
@@ -300,7 +322,7 @@ ALTER TABLE `rewards`
 -- AUTO_INCREMENT for table `user_rewards`
 --
 ALTER TABLE `user_rewards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
