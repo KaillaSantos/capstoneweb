@@ -105,8 +105,8 @@
         if (mysqli_num_rows($run) > 0) {
           while ($rows = mysqli_fetch_assoc($run)) {
             $announceImage = !empty($rows['announce_img'])
-              ? "../announceImg/" . $rows['announce_img']
-              : "../announceImg/announcementPlaceholder.jpg";
+              ? "../../announceImg/" . $rows['announce_img']
+              : "../../announceImg/announcementPlaceholder.jpg";
         ?>
             <div class="announcement-card">
               <input type="checkbox" name="archive_ids[]" value="<?= $rows['announce_id'] ?>">
