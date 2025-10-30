@@ -586,7 +586,7 @@ if (isset($_POST['approve_user'])) {
         $_SESSION['message'] = "Error Approving Account" . mysqli_error($conn);
     }
 
-    header("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
 
@@ -601,7 +601,7 @@ if (isset($_POST['reject_user'])) {
         $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
     }
 
-    header("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
 
