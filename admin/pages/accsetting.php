@@ -199,11 +199,11 @@
           </header>
 
           <div class="settings-panel">
-
+            <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
             <!-- Profile Card -->
             <div class="profile-container">
               <div class="profile-card">
-                <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+                
                   
                   <!-- Profile Image Section -->
                   <div class="profile-left">
@@ -246,10 +246,11 @@
                         <button type="button" class="cancel-btn" onclick="cancelChanges()">Cancel</button>
                       </div>
                   </div>
-              </form>
+              
             </div>
           </div>
         <?php }  ?>
+        </form>
         </div>
         </div>
 
