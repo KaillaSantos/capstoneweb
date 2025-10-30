@@ -33,7 +33,7 @@ $current_page = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
        <i class="fas fa-bell"></i> <span class="link-text">Announcement</span>
     </a>
 
-    <a href="/capstoneweb/admin/pages/admin_accveri.php.php?userid=<?= $userid ?>" 
+    <a href="/capstoneweb/admin/pages/admin_accveri.php?userid=<?= $userid ?>" 
        title="Announcement"
        class="<?= ($current_page == 'admin_accveri.php') ? 'active' : '' ?>">
        <i class="fa fa-star"></i> <span class="link-text">Account Verification</span>
