@@ -102,10 +102,7 @@ if (isset($_POST['signup'])) {
     }
 }
 
-
-
-
-// For Account Editing
+// 🔹 USER ACCOUNT SETTINGS
 if (isset($_POST['submitsetting'])) {
     $userid     = mysqli_real_escape_string($conn, $_POST['userid']);
     $userName   = mysqli_real_escape_string($conn, $_POST['userName']);
@@ -113,96 +110,99 @@ if (isset($_POST['submitsetting'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
 
-    // ✅ Password check
+    // ✅ Password match check
     if ($passWord !== $rePassword) {
-        echo "<script>alert('Passwords do not match! Please try again.'); history.back();</script>";
+        echo "<script>alert('Passwords do not match!'); history.back();</script>";
         exit();
     }
-
-    // ✅ Update user info (excluding image first)
-    $updateInfo = "UPDATE account 
-                   SET userName = '$userName', email = '$email', passWord = '$passWord' 
-                   WHERE userid = '$userid'";
-    mysqli_query($conn, $updateInfo);
-
 
     // ✅ Handle image upload
-    if (!empty($_FILES['userimg']['name'])) {
-        $userimg = basename($_FILES['userimg']['name']);
-        $targetDir = __DIR__ . "/../user/image/"; // absolute path to /capstoneweb/user/image/
-        $targetPath = $targetDir . $userimg;
+    $userimg = "";
+    if (!empty($_FILES["userimg"]["name"])) {
+        $filename = basename($_FILES["userimg"]["name"]);
+        $tempname = $_FILES["userimg"]["tmp_name"];
+        $folder   = __DIR__ . "/../user/image/" . $filename; // ✅ User image path
 
-        // Check file type
-        $fileType = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
-        $allowedTypes = ['jpg', 'jpeg', 'png'];
-
-        if (!in_array($fileType, $allowedTypes)) {
-            echo "<script>alert('Only JPG, JPEG, PNG images are allowed.'); history.back();</script>";
+        $allowed = ['jpg', 'jpeg', 'png'];
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowed)) {
+            echo "<script>alert('Only JPG, JPEG, PNG files are allowed.'); history.back();</script>";
             exit();
         }
 
-        // Make sure directory exists
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
-
-        // Try moving uploaded file
-        if (move_uploaded_file($_FILES['userimg']['tmp_name'], $targetPath)) {
-            $query = "UPDATE account 
-                    SET userName = '$userName', email = '$email', passWord = '$passWord', userimg = '$userimg' 
-                    WHERE userid = '$userid'";
-            if (!mysqli_query($conn, $query)) {
-                echo "<script>alert('Database update failed: " . mysqli_error($conn) . "');</script>";
-                exit();
-            }
-        } else {
-            echo "<script>alert('File upload failed. Please check permissions on /user/image/.'); history.back();</script>";
+        if (!move_uploaded_file($tempname, $folder)) {
+            echo "<script>alert('Image upload failed.'); history.back();</script>";
             exit();
         }
-    } else {
-        // ✅ No image — just update info
-        $updateInfo = "UPDATE account 
-                    SET userName = '$userName', email = '$email', passWord = '$passWord' 
-                    WHERE userid = '$userid'";
-        mysqli_query($conn, $updateInfo);
+        $userimg = $filename;
     }
 
-    // ✅ Fetch user role
-    function getUserInfo($conn, $userid)
-    {
-        $query = "SELECT role FROM account WHERE userid = '$userid'";
-        $result = mysqli_query($conn, $query);
-        return mysqli_fetch_assoc($result);
-    }
+    // ✅ Update user info
+    $update = !empty($userimg)
+        ? "UPDATE account SET userName='$userName', email='$email', passWord='$passWord', userimg='$userimg' WHERE userid='$userid'"
+        : "UPDATE account SET userName='$userName', email='$email', passWord='$passWord' WHERE userid='$userid'";
 
-    $user = getUserInfo($conn, $_SESSION['userid']);
-    $previousPage = $_SERVER['HTTP_REFERER'] ?? '';
-
-    // ✅ Redirect based on role
-    if ($user) {
-        if ($user['role'] === 'admin') {
-            if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-                $previousPage = '/capstoneweb/admin/pages/dashboard.php';
-            }
-        } elseif ($user['role'] === 'user') {
-            if (strpos($previousPage, 'accsetting.php') !== false || empty($previousPage)) {
-                $previousPage = '/capstoneweb/user/pages/user_announcement.php';
-            }
-        } else {
-            echo "<script>alert('Error: user role not found');</script>";
-            exit();
-        }
-
-        echo "<script>
-            alert('Account updated successfully!');
-            window.location.href = '$previousPage';
-        </script>";
-        exit();
-    } else {
-        echo "<script>alert('Error: unable to fetch user info.'); history.back();</script>";
+    if (!mysqli_query($conn, $update)) {
+        echo "<script>alert('Error updating account: " . mysqli_error($conn) . "');</script>";
         exit();
     }
+
+    echo "<script>alert('Account updated successfully!'); window.location.href='/capstoneweb/user/pages/user_announcement.php';</script>";
+    exit();
 }
+
+
+
+
+// 🔹 ADMIN ACCOUNT SETTINGS
+if (isset($_POST['adminsetting'])) {
+    $userid     = mysqli_real_escape_string($conn, $_POST['userid']);
+    $userName   = mysqli_real_escape_string($conn, $_POST['userName']);
+    $email      = mysqli_real_escape_string($conn, $_POST['email']);
+    $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
+    $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
+
+    // ✅ Password match check
+    if ($passWord !== $rePassword) {
+        echo "<script>alert('Passwords do not match!'); history.back();</script>";
+        exit();
+    }
+
+    // ✅ Handle image upload
+    $userimg = "";
+    if (!empty($_FILES["userimg"]["name"])) {
+        $filename = basename($_FILES["userimg"]["name"]);
+        $tempname = $_FILES["userimg"]["tmp_name"];
+        $folder   = __DIR__ . "/../admin/image/" . $filename; // ✅ Admin image path
+
+        $allowed = ['jpg', 'jpeg', 'png'];
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowed)) {
+            echo "<script>alert('Only JPG, JPEG, PNG files are allowed.'); history.back();</script>";
+            exit();
+        }
+
+        if (!move_uploaded_file($tempname, $folder)) {
+            echo "<script>alert('Image upload failed.'); history.back();</script>";
+            exit();
+        }
+        $userimg = $filename;
+    }
+
+    // ✅ Update admin info
+    $update = !empty($userimg)
+        ? "UPDATE account SET userName='$userName', email='$email', passWord='$passWord', userimg='$userimg' WHERE userid='$userid'"
+        : "UPDATE account SET userName='$userName', email='$email', passWord='$passWord' WHERE userid='$userid'";
+
+    if (!mysqli_query($conn, $update)) {
+        echo "<script>alert('Error updating account: " . mysqli_error($conn) . "');</script>";
+        exit();
+    }
+
+    echo "<script>alert('Account updated successfully!'); window.location.href='/capstoneweb/admin/pages/dashboard.php';</script>";
+    exit();
+}
+
 
 if (isset($_POST['submit_announcement'])) {
     $announce_name = mysqli_real_escape_string($conn, $_POST['announce_name']);
