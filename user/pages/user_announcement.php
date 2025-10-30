@@ -178,7 +178,7 @@ $userid = $_SESSION['userid'];
       }
     }
 
-    #readMoreModal .modal-dialog {
+    /* #readMoreModal .modal-dialog {
       max-width: 100%;
       margin: 0;
     }
@@ -195,7 +195,7 @@ $userid = $_SESSION['userid'];
       border-radius: 8px;
       padding: 15px 20px;
       color: #333;
-    }
+    } */
 
     </style>
 </head>
