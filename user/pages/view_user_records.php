@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/dbconn.php';
+require_once __DIR__ . '/../../conn/dbconn.php';
 
 if (!isset($_GET['id'])) {
     die("❌ Missing user ID.");
