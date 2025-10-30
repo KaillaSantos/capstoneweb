@@ -876,3 +876,7 @@ body.sidebar-collapsed .content {
   }
 }
 
+/* === HIDE PROFILE WHEN SIDEBAR IS COLLAPSED === */
+body.sidebar-collapsed .sidebar .profile {
+  display: none;
+}
