@@ -66,8 +66,7 @@ if (isset($_POST['signup'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role       = mysqli_real_escape_string($conn, $_POST['role']);
-
-    $purok = isset($_POST['purok']) ? mysqli_real_escape_string($conn, $_POST['purok']) : null;
+    $purok      = isset($_POST['purok']) ? mysqli_real_escape_string($conn, $_POST['purok']) : null;
 
     // Check required fields
     if (empty($userName) || empty($email) || empty($passWord) || empty($rePassword) || empty($role)) {
@@ -99,7 +98,7 @@ if (isset($_POST['signup'])) {
         exit();
     }
 
-    // ✅ Set status
+    //  Set status
     $status = ($role === 'user') ? 'pending' : 'approved';
 
     // Insert user
@@ -107,9 +106,40 @@ if (isset($_POST['signup'])) {
               VALUES ('$userName', '$passWord', '$email', '$role', '$purok', '$status')";
 
     if (mysqli_query($conn, $query)) {
+        // Get the newly inserted user's ID
+        $newUserId = $conn->insert_id;
+
+        // Include QR code library
+        require_once __DIR__ . '/../includes/phpqrcode/qrlib.php';
+
+        // Prepare directory for QR codes
+        $qrDir = __DIR__ . '/../uploads/qrcodes/';
+        if (!is_dir($qrDir)) {
+            mkdir($qrDir, 0777, true);
+        }
+
+        // Create QR code filename and path
+        $qrFileName = "qr_" . $newUserId . ".png";
+        $qrFilePath = $qrDir . $qrFileName;
+
+        // Generate QR content (encode important info)
+        $qrData = "User ID: $newUserId | Name: $userName | Email: $email | Role: $role";
+
+        // Generate QR code
+        QRcode::png($qrData, $qrFilePath, QR_ECLEVEL_L, 5);
+
+        // Save filename in database
+        $updateQuery = "UPDATE account SET qr_code = ? WHERE userid = ?";
+        $stmt = $conn->prepare($updateQuery);
+        $stmt->bind_param("si", $qrFileName, $newUserId);
+        $stmt->execute();
+        $stmt->close();
+
+        // Success message
         $_SESSION['registerSuccess'] = ($role === 'user')
             ? "Account created successfully! Please wait for admin approval."
             : "Admin account created successfully!";
+
         header("Location: /capstoneweb/login.php");
         exit();
     } else {
