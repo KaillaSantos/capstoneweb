@@ -105,7 +105,7 @@ if (!isset($_GET['id'])) {
 </head>
 <body>
     
-    <a href="\capstoneweb\pages\announcement.php?userid=<?=$userid?>" class="close-btn">✖</a>
+    <a href="\capstoneweb\admin\pages\announcement.php?userid=<?=$userid?>" class="close-btn">✖</a>
 
     <div class="announce-panel">
     <h2 style="color:black; display:block; font-size:28px; font-weight:bold;">
