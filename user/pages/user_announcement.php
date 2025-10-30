@@ -309,43 +309,37 @@ $userid = $_SESSION['userid'];
   <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../assets/sidebarToggle.js"></script>
 
-  <!-- Read More Modal -->
-  <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="readMoreModalLabel">Announcement Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <img id="modalImage" src="" class="img-fluid mb-3 rounded" alt="Announcement Image" style="height: 350px;">
-          <h3 id="modalTitle"></h3>
-          <p><strong>Date:</strong> <span id="modalDate"></span></p>
-          <p id="modalText"></p>
+  <!-- 📜 Read More Modal -->
+    <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="readMoreModalLabel">Announcement Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img id="modalImage" src="" class="img-fluid mb-3 rounded" alt="Announcement Image" style="height: 350px;">
+            <h3 id="modalTitle"></h3>
+            <p><strong>Date:</strong> <span id="modalDate"></span></p>
+            <p id="modalText"></p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
   <script>
-    // Handle Read More modal for both sections
-    document.querySelectorAll('.read-more-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      const modalTitle = document.getElementById('modalTitle');
-      const modalDate = document.getElementById('modalDate');
-      const modalText = document.getElementById('modalText');
-      const modalImage = document.getElementById('modalImage');
-      
-      modalTitle.textContent = this.getAttribute('data-title');
-      modalDate.textContent = this.getAttribute('data-date');
-      modalText.textContent = this.getAttribute('data-text');
-      modalImage.src = this.getAttribute('data-image');
+    // Read More Modal handler
+      document.querySelectorAll('.read-more-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
+          document.getElementById('modalDate').textContent = this.getAttribute('data-date');
+          document.getElementById('modalText').textContent = this.getAttribute('data-text');
+          document.getElementById('modalImage').src = this.getAttribute('data-image');
 
-      // Bootstrap modal (standard way)
-      const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
-      modal.show();
-    });
-  });
+          const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
+          modal.show();
+        });
+      });
 
   </script>
 </body>
