@@ -301,8 +301,6 @@ if (isset($_POST['add_material'])) {
 }
 
 if (isset($_POST['submit_redeem'])) {
-    require_once __DIR__ . '/../conn/dbconn.php'; // Make sure the DB connection is included
-    session_start();
 
     //  Get the logged-in user's ID from session
     $userid = mysqli_real_escape_string($conn, $_POST['user_id']); // user selected by admin
