@@ -219,15 +219,10 @@ if (isset($_POST['submitsetting'])) {
     }
 }
 
-
-
-// Back-End for Announcement
 if (isset($_POST['submit_announcement'])) {
     $announce_name = mysqli_real_escape_string($conn, $_POST['announce_name']);
     $announce_text = mysqli_real_escape_string($conn, $_POST['announce_text']);
     $announce_date = mysqli_real_escape_string($conn, $_POST['announce_date']);
-
-    $filename = "";
 
     $filename = "";
     if (!empty($_FILES["announce_img"]["name"])) {
@@ -235,20 +230,14 @@ if (isset($_POST['submit_announcement'])) {
         $tempname = $_FILES["announce_img"]["tmp_name"];
         $folder   = "../admin/announceImg/" . $filename;
 
-        if (move_uploaded_file($tempname, $folder)) {
-            // Optional: use relative path for database or frontend
-            $dbPath = "announceImg/" . $filename;
-        } else {
-            echo "<script>alert('Image upload failed. Check permissions.');</script>";
+        if (!move_uploaded_file($tempname, $folder)) {
+            echo "<script>alert('Image upload failed.');</script>";
             $filename = "";
-            $dbPath = "";
         }
-    } else {
-        $dbPath = "";
     }
 
-    $query = "INSERT INTO announcement (announce_name, announce_text, announce_date, announce_img)
-              VALUES ('$announce_name', '$announce_text', '$announce_date', '$dbPath')";
+    $query = "INSERT INTO announcement ( announce_name, announce_text, announce_date, announce_img)
+          VALUES ( '$announce_name', '$announce_text', '$announce_date', '$filename')";
 
     if (mysqli_query($conn, $query)) {
         header("Location: ../admin/pages/announcement.php?userid={$userid}");
