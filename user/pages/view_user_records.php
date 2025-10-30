@@ -26,10 +26,16 @@ if (!$user) die("❌ User not found for userid = {$userid}");
 // ✅ Fetch recyclable categories (Plastic, Cardboard, Tin Can, Bakal, etc.)
 $catQuery = "SELECT recyclable_id, RM_name FROM recyclable ORDER BY recyclable_id ASC";
 $catRes = $conn->query($catQuery);
+
+if (!$catRes) {
+    die("❌ Error fetching recyclable categories: " . $conn->error);
+}
+
 $categories = [];
 while ($cat = $catRes->fetch_assoc()) {
     $categories[$cat['recyclable_id']] = $cat['RM_name'];
 }
+
 
 // ✅ Fetch all records for that user + recyclable items per record
 $recordsQuery = "
