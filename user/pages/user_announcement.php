@@ -162,6 +162,14 @@ $userid = $_SESSION['userid'];
       .latest-announcements {
         width: 100%;
       }
+
+      .announcement-card {
+        width: 100%;
+      }
+
+      #readMoreModal {
+        width: 100%;
+      }
     }
   </style>
 </head>
