@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/authSession.php';
+require_once __DIR__ . '/../../includes/authSession.php';
 
 if (!isset($_GET['id'])) {
     echo "<script>alert('No reward selected.'); window.location.href='../pages/reward.php?userid=$userid';</script>";
