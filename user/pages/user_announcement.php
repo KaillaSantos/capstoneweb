@@ -25,12 +25,11 @@ $userid = $_SESSION['userid'];
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
-
   <style>
-    /* ============ Announcement Layout ============ */
+      /* ============ Announcement Layout ============ */
     .announcement-layout {
       display: grid;
-      grid-template-columns: 2 fr;/* Latest is larger */
+      grid-template-columns: 2fr 1fr; /* Latest wider, previous smaller */
       gap: 30px;
       padding: 20px;
     }
@@ -43,17 +42,18 @@ $userid = $_SESSION['userid'];
       padding-left: 10px;
     }
 
-    /* Latest Announcements */
+    /* ============ Latest Announcement ============ */
     .latest-announcements .announcement-card {
       display: flex;
       align-items: flex-start;
       gap: 15px;
       background: #fff;
-      border-radius: 12px;
+      border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       margin-bottom: 20px;
       border: 1px solid #e2e2e2;
       transition: all 0.25s ease;
+      padding: 15px;
     }
 
     .latest-announcements .announcement-card:hover {
@@ -62,23 +62,22 @@ $userid = $_SESSION['userid'];
     }
 
     .announcement-img {
-      width: 220px;
-      height: 150px;
+      width: 120px;
+      height: 100px;
       object-fit: cover;
-      border-radius: 10px;
-      margin-left: 10px;
+      border-radius: 6px;
     }
 
     .announcement-body {
       flex: 1;
-      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
     }
 
     .announcement-body h2 {
-      font-size: 1.3rem;
-      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 0 0 6px;
       color: #184e1e;
-      margin-bottom: 5px;
     }
 
     .announcement-body .date {
@@ -88,27 +87,47 @@ $userid = $_SESSION['userid'];
     }
 
     .announcement-text {
-      color: #333;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      color: #555;
       line-height: 1.6;
-      max-height: 5.2em;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* limit to 3 lines */
+      -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .read-more-btn {
-      font-weight: 500;
+      margin-top: 10px;
       color: #2b7a0b;
       text-decoration: none;
-      padding: 5px 0;
+      font-weight: 600;
+      font-size: 0.95rem;
     }
 
     .read-more-btn:hover {
-      color: #1e5e07;
       text-decoration: underline;
+      color: #1e5e07;
     }
 
-    /* Previous Announcements Sidebar */
+    /* Read More Modal inline (below text) */
+    .read-more-modal {
+      display: none;
+      margin-top: 10px;
+      background: #f8fef9;
+      border-left: 3px solid #2b7a0b;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .announcement-card.show-full .read-more-modal {
+      display: block;
+    }
+
+    /* ============ Previous Announcements ============ */
     .previous-announcements {
       background: #f7fdf8;
       border-radius: 12px;
@@ -149,6 +168,7 @@ $userid = $_SESSION['userid'];
       color: #444;
     }
 
+    /* ============ Responsive ============ */
     @media (max-width: 992px) {
       .announcement-layout {
         grid-template-columns: 1fr;
@@ -158,24 +178,26 @@ $userid = $_SESSION['userid'];
       }
     }
 
-    @media (max-width: 768px) {
-      .latest-announcements {
-        width: 100%;
-      }
-
-      .announcement-card {
-        width: 100%;
-      }
-
-      #readMoreModal {
-        width: 100%;
-      }
-
-      #modalImage {
-        width: 80%;
-      }
+    #readMoreModal .modal-dialog {
+      max-width: 100%;
+      margin: 0;
     }
-  </style>
+
+    #readMoreModal .modal-content {
+      border: none;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    #readMoreModal .modal-body {
+      background: #f8fef9;
+      border-left: 3px solid #2b7a0b;
+      border-radius: 8px;
+      padding: 15px 20px;
+      color: #333;
+    }
+
+    </style>
 </head>
 
 <body>
@@ -283,6 +305,10 @@ $userid = $_SESSION['userid'];
     </div>
   </div>
 
+
+  <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/sidebarToggle.js"></script>
+
   <!-- Read More Modal -->
   <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -301,20 +327,26 @@ $userid = $_SESSION['userid'];
     </div>
   </div>
 
-  <script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../../assets/sidebarToggle.js"></script>
-
   <script>
     // Handle Read More modal for both sections
     document.querySelectorAll('.read-more-btn').forEach(button => {
-      button.addEventListener('click', function() {
-        document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
-        document.getElementById('modalDate').textContent = this.getAttribute('data-date');
-        document.getElementById('modalText').textContent = this.getAttribute('data-text');
-        document.getElementById('modalImage').src = this.getAttribute('data-image');
-        new bootstrap.Modal(document.getElementById('readMoreModal')).show();
-      });
+    button.addEventListener('click', function() {
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDate = document.getElementById('modalDate');
+      const modalText = document.getElementById('modalText');
+      const modalImage = document.getElementById('modalImage');
+      
+      modalTitle.textContent = this.getAttribute('data-title');
+      modalDate.textContent = this.getAttribute('data-date');
+      modalText.textContent = this.getAttribute('data-text');
+      modalImage.src = this.getAttribute('data-image');
+
+      // Bootstrap modal (standard way)
+      const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
+      modal.show();
     });
+  });
+
   </script>
 </body>
 </html>
