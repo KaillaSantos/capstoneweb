@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
+include __DIR__ . '/../includes/sidebar.php';
 
 // ✅ Check session
 if (!isset($_SESSION['userid'])) {
