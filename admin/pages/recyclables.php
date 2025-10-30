@@ -22,7 +22,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
     .container .row {
       display: block; /* stack vertically */
       margin: 0 auto;
-      max-width: 800px; /* optional: to center the list */
+      /* max-width: 800px; optional: to center the list */
     }
 
     /* === Card Styling (match announcement look) === */
