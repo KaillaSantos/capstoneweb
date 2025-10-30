@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 // ===== REQUIRED FILES =====
 require_once __DIR__ . '/../../includes/authSession.php';
-require_once __DIR__ . '/../../includes/dbconn.php'; 
 require_once __DIR__ . '/../includes/passwordVerification.php';
 include __DIR__ . '/../includes/sidebar.php';
 
