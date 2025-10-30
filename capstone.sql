@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2025 at 09:08 AM
+-- Generation Time: Oct 30, 2025 at 01:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -44,11 +44,11 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
-(6, NULL, 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kaiadmmin123', 'admin', 'not verified', NULL),
-(8, NULL, 'Geb Micahel', 'user@gmail.com', 1, 'Samic57', 'user', 'not verified', NULL),
-(15, NULL, 'Miguel', 'j@gmail.com', 3, '12345', 'user', 'not verified', NULL),
-(19, NULL, 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'user', 'approved', 'qr_19.png'),
-(20, NULL, 'mico', 'gg@gmail.com', 6, '12345', 'user', 'approved', 'qr_20.png');
+(6, 'kailla.jpg', 'Kai Admin', 'kaiamboy@gmail.com', 0, 'kai123', 'admin', 'not verified', NULL),
+(19, 'images.jpg', 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'user', 'approved', 'qr_19.png'),
+(20, NULL, 'mico', 'gg@gmail.com', 6, '12345', 'user', 'approved', 'qr_20.png'),
+(24, NULL, 'Rafael Fernandez', 'niggaz@gmail.com', 1, '12345', 'user', 'approved', NULL),
+(25, NULL, 'Kailla Santos', 'kaillasantos@gmail.com', 0, 'kailla123', 'admin', 'approved', NULL);
 
 -- --------------------------------------------------------
 
@@ -70,9 +70,10 @@ CREATE TABLE `announcement` (
 --
 
 INSERT INTO `announcement` (`announce_id`, `announce_name`, `announce_text`, `status`, `announce_date`, `announce_img`) VALUES
-(1, 'Test Title1', 'here lies the test part of the web and mobile', 'Posted', '2025-09-12', 'HiPaint_1745812131005.png'),
+(1, 'Test Title', 'here lies the test part of the web and mobile', 'Posted', '2025-09-12', 'HiPaint_1745812131005.png'),
 (2, 'Test Title2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Posted', '2025-09-12', 'announcement1.jpg'),
-(3, 'archived title', 'nice ', 'Archived', '2025-02-02', 'curtain.jpg');
+(3, 'archived title', 'nice ', 'Archived', '2025-02-02', 'curtain.jpg'),
+(5, 'test pic ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu mi et purus porttitor tristique. Nulla dapibus semper ipsum ut scelerisque. Sed quis mi orci. Donec iaculis convallis fringilla. Nam placerat mattis volutpat. Duis condimentum justo at malesuada consectetur. Integer ac hendrerit enim, vel posuere enim. Donec at erat lorem. Donec rutrum, lectus eu ullamcorper vehicula, ex augue ultricies turpis, nec finibus orci turpis sed velit. Mauris gravida malesuada turpis, eget mollis dolor. Sed ac suscipit nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum elementum, ligula aliquet eleifend faucibus, urna ante faucibus nisl, ut egestas libero tortor eu enim. Pellentesque vitae sem metus.\r\n\r\nSed pharetra auctor risus, ac laoreet urna semper a. Sed lectus tortor, finibus sit amet lacinia vitae, posuere ac nibh. Sed luctus, ante ac sagittis varius, magna diam faucibus felis, ut ullamcorper nulla lacus vel ligula. Morbi at ligula eu urna egestas ultrices. Sed eu gravida quam. Morbi vitae convallis purus, eu pellentesque purus. Sed scelerisque magna vel rhoncus malesuada. Morbi sed mi arcu. Nam imperdiet nisi nec euismod accumsan.\r\n\r\nSuspendisse purus libero, porta non imperdiet vitae, ultricies sed eros. Aenean pellentesque vel enim a pellentesque. Quisque a odio est. Sed imperdiet lobortis tellus, ac tempus felis ullamcorper in. Donec fringilla turpis ut nibh aliquet blandit. In hac habitasse platea dictumst. Mauris ultrices lorem sed aliquet mattis. Maecenas sed magna ipsum. Cras convallis ipsum dolor, non suscipit urna tincidunt non. Integer porta pellentesque dolor. Phasellus rhoncus consequat hendrerit. Sed a neque et urna gravida finibus. Proin nec facilisis turpis. In aliquam tempus ex vel facilisis. Pellentesque rhoncus neque maximus, laoreet ante ac, ullamcorper purus. Praesent sit amet tristique velit.', 'Posted', '2025-11-01', 'plastic-recycling-guide.png');
 
 -- --------------------------------------------------------
 
@@ -123,7 +124,8 @@ INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
 (24, 'throy', '2025-10-30', '', 18),
 (25, 'Throy Dafielmoto', '2025-10-30', '', 19),
 (26, 'Throy Dafielmoto', '2025-10-30', '', 19),
-(27, 'Throy Dafielmoto', '2025-11-02', '', 19);
+(27, 'Throy Dafielmoto', '2025-11-02', '', 19),
+(28, 'mico', '2025-10-30', '', 20);
 
 -- --------------------------------------------------------
 
@@ -161,7 +163,11 @@ INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `uni
 (0, 27, 4, 12, 'kg'),
 (0, 27, 5, 34, 'pcs'),
 (0, 27, 6, 10, 'kg'),
-(0, 27, 9, 10, 'kg');
+(0, 27, 9, 10, 'kg'),
+(0, 28, 4, 23, 'kg'),
+(0, 28, 5, 13, 'kg'),
+(0, 28, 6, 4, 'kg'),
+(0, 28, 9, 5, 'kg');
 
 -- --------------------------------------------------------
 
@@ -286,13 +292,13 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -304,7 +310,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
