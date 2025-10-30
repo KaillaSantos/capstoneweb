@@ -51,7 +51,7 @@ if (!isset($_GET['id'])) {
         }
 
         .announce-panel h2 {
-            margin-top: 200px;   /* push it down from the close button */
+            margin-top: 100px;   /* push it down from the close button */
             margin-bottom: 25px;
             font-size: 28px;
             font-weight: bold;
