@@ -74,7 +74,7 @@ if (isset($_POST['signup'])) {
     }
 
     // Insert new user
-    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role)) {
+    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) && !empty($purok)) {
         $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
                    VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
@@ -102,6 +102,23 @@ if (isset($_POST['signup'])) {
             // Save QR file name in database
             $updateQr = "UPDATE account SET qr_code = '$qrFileName' WHERE userid = '$userId'";
             mysqli_query($conn, $updateQr);
+
+            $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
+            header("Location: /capstoneweb/login.php");
+            exit();
+        } else {
+            $_SESSION['registerError'] = "Database error: " . mysqli_error($conn);
+            header("Location: /capstoneweb/signUp.php");
+            exit();
+        }
+    } elseif (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) ) {
+        // admin
+        $query2 = "INSERT INTO account (userName, passWord, email, role, )
+                   VALUES ('$userName', '$passWord', '$email', '$role',)";
+
+        if (mysqli_query($conn, $query2)) {
+            // Get new user ID
+            $userId = mysqli_insert_id($conn);
 
             $_SESSION['registerSuccess'] = "Account created successfully! You can now log in.";
             header("Location: /capstoneweb/login.php");
