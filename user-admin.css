@@ -30,6 +30,7 @@ body {
 /* === COLLAPSED SIDEBAR === */
 body.sidebar-collapsed .sidebar {
   width: 80px;
+  padding-top: 50px;
 }
 
 body.sidebar-collapsed .sidebar .profile-info,
@@ -46,6 +47,7 @@ body.sidebar-collapsed .sidenav a {
 .profile {
   text-align: center;
   margin-bottom: 30px;
+  padding-top: 30px;
 }
 
 .profile img {
@@ -89,6 +91,7 @@ body.sidebar-collapsed .sidenav a {
 .sidenav a:hover {
   background-color: #1a4314;
 }
+
 
 /* === ACTIVE LINK === */
 .sidenav a.active {
@@ -876,3 +879,7 @@ body.sidebar-collapsed .content {
   }
 }
 
+/* === HIDE PROFILE WHEN SIDEBAR IS COLLAPSED === */
+body.sidebar-collapsed .sidebar .profile {
+  display: none;
+}
