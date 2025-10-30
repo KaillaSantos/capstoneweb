@@ -170,6 +170,10 @@ $userid = $_SESSION['userid'];
       #readMoreModal {
         width: 100%;
       }
+
+      #modalImage {
+        width: 80%;
+      }
     }
   </style>
 </head>
