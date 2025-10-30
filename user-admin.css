@@ -30,6 +30,7 @@ body {
 /* === COLLAPSED SIDEBAR === */
 body.sidebar-collapsed .sidebar {
   width: 80px;
+  padding-top: 10px;
 }
 
 body.sidebar-collapsed .sidebar .profile-info,
