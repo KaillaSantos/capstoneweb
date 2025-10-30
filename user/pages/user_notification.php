@@ -100,7 +100,7 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
 
     <?php
     $user_id = $_SESSION['userid'];
-    $role = $_SESSION['role']; // Make sure your authSession.php sets this
+    $role = $_SESSION['role']; 
 
     // Only show QR for normal users
     if ($role === 'user') {
