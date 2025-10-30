@@ -125,7 +125,7 @@
                     Read More »
                   </button>
 
-                  <a href="editannouncement.php?id=<?= $rows['announce_id'] ?>"
+                  <a href="../pages/editannouncement.php?<?= $rows['announce_id'] ?>"
                     class="btn btn-warning btn-sm">
                     <i class="fa fa-edit"></i> Edit
                   </a>
