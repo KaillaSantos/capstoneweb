@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/authSession.php';
+require_once '../../includes/authSession.php';
 
 if (!isset($_GET['id'])) {
     echo "<script>alert('No announcement selected.'); window.location.href='../pages/announcement.php?userid=$userid';</script>";
