@@ -81,7 +81,7 @@
       <option value="7">Purok 7</option>
     </select>
     <!-- Hidden field fallback for Admin -->
-    <input type="hidden" name="purok" id="purokHidden" value="">
+    <input type="hidden" name="purok_hidden" id="purokHidden" value="">
   </div>
 
   <div class="mb-3">
