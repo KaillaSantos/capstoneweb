@@ -91,8 +91,8 @@ if (isset($_POST['signup'])) {
                 mkdir($qrDir, 0777, true);
             }
 
-            // QR code data and path
-            $qrData = "UserID: $userId | Name: $userName | Email: $email";
+            // Dynamic QR Code that links to user's record viewer
+            $qrData = "http://localhost/capstoneweb/user/pages/view_user_record.php?userid=" . $userId;
             $qrFileName = "qr_" . $userId . ".png";
             $qrFilePath = $qrDir . $qrFileName;
 
