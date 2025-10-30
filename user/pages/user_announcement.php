@@ -162,12 +162,15 @@ $userid = $_SESSION['userid'];
 
 <body>
 
-  <!-- Sidebar -->
-  <?php include '../includes/sidebar.php'; ?>
+  <!-- ===== SIDEBAR ===== -->
+  <?php include  '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle -->
+  <!-- ===== TOGGLE BUTTON ===== -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
-  <div class="overlay"></div>
+
+  <!-- ===== CONTENT AREA ===== -->
+  <div class="content" id="content">
+
 
   <!-- Content -->
   <div class="content" id="content">
