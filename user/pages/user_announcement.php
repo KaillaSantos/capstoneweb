@@ -81,19 +81,17 @@ $userid = $_SESSION['userid'];
               ? "../announceImg/" . $rows['announce_img']
               : "../announceImg/announcementPlaceholder.jpg";
         ?>
-        <div class="announcement-card">
-          <img src="<?php echo $announceImage; ?>" alt="Announcement" class="announcement-img">
-          <div class="announcement-body">
+        <div class="announcement-card latest-full">
+          <div class="announcement-header">
             <h2><?= htmlspecialchars($rows['announce_name']) ?></h2>
-            <p class="date"><?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
-            <p class="announcement-text"><?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
-            <button type="button" class="btn btn-link read-more-btn"
-              data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
-              data-date="<?= date("m/d/Y", strtotime($rows['announce_date'])) ?>"
-              data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
-              data-image="<?= $announceImage ?>">Read More »</button>
+          </div>
+          <img src="<?php echo $announceImage; ?>" alt="Announcement Image" class="announcement-banner">
+          <div class="announcement-content">
+            <p class="date"><i class="bi bi-calendar-event"></i> <?= date("F d, Y", strtotime($rows['announce_date'])) ?></p>
+            <p class="announcement-text-full"><?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
           </div>
         </div>
+
         <?php
           }
         } else {
