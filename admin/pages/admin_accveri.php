@@ -28,6 +28,14 @@ $user = mysqli_fetch_assoc($result);
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link rel="stylesheet" href="/capstoneweb/user-admin.css">
   <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
+  <style>
+    table thead tbody tr td {
+       overflow: hidden;
+    }
+    tr {
+      height: 10px;
+    }
+  </style>
 </head>
 
 <body>
