@@ -585,6 +585,37 @@ if (isset($_POST['update_reward'])) {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
 }
+
+// user account verification "ACCEPT"
+if (isset($_POST['approve_user'])) {
+    $userId = intval($_POST['userid']);
+
+    $sql = "UPDATE account SET status = 'approved' WHERE userid = $userId";
+    if(mysqli_query($conn, $sql)) {
+        $_SESSION['message'] = "User Account Approved Successfully";
+    } else {
+        $_SESSION['message'] = "Error Approving Account" . mysqli_error($conn);
+    }
+    
+    header ("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+    exit();
+}
+
+// user account verification "REJECT"
+if (isset($_POST['reject_user'])) {
+    $userId = intval($_POST['userid']);
+
+    $sql = "UPDATE account SET status = rejected WHERE userid = $userId";
+    if(mysqli_query($conn, $sql)) {
+        $_SESSION['message'] = "User Account Rejected Successfully";
+    } else {
+        $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
+    }
+    
+    header ("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+    exit();
+}
+
 function getUserQRCode($conn, $userid) {
     $sql = "SELECT qr_code FROM account WHERE userid = ?";
     $stmt = $conn->prepare($sql);
