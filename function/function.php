@@ -231,16 +231,25 @@ if (isset($_POST['submit_announcement'])) {
     if (!empty($_FILES["announce_img"]["name"])) {
         $filename = basename($_FILES["announce_img"]["name"]);
         $tempname = $_FILES["announce_img"]["tmp_name"];
-        $folder   = "/capstoneweb/admin/announceImg/" . $filename;
 
-        if (!move_uploaded_file($tempname, $folder)) {
-            echo "<script>alert('Image upload failed.');</script>";
+        // ✅ Correct physical path on the server
+        $uploadDir = __DIR__ . "/../announceImg/";
+        $folder = $uploadDir . $filename;
+
+        if (move_uploaded_file($tempname, $folder)) {
+            // Optional: use relative path for database or frontend
+            $dbPath = "announceImg/" . $filename;
+        } else {
+            echo "<script>alert('Image upload failed. Check permissions.');</script>";
             $filename = "";
+            $dbPath = "";
         }
+    } else {
+        $dbPath = "";
     }
 
-    $query = "INSERT INTO announcement ( announce_name, announce_text, announce_date, announce_img)
-          VALUES ( '$announce_name', '$announce_text', '$announce_date', '$filename')";
+    $query = "INSERT INTO announcement (announce_name, announce_text, announce_date, announce_img)
+              VALUES ('$announce_name', '$announce_text', '$announce_date', '$dbPath')";
 
     if (mysqli_query($conn, $query)) {
         header("Location: ../admin/pages/announcement.php?userid={$userid}");
