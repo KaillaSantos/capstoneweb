@@ -70,7 +70,7 @@
 
   <div class="mb-3" id="purokContainer">
     <label for="purok" class="form-label d-block">Purok Number:</label>
-    <select name="purok" id="purok" class="form-select" required>
+    <select name="purok" id="purok" class="form-select">
       <option value="" disabled selected>Select Purok</option>
       <option value="1">Purok 1</option>
       <option value="2">Purok 2</option>
@@ -81,7 +81,7 @@
       <option value="7">Purok 7</option>
     </select>
     <!-- Hidden field fallback for Admin -->
-    <input type="hidden" name="purok" id="purokHidden" value="">
+    <input type="hidden" name="purok_hidden" id="purokHidden" value="">
   </div>
 
   <div class="mb-3">
