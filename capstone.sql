@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2025 at 01:49 PM
+-- Generation Time: Oct 30, 2025 at 02:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,7 +44,8 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
-(19, NULL, 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'user', 'approved', 'qr_19.png');
+(19, NULL, 'Throy Dafielmoto', 'fuhrer@gmail.com', 6, '12345', 'admin', 'approved', 'qr_19.png'),
+(24, NULL, 'sasd', 'asda@gmail.com', 5, '123123', 'user', 'approved', NULL);
 
 -- --------------------------------------------------------
 
@@ -60,6 +61,14 @@ CREATE TABLE `announcement` (
   `announce_date` date NOT NULL,
   `announce_img` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `announcement`
+--
+
+INSERT INTO `announcement` (`announce_id`, `announce_name`, `announce_text`, `status`, `announce_date`, `announce_img`) VALUES
+(5, 'asd', 'asda', 'Archived', '2025-10-30', 'logo.png'),
+(9, 'rrrr', 'rqrqr', 'Posted', '1224-02-14', '1761829012_1757030543_1757030494_OIP.webp');
 
 -- --------------------------------------------------------
 
@@ -92,6 +101,15 @@ CREATE TABLE `records` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `records`
+--
+
+INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
+(36, 'sasd', '2025-11-06', '', 24),
+(37, 'sasd', '2025-10-30', '', 24),
+(38, 'sasd', '2025-10-30', '', 24);
+
 -- --------------------------------------------------------
 
 --
@@ -106,6 +124,15 @@ CREATE TABLE `record_items` (
   `unit` varchar(10) NOT NULL DEFAULT 'kg'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `record_items`
+--
+
+INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `unit`) VALUES
+(1, 36, 11, 23, 'kg'),
+(2, 38, 11, 22, 'kg'),
+(3, 38, 12, 3, 'kg');
+
 -- --------------------------------------------------------
 
 --
@@ -117,6 +144,14 @@ CREATE TABLE `recyclable` (
   `RM_name` varchar(20) NOT NULL COMMENT '20',
   `RM_img` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `recyclable`
+--
+
+INSERT INTO `recyclable` (`id`, `RM_name`, `RM_img`) VALUES
+(11, 'plastic bottle', '1761829675_plastic-bottle.jpg'),
+(12, 'bakal', '1761830264_1756297128_tincans.jpg');
 
 -- --------------------------------------------------------
 
@@ -210,13 +245,13 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -228,19 +263,25 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `record_items`
+--
+ALTER TABLE `record_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
 --
 ALTER TABLE `recyclable`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `rewards`
 --
 ALTER TABLE `rewards`
-  MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_rewards`
