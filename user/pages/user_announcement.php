@@ -77,8 +77,8 @@ $userid = $_SESSION['userid'];
 
           foreach ($latest as $rows) {
             $announceImage = !empty($rows['announce_img'])
-              ? "../announceImg/" . $rows['announce_img']
-              : "../announceImg/announcementPlaceholder.jpg";
+              ? "../../announceImg/" . $rows['announce_img']
+              : "../../announceImg/announcementPlaceholder.jpg";
         ?>
         <div class="announcement-card latest-full">
           <div class="announcement-header">
@@ -106,8 +106,8 @@ $userid = $_SESSION['userid'];
         if (!empty($previous)) {
           foreach ($previous as $rows) {
             $announceImage = !empty($rows['announce_img'])
-              ? "../announceImg/" . $rows['announce_img']
-              : "../announceImg/announcementPlaceholder.jpg";
+              ? "../../announceImg/" . $rows['announce_img']
+              : "../../announceImg/announcementPlaceholder.jpg";
         ?>
         <div class="previous-announcement-card">
           <h6><?= htmlspecialchars($rows['announce_name']) ?></h6>
