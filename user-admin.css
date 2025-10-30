@@ -308,7 +308,6 @@ body.sidebar-collapsed .sidenav a:hover::after {
 }
 
 .announcement-card {
-  display: flex;
   align-items: flex-start;
   gap: 15px;
   border: 1px solid #ccc;
