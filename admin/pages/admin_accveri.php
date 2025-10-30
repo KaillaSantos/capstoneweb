@@ -29,6 +29,9 @@ $user = mysqli_fetch_assoc($result);
   <link rel="stylesheet" href="/capstoneweb/user-admin.css">
   <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
   <style>
+    table thead tbody tr td {
+       overflow: hidden;
+    }
     tr {
       height: 10px;
     }
