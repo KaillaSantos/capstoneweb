@@ -53,7 +53,7 @@ $user = mysqli_fetch_assoc($result);
         <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
         <div class="header-text ms-3">
           <h1 class="h4 mb-0">E-Recycle Account Verification</h1>
-          <p class="mb-0 text-muted">Municipality of San Ildefonso</p>
+          <p>Municipality of San Ildefonso</p>
         </div>
       </div>
       <div class="header-right">
