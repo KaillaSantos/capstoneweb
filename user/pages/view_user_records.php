@@ -17,7 +17,7 @@ $userQuery = "SELECT userid, userName AS name, email, purok FROM account WHERE u
 $stmt = $conn->prepare($userQuery);
 if (!$stmt) die("❌ SQL prepare (userQuery) failed: " . $conn->error);
 $stmt->bind_param("i", $userid);
-$stmt->execute();
+$stmt->execute();   
 $userResult = $stmt->get_result();
 $user = $userResult->fetch_assoc();
 $stmt->close();
