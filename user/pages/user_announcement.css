@@ -2,7 +2,7 @@
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #2c5e1a;
+  background-color: #2c5e1a; /* Main green */
   color: white;
   padding-top: 20px;
   position: fixed;
@@ -11,16 +11,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: width 0.3s ease;
   z-index: 100;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  overflow-y: auto;
 }
 
 /* === COLLAPSED SIDEBAR === */
 body.sidebar-collapsed .sidebar {
-  width: 70px;
+  width: 80px;
+  padding-top: 50px;
 }
 
 body.sidebar-collapsed .sidebar .profile-info,
@@ -30,33 +30,99 @@ body.sidebar-collapsed .sidebar .link-text {
 
 body.sidebar-collapsed .sidenav a {
   justify-content: center;
+  text-align: center;
 }
 
 /* === PROFILE === */
 .profile {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  padding-top: 30px;
 }
 
 .profile img {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid white;
 }
 
 .profile h3 {
-  margin: 8px 0 3px;
-  font-size: 17px;
+  margin: 10px 0 5px;
+  font-size: 18px;
 }
 
 .profile p {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #bbb;
 }
 
+/* === NAVIGATION LINKS === */
+.sidenav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidenav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  color: white;
+  width: 100%;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidenav a:hover {
+  background-color: #1a4314;
+}
+
+
+/* === ACTIVE LINK === */
+.sidenav a.active {
+  background-color: #4caf50;
+  color: #fff;
+  font-weight: bold;
+  border-left: 5px solid #a2f89a;
+}
+
+/* Keep active icon colored when collapsed */
+body.sidebar-collapsed .sidenav a.active {
+  background-color: transparent;
+  border-left: none;
+}
+
+body.sidebar-collapsed .sidenav a.active i {
+  color: #4caf50;
+}
+
+/* === TOOLTIP IN COLLAPSED MODE === */
+body.sidebar-collapsed .sidenav a {
+  position: relative;
+}
+
+body.sidebar-collapsed .sidenav a:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 90px;
+  background: #1a4314;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 13px;
+  z-index: 999;
+}
+
+/* === HIDE PROFILE WHEN SIDEBAR IS COLLAPSED === */
+body.sidebar-collapsed .sidebar .profile {
+  display: none;
+}
 /* === MAIN CONTENT AREA === */
 .main-content {
   margin-left: 270px;

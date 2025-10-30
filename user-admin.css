@@ -129,6 +129,11 @@ body.sidebar-collapsed .sidenav a:hover::after {
   z-index: 999;
 }
 
+/* === HIDE PROFILE WHEN SIDEBAR IS COLLAPSED === */
+body.sidebar-collapsed .sidebar .profile {
+  display: none;
+}
+
 
 /* all content page */
 .content {
@@ -879,7 +884,3 @@ body.sidebar-collapsed .content {
   }
 }
 
-/* === HIDE PROFILE WHEN SIDEBAR IS COLLAPSED === */
-body.sidebar-collapsed .sidebar .profile {
-  display: none;
-}
