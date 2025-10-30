@@ -24,6 +24,7 @@ $userid = $_SESSION['userid'];
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
+  <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="user_announcement.css">
 </head>
 
