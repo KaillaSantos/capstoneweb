@@ -82,7 +82,7 @@ $user = mysqli_fetch_assoc($result);
           $offset = ($page - 1) * $records_per_page;
 
           // ===== COUNT TOTAL RECORDS =====
-          $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'User' AND status = 'not verified'";
+          $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'User' AND status = 'pending'";
           $countResult = mysqli_query($conn, $countQuery);
           $total_records = mysqli_fetch_assoc($countResult)['total'];
           $total_pages = ceil($total_records / $records_per_page);
@@ -91,7 +91,7 @@ $user = mysqli_fetch_assoc($result);
           $sql = "
             SELECT userid, userimg, userName, email, purok, status 
             FROM account 
-            WHERE role = 'User' AND status = 'not verified'
+            WHERE role = 'User' AND status = 'pending'
             ORDER BY userid DESC
             LIMIT $records_per_page OFFSET $offset
           ";
