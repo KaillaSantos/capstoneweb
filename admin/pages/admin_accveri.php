@@ -85,16 +85,15 @@ $user = mysqli_fetch_assoc($result);
 
           // Fetch paginated records
           $sql = "
-  SELECT userid, userimg, userName, email, purok, status 
-  FROM account 
-  WHERE role = 'User' AND status = 'not verified'
-  ORDER BY userid DESC
-  LIMIT $records_per_page OFFSET $offset
-";
+            SELECT userid, userimg, userName, email, purok, status 
+            FROM account 
+            WHERE role = 'User' AND status = 'not verified'
+            ORDER BY userid DESC
+            LIMIT $records_per_page OFFSET $offset
+          ";
           $result = mysqli_query($conn, $sql);
           ?>
 
-        <tbody>
           <?php if (mysqli_num_rows($result) > 0): ?>
             <?php while ($row = mysqli_fetch_assoc($result)): ?>
               <?php
@@ -165,12 +164,6 @@ $user = mysqli_fetch_assoc($result);
       </div>
     </div>
   </div>
-  </div>
-
-  </div>
-  </div>
-
-
 
   <script src="/capstoneweb/assets/sidebarToggle.js"></script>
 
