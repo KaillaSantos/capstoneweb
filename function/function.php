@@ -653,7 +653,7 @@ function getUserQRCode($conn, $userid)
         $qrPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
 
         // Absolute file path (for PHP file_exists)
-        $absolutePath = "C:/xampp/htdocs/capstoneweb/uploads/qrcodes/" . $qrFile;
+        $absolutePath = "http://192.168.0.208/capstoneweb/uploads/qrcodes/" . $qrFile;
 
         if (file_exists($absolutePath)) {
             return $qrPath; // Return the web path so browser can load it
