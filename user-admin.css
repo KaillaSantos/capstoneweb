@@ -370,6 +370,7 @@ body.sidebar-collapsed .sidenav a:hover::after {
 
 .card:hover {
   transform: translateY(-5px);
+  border-color: #1a4314;
 }
 
 .card-img {
