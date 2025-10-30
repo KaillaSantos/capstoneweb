@@ -108,7 +108,7 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
 
     if ($result && $row = $result->fetch_assoc()) {
         $qrFile = trim($row['qr_code']);
-        $absolutePath = "C:/xampp/htdocs/capstoneweb/uploads/qrcodes/" . $qrFile;
+        $absolutePath = __DIR__ . "/../../uploads/qrcodes/" . $qrFile;
         $webPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
 
         if (!empty($qrFile) && file_exists($absolutePath)) {
