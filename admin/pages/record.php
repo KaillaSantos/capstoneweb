@@ -133,7 +133,7 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                 <td><?php if (!empty($rec['rec_img'])) {
                     ?>
                     <a href="#" class="btn btn-small btn-success viewImageBtn" data-bs-toggle="modal" data-bs-target="#imageModal"
-                      data-img="../../assets/proofs/<?= htmlspecialchars($rec['rec_img']) ?>" data-name="<?= htmlspecialchars($rec['name']) ?>"><i class="fa-solid fa-eye" style=" width: 50px;"></i></a>
+                      data-img="../assets/proofs/<?= htmlspecialchars($rec['rec_img']) ?>" data-name="<?= htmlspecialchars($rec['name']) ?>"><i class="fa-solid fa-eye" style=" width: 50px;"></i></a>
                   <?php
                     } else {
                       echo 'no image uploaded';
