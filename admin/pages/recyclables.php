@@ -50,8 +50,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 
 /* Image on the left */
 .card-img {
-  width: 120px;
-  height: auto;
+  width: 200px;
+  height: 150;
   flex-shrink: 0;
 }
 
