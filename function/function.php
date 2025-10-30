@@ -74,7 +74,7 @@ if (isset($_POST['signup'])) {
     }
 
     // Insert new user
-    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role) && !empty($purok)) {
+    if (!empty($userName) && !empty($email) && !empty($passWord) && !empty($role)) {
         $query2 = "INSERT INTO account (userName, passWord, email, role, purok)
                    VALUES ('$userName', '$passWord', '$email', '$role', '$purok')";
 
