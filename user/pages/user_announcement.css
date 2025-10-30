@@ -2,7 +2,7 @@
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #2c5e1a; /* Main green */
+  background-color: #2c5e1a;
   color: white;
   padding-top: 20px;
   position: fixed;
@@ -11,29 +11,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: width 0.3s ease, transform 0.3s ease;
   z-index: 100;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow-y: auto;
 }
 
-/* === COLLAPSED SIDEBAR === */
+/* Collapsed Sidebar */
 body.sidebar-collapsed .sidebar {
   width: 80px;
 }
 
-body.sidebar-collapsed .sidebar .profile-info,
+body.sidebar-collapsed .sidebar .profile,
 body.sidebar-collapsed .sidebar .link-text {
   display: none;
 }
 
-body.sidebar-collapsed .sidenav a {
-  justify-content: center;
-  text-align: center;
-}
-
-/* === PROFILE === */
+/* Profile */
 .profile {
   text-align: center;
   margin-bottom: 30px;
@@ -58,20 +53,23 @@ body.sidebar-collapsed .sidenav a {
   color: #bbb;
 }
 
-/* ============ Announcement Layout ============ */
+/* === PAGE CONTENT LAYOUT === */
 .announcement-layout {
-  display: grid;
-  grid-template-columns: 2fr;
-  gap: 30px;
-  padding: 20px;
   margin-left: 250px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
   transition: margin-left 0.3s ease;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body.sidebar-collapsed .announcement-layout {
   margin-left: 80px;
 }
 
+/* Section Title */
 .section-title {
   font-weight: 700;
   color: #0b3d0b;
@@ -81,7 +79,7 @@ body.sidebar-collapsed .announcement-layout {
   font-size: 1.4rem;
 }
 
-/* ============ Latest Announcement (FULL STYLE) ============ */
+/* === ANNOUNCEMENT CARD === */
 .latest-announcements .announcement-card.latest-full {
   background: #fff;
   border-radius: 10px;
@@ -96,40 +94,41 @@ body.sidebar-collapsed .announcement-layout {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Header title */
+/* Header */
 .latest-announcements .announcement-header {
   background: #fefefe;
-  padding: 20px 25px 10px 25px;
+  padding: 15px 20px;
 }
 
 .latest-announcements .announcement-header h2 {
   color: #145c1e;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin: 0;
   border-left: 6px solid #ffda3a;
-  padding-left: 12px;
+  padding-left: 10px;
+  line-height: 1.4;
 }
 
-/* Banner image */
+/* Banner */
 .latest-announcements .announcement-banner {
   width: 100%;
-  height: 380px;
+  height: auto;
+  max-height: 350px;
   object-fit: cover;
   display: block;
 }
 
-/* Content text */
+/* Content */
 .latest-announcements .announcement-content {
-  padding: 25px;
+  padding: 20px;
   font-size: 1rem;
   color: #333;
   line-height: 1.8;
-  background: #fff;
 }
 
 .latest-announcements .announcement-content .date {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #666;
   margin-bottom: 10px;
   display: flex;
@@ -148,13 +147,12 @@ body.sidebar-collapsed .announcement-layout {
   color: #444;
 }
 
-/* ============ Previous Announcements ============ */
+/* === PREVIOUS ANNOUNCEMENTS === */
 .previous-announcements {
   background: #f7fdf8;
   border-radius: 12px;
   padding: 15px;
   border: 1px solid #e2e2e2;
-  height: fit-content;
 }
 
 .previous-announcement-card {
@@ -190,58 +188,52 @@ body.sidebar-collapsed .announcement-layout {
 }
 
 /* =====================================================
-   ============ RESPONSIVE DESIGN ENHANCEMENTS ============
+   RESPONSIVE FIXES (Nova 5T, iPhones, Tablets)
    ===================================================== */
 
-/* Medium screens (tablets) */
+/* Tablets */
 @media (max-width: 992px) {
-  .announcement-layout {
-    grid-template-columns: 1fr;
-    margin-left: 200px;
-    padding: 15px;
-    gap: 20px;
-  }
-
-  body.sidebar-collapsed .announcement-layout {
-    margin-left: 0;
-  }
-
-  .latest-announcements .announcement-banner {
-    height: 280px;
-  }
-
-  .latest-announcements .announcement-header h2 {
-    font-size: 1.4rem;
-  }
-
   .sidebar {
     width: 200px;
   }
+
+  .announcement-layout {
+    margin-left: 200px;
+    padding: 15px;
+  }
+
+  .latest-announcements .announcement-banner {
+    max-height: 300px;
+  }
+
+  .latest-announcements .announcement-header h2 {
+    font-size: 1.3rem;
+  }
 }
 
-/* Small screens (mobile landscape & portrait) */
+/* Mobile Landscape / Small Tablets */
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
     width: 100%;
     height: auto;
+    position: fixed;
     flex-direction: row;
     justify-content: space-around;
-    padding: 10px;
     border-radius: 0;
+    padding: 10px 0;
   }
 
   .profile {
-    display: none; /* hide profile on small screens */
+    display: none;
   }
 
   .announcement-layout {
     margin-left: 0;
-    padding-top: 80px; /* space for top sidebar */
+    padding-top: 70px; /* space for top sidebar */
   }
 
   .latest-announcements .announcement-banner {
-    height: 240px;
+    max-height: 250px;
   }
 
   .latest-announcements .announcement-content {
@@ -249,39 +241,35 @@ body.sidebar-collapsed .announcement-layout {
     font-size: 0.95rem;
   }
 
-  .latest-announcements .announcement-header h2 {
-    font-size: 1.3rem;
-  }
-
-  .previous-announcements {
-    padding: 10px;
-  }
-
-  .previous-announcement-card {
-    padding: 8px;
+  .section-title {
+    font-size: 1.2rem;
   }
 }
 
-/* Extra small screens (phones <576px) */
+/* Phones (Nova 5T, <576px) */
 @media (max-width: 576px) {
+  html, body {
+    overflow-x: hidden; /* prevent horizontal scroll */
+  }
+
   .sidebar {
     flex-wrap: wrap;
-    text-align: center;
-    font-size: 14px;
+    gap: 10px;
+    font-size: 13px;
   }
 
   .announcement-layout {
     padding: 10px;
+    margin: 0;
+    grid-template-columns: 1fr;
   }
 
   .latest-announcements .announcement-banner {
-    height: 200px;
+    max-height: 200px;
   }
 
   .latest-announcements .announcement-header h2 {
     font-size: 1.1rem;
-    padding-left: 6px;
-    border-left-width: 4px;
   }
 
   .latest-announcements .announcement-content {
@@ -290,14 +278,10 @@ body.sidebar-collapsed .announcement-layout {
   }
 
   .previous-announcement-card h6 {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .previous-announcement-card p {
     font-size: 0.85rem;
-  }
-
-  .section-title {
-    font-size: 1.2rem;
   }
 }
