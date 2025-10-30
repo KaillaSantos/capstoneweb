@@ -228,19 +228,27 @@ if (isset($_POST['submit_announcement'])) {
     $announce_date = mysqli_real_escape_string($conn, $_POST['announce_date']);
 
     $filename = "";
+
+    $filename = "";
     if (!empty($_FILES["announce_img"]["name"])) {
         $filename = basename($_FILES["announce_img"]["name"]);
         $tempname = $_FILES["announce_img"]["tmp_name"];
-        $folder   = "/capstoneweb/admin/announceImg/" . $filename;
+        $folder   = "../admin/announceImg/" . $filename;
 
-        if (!move_uploaded_file($tempname, $folder)) {
-            echo "<script>alert('Image upload failed.');</script>";
+        if (move_uploaded_file($tempname, $folder)) {
+            // Optional: use relative path for database or frontend
+            $dbPath = "announceImg/" . $filename;
+        } else {
+            echo "<script>alert('Image upload failed. Check permissions.');</script>";
             $filename = "";
+            $dbPath = "";
         }
+    } else {
+        $dbPath = "";
     }
 
-    $query = "INSERT INTO announcement ( announce_name, announce_text, announce_date, announce_img)
-          VALUES ( '$announce_name', '$announce_text', '$announce_date', '$filename')";
+    $query = "INSERT INTO announcement (announce_name, announce_text, announce_date, announce_img)
+              VALUES ('$announce_name', '$announce_text', '$announce_date', '$dbPath')";
 
     if (mysqli_query($conn, $query)) {
         header("Location: ../admin/pages/announcement.php?userid={$userid}");
@@ -251,23 +259,23 @@ if (isset($_POST['submit_announcement'])) {
 }
 
 if (isset($_POST['archive_selected'])) {
-  if (!empty($_POST['archive_ids'])) {
-    $archive_ids = $_POST['archive_ids'];
-    $id_list = implode(",", array_map('intval', $archive_ids));
+    if (!empty($_POST['archive_ids'])) {
+        $archive_ids = $_POST['archive_ids'];
+        $id_list = implode(",", array_map('intval', $archive_ids));
 
-    $archive_query = "UPDATE announcement SET status = 'Archived' WHERE announce_id IN ($id_list)";
-    if (mysqli_query($conn, $archive_query)) {
-      $_SESSION['message'] = 'Selected announcements archived successfully.';
+        $archive_query = "UPDATE announcement SET status = 'Archived' WHERE announce_id IN ($id_list)";
+        if (mysqli_query($conn, $archive_query)) {
+            $_SESSION['message'] = 'Selected announcements archived successfully.';
+        } else {
+            $_SESSION['message'] = 'Failed to archive announcements.';
+        }
     } else {
-      $_SESSION['message'] = 'Failed to archive announcements.';
+        $_SESSION['message'] = 'No announcements selected.';
     }
-  } else {
-    $_SESSION['message'] = 'No announcements selected.';
-  }
 
-  $userid = $_SESSION['userid'] ?? 0;
-  header("Location: ../admin/pages/announcement.php?userid={$userid}");
-  exit();
+    $userid = $_SESSION['userid'] ?? 0;
+    header("Location: ../admin/pages/announcement.php?userid={$userid}");
+    exit();
 }
 
 // <!-- add material -->
@@ -582,13 +590,13 @@ if (isset($_POST['approve_user'])) {
     $userId = intval($_POST['userid']);
 
     $sql = "UPDATE account SET status = 'approved' WHERE userid = $userId";
-    if(mysqli_query($conn, $sql)) {
+    if (mysqli_query($conn, $sql)) {
         $_SESSION['message'] = "User Account Approved Successfully";
     } else {
         $_SESSION['message'] = "Error Approving Account" . mysqli_error($conn);
     }
-    
-    header ("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+
+    header("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
 
@@ -597,17 +605,18 @@ if (isset($_POST['reject_user'])) {
     $userId = intval($_POST['userid']);
 
     $sql = "UPDATE account SET status = rejected WHERE userid = $userId";
-    if(mysqli_query($conn, $sql)) {
+    if (mysqli_query($conn, $sql)) {
         $_SESSION['message'] = "User Account Rejected Successfully";
     } else {
         $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
     }
-    
-    header ("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
+
+    header("Location: Location: ../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
 
-function getUserQRCode($conn, $userid) {
+function getUserQRCode($conn, $userid)
+{
     $sql = "SELECT qr_code FROM account WHERE userid = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $userid);
@@ -617,10 +626,10 @@ function getUserQRCode($conn, $userid) {
 
     if ($row && !empty($row['qr_code'])) {
         $qrFile = trim($row['qr_code']);
-        
+
         // Web-accessible path (for <img src="">)
         $qrPath = "/capstoneweb/uploads/qrcodes/" . $qrFile;
-        
+
         // Absolute file path (for PHP file_exists)
         $absolutePath = "C:/xampp/htdocs/capstoneweb/uploads/qrcodes/" . $qrFile;
 
@@ -631,5 +640,3 @@ function getUserQRCode($conn, $userid) {
 
     return null; // Not found
 }
-
-

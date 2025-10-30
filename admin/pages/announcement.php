@@ -1,5 +1,5 @@
   <?php
-  
+
 
   // includes
   require_once __DIR__ . '/../../includes/authSession.php';
