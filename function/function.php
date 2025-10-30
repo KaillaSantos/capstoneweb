@@ -302,8 +302,6 @@ if (isset($_POST['add_material'])) {
 
 if (isset($_POST['submit_redeem'])) {
 
-    $userid = mysqli_real_escape_string($conn, $_POST['user_id']); // user selected by admin
-
     $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
