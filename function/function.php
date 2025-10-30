@@ -41,7 +41,10 @@ if (isset($_POST['submit'])) {
                 header("Location: ../user/pages/user_announcement.php?userid={$row['userid']}");
                 exit();
             }
-
+            if ($row['role'] == "superAdmin") {
+                header("Location: ../superAdmin/pages/dashboard.php?userid={$row['userid']}");
+                exit();
+            }
         } else {
             // ❌ Incorrect password
             $_SESSION['login_error'] = "Email or password didn't match.";
@@ -63,7 +66,7 @@ if (isset($_POST['signup'])) {
     $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role       = mysqli_real_escape_string($conn, $_POST['role']);
-    
+
     $purok = isset($_POST['purok']) ? mysqli_real_escape_string($conn, $_POST['purok']) : null;
 
     // Check required fields
@@ -104,7 +107,7 @@ if (isset($_POST['signup'])) {
               VALUES ('$userName', '$passWord', '$email', '$role', '$purok', '$status')";
 
     if (mysqli_query($conn, $query)) {
-        $_SESSION['registerSuccess'] = ($role === 'user') 
+        $_SESSION['registerSuccess'] = ($role === 'user')
             ? "Account created successfully! Please wait for admin approval."
             : "Admin account created successfully!";
         header("Location: /capstoneweb/login.php");
