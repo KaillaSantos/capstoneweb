@@ -231,7 +231,7 @@ if (isset($_POST['submit_announcement'])) {
     if (!empty($_FILES["announce_img"]["name"])) {
         $filename = basename($_FILES["announce_img"]["name"]);
         $tempname = $_FILES["announce_img"]["tmp_name"];
-        $folder   = "../announceImg/" . $filename;
+        $folder   = "../admin/announceImg/" . $filename;
 
         if (!move_uploaded_file($tempname, $folder)) {
             echo "<script>alert('Image upload failed.');</script>";
@@ -346,7 +346,6 @@ if (isset($_POST['submit_redeem'])) {
     header("Location: ../admin/pages/record.php?userid={$userid}");
     exit();
 }
-
 
 
 // Reset Button for records
