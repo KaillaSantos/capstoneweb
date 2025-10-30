@@ -17,6 +17,47 @@ require_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
 </head>
+<style>
+.qr-card {
+  background: #fff;
+  max-width: 500px;
+  width: 100%;
+  border-radius: 15px;
+  border: 1px solid #dee2e6;
+}
+
+.qr-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.qr-image {
+  width: 220px;
+  border: 2px solid #198754;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+}
+
+.qr-header h3 {
+  font-size: 1.25rem;
+}
+
+.qr-info p {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.qr-card a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+.qr-card a:hover {
+  text-decoration: underline;
+}
+</style>
+
 
 <body>
 
