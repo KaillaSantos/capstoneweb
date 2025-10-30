@@ -1,14 +1,14 @@
 <?php
 require_once __DIR__ . '/../../conn/dbconn.php';
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET['userid'])) {
     die("❌ Missing user ID.");
 }
 
-$userid = intval($_GET['id']);
+$userid = intval($_GET['user']);
 
 // Fetch user info
-$userQuery = "SELECT name, email FROM account WHERE id = ?";
+$userQuery = "SELECT name, email FROM account WHERE userid = ?";
 $stmt = $conn->prepare($userQuery);
 $stmt->bind_param("i", $userid);
 $stmt->execute();
@@ -21,7 +21,7 @@ if (!$user) {
 
 // Fetch all records for that user
 $recordsQuery = "
-    SELECT r.id, r.record_name, r.date, r.rec_img
+    SELECT r.userid, r.record_name, r.date, r.rec_img
     FROM records r
     WHERE r.user_id = ?
     ORDER BY r.date DESC
