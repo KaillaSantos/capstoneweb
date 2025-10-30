@@ -611,33 +611,45 @@ if (isset($_POST['update_reward'])) {
     }
 }
 
-// user account verification "ACCEPT"
 if (isset($_POST['approve_user'])) {
     $userId = intval($_POST['userid']);
 
-    $sql = "UPDATE account SET status = 'approved' WHERE userid = $userId";
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "User Account Approved Successfully";
+    $sql = "UPDATE account SET status = 'approved' WHERE userid = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "✅ User account approved successfully.";
+        $_SESSION['alert_type'] = "success";
     } else {
-        $_SESSION['message'] = "Error Approving Account" . mysqli_error($conn);
+        $_SESSION['message'] = "❌ Error approving account: " . $stmt->error;
+        $_SESSION['alert_type'] = "danger";
     }
 
-    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
+    $stmt->close();
+    header("Location: ../admin/pages/admin_accveri.php");
     exit();
 }
+
 
 // user account verification "REJECT"
 if (isset($_POST['reject_user'])) {
     $userId = intval($_POST['userid']);
 
-    $sql = "UPDATE account SET status = rejected WHERE userid = $userId";
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "User Account Rejected Successfully";
+    $sql = "UPDATE account SET status = 'rejected' WHERE userid = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "🚫 User account rejected successfully.";
+        $_SESSION['alert_type'] = "warning";
     } else {
-        $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
+        $_SESSION['message'] = "❌ Error rejecting account: " . $stmt->error;
+        $_SESSION['alert_type'] = "danger";
     }
 
-    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
+    $stmt->close();
+    header("Location: ../admin/pages/admin_accveri.php");
     exit();
 }
 

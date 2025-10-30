@@ -16,6 +16,7 @@ $user = mysqli_fetch_assoc($result);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -60,6 +61,16 @@ $user = mysqli_fetch_assoc($result);
         <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
+    <?php if (isset($_SESSION['message'])): ?>
+      <div class="container mt-3">
+        <div class="alert alert-<?= $_SESSION['alert_type'] ?? 'info' ?> alert-dismissible fade show shadow-sm" role="alert">
+          <?= htmlspecialchars($_SESSION['message']) ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+      <?php unset($_SESSION['message'], $_SESSION['alert_type']); ?>
+    <?php endif; ?>
+
 
     <!-- ===== USERS TABLE ===== -->
     <div class="table-responsive mt-4">
@@ -99,8 +110,8 @@ $user = mysqli_fetch_assoc($result);
 
           if (mysqli_num_rows($result) > 0):
             while ($row = mysqli_fetch_assoc($result)):
-              $imagePath = !empty($row['userimg']) 
-                ? "../../image/" . htmlspecialchars($row['userimg']) 
+              $imagePath = !empty($row['userimg'])
+                ? "../../image/" . htmlspecialchars($row['userimg'])
                 : "../../image/placeholder.jpg";
           ?>
               <tr>
@@ -128,10 +139,10 @@ $user = mysqli_fetch_assoc($result);
                   </form>
                 </td>
               </tr>
-          <?php 
+            <?php
             endwhile;
-          else: 
-          ?>
+          else:
+            ?>
             <tr>
               <td colspan="6" class="text-center text-muted py-4">No unverified users found.</td>
             </tr>
@@ -170,6 +181,18 @@ $user = mysqli_fetch_assoc($result);
   <!-- ===== JS ===== -->
   <script src="/capstoneweb/assets/sidebarToggle.js"></script>
   <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const alert = document.querySelector(".alert");
+      if (alert) {
+        setTimeout(() => {
+          const fade = new bootstrap.Alert(alert);
+          fade.close();
+        }, 3000);
+      }
+    });
+  </script>
+
 
   <!-- ===== PASSWORD VERIFY MODAL ===== -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
@@ -195,4 +218,5 @@ $user = mysqli_fetch_assoc($result);
   </div>
 
 </body>
+
 </html>
