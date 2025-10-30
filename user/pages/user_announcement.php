@@ -30,7 +30,7 @@ $userid = $_SESSION['userid'];
     /* ============ Announcement Layout ============ */
     .announcement-layout {
       display: grid;
-      grid-template-columns: 2.5fr .5fr; /* Latest is larger */
+      grid-template-columns: 2 fr;/* Latest is larger */
       gap: 30px;
       padding: 20px;
     }
