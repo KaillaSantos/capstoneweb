@@ -157,6 +157,12 @@ $userid = $_SESSION['userid'];
         margin-top: 20px;
       }
     }
+
+    @media (max-width: 768px) {
+      .latest-announcements {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -167,7 +173,6 @@ $userid = $_SESSION['userid'];
 
   <!-- ===== TOGGLE BUTTON ===== -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
-
 
 
   <!-- Content -->
