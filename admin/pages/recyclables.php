@@ -72,6 +72,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   font-size: 1rem;
   color: #333;
   margin: 0;
+  text-align: center;
 }
 
 /* === Responsive Design === */
