@@ -231,7 +231,7 @@ if (isset($_POST['submit_announcement'])) {
     if (!empty($_FILES["announce_img"]["name"])) {
         $filename = basename($_FILES["announce_img"]["name"]);
         $tempname = $_FILES["announce_img"]["tmp_name"];
-        $folder   = "../admin/announceImg/" . $filename;
+        $folder   = "/capstoneweb/admin/announceImg/" . $filename;
 
         if (!move_uploaded_file($tempname, $folder)) {
             echo "<script>alert('Image upload failed.');</script>";
