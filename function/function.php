@@ -228,6 +228,7 @@ if (isset($_POST['submit_announcement'])) {
     $announce_date = mysqli_real_escape_string($conn, $_POST['announce_date']);
 
     $filename = "";
+    
     if (!empty($_FILES["announce_img"]["name"])) {
         $filename = basename($_FILES["announce_img"]["name"]);
         $tempname = $_FILES["announce_img"]["tmp_name"];
