@@ -219,6 +219,7 @@ if (isset($_POST['submitsetting'])) {
     }
 }
 
+
 if (isset($_POST['submit_announcement'])) {
     $announce_name = mysqli_real_escape_string($conn, $_POST['announce_name']);
     $announce_text = mysqli_real_escape_string($conn, $_POST['announce_text']);
