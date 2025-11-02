@@ -55,9 +55,9 @@
 
   <!-- FRONT SECTION -->
   <section id="front">
-    <h2>Our Matimbubong Barangay Hall(Tanggapan)</h2>
+    <h2>Our Matimbubong Barangay Sangunian(Tanggapan)</h2>
     <div class="front-img">
-      <img src="assets/brgy hall.jpeg" alt="Front" />
+      <img src="assets/matimbubong.jpeg" alt="Front" />
     </div>
   </section>
 
