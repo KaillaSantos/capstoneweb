@@ -25,11 +25,11 @@
         </div>
 
         <nav>
-            <a href="#home">Home</a>
-            <a href="#front">Barangay</a>
-            <a href="#services">Services</a>
-            <a href="#vision-mission">Vision & Mission</a>
-            <a href="#contact">Contact</a>
+            <a href="index.php#home">Home</a>
+            <a href="index.php#front">Barangay</a>
+            <a href="index.php#services">Services</a>
+            <a href="index.php#vision-mission">Vision & Mission</a>
+            <a href="index.php#contact">Contact</a>
         </nav>
     </header>
 
