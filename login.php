@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="Landing.css">
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-    <link rel="icon" type="image/x-icon" href="assets/logo_matimbubong.jpeg">
+    <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">    
     <title>E-Recycle</title>
 </head>
 
