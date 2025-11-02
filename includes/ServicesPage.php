@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,16 +12,15 @@
       background: #e8e5e4;
       color: black;
       padding: 6rem 9%;
-      min-height: 100vh;
+      /* min-height: 100vh; */
       text-align: center;
     }
 
-    .services h1 {
-      font-size: 4rem;
-      font-weight: 700;
-      color: green;
-      margin-bottom: 3rem;
-    }
+    #services h2 {
+  font-size: 2rem;
+  color: #006d5b;
+  margin-bottom: 40px;
+}
 
     .services-container {
       display: grid;
@@ -72,7 +69,7 @@
  
 
   <section class="services" id="services">
-    <h1>Our Services</h1>
+    <h2>Our Services</h2>
 
     <div class="services-container">
       <div class="service-box">
