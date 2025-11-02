@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
     <title>E-Recycle</title>
-    <link rel="stylesheet" href="test.css" />
+    <link rel="stylesheet" href="Landing.css" />
     <style>
         html {
             scroll-behavior: smooth;
