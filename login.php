@@ -118,28 +118,28 @@
         });
 
     const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
+  const nav = document.querySelector('nav');
 
-    // Toggle mobile nav
-    menuToggle.addEventListener('click', () => {
-        nav.classList.toggle('active');
-        menuToggle.classList.toggle('open');
-    });
+  // Toggle mobile nav
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
 
-    // Close menu when clicking a link
-    document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', () => {
-        nav.classList.remove('active');
-        menuToggle.classList.remove('open');
-        });
+  // Close menu when clicking a link
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('active');
+      menuToggle.classList.remove('open');
     });
+  });
 
-    // Header shrink on scroll
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
-        if (window.scrollY > 50) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-    });
+  // Header shrink on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+
     </script>
 </body>
 
