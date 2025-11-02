@@ -12,23 +12,26 @@
     <title>E-Recycle</title>
 </head>
 
-<body>
-        <header>
-            <div class="header">
-                <a href="login.php"><img src="assets/logo_matimbubong.jpeg" alt="" style="border-radius: 50%;"></a>
-                <div class="nav-text">
-                    <h2>E-Recycle</h2>
-                </div> 
-                
-                <nav>
-                    <a href="/capstoneweb/index.php#home">Home</a>
-                    <a href="/capstoneweb/index.php#services">Services</a>
-                    <a href="/capstoneweb/index.php#contact">Contact</a>
-                </nav>
-            </div>
+<body>  
+    <header>
+        <a href="test.php" class="logo">
+            <img src="assets/logo_matimbubong.jpeg" alt=""> E-Recycle
+        </a>
 
-           
-        </header>
+        <div class="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#front">Barangay</a>
+            <a href="#services">Services</a>
+            <a href="#vision-mission">Vision & Mission</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
 
 
     <div class="break" style="margin-top: 150px;"></div>
@@ -113,6 +116,30 @@
                 }
             });
         });
+
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+
+    // Toggle mobile nav
+    menuToggle.addEventListener('click', () => {
+        nav.classList.toggle('active');
+        menuToggle.classList.toggle('open');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        menuToggle.classList.remove('open');
+        });
+    });
+
+    // Header shrink on scroll
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+    });
     </script>
 </body>
 
