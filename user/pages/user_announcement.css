@@ -280,7 +280,6 @@ body.sidebar-collapsed .main-content {
     height: auto;
     width: 100%;
     flex-direction: row;
-    justify-content: space-between;
     padding: 10px 15px;
     border-radius: 0;
   }
