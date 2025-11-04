@@ -631,27 +631,56 @@ if (isset($_POST['approve_user'])) {
     exit();
 }
 
+if (isset($_POST['superadmin_approve_user'])) {
+    $userId = intval($_POST['userid']);
+
+    $sql = "UPDATE account SET status = 'approved' WHERE userid = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "✅ User account approved successfully.";
+        $_SESSION['alert_type'] = "success";
+    } else {
+        $_SESSION['message'] = "❌ Error approving account: " . $stmt->error;
+        $_SESSION['alert_type'] = "danger";
+    }
+
+    $stmt->close();
+    header("Location: ../superAdmin/pages/superadmin_accveri.php");
+    exit();
+}
+
 
 // user account verification "REJECT"
 if (isset($_POST['reject_user'])) {
     $userId = intval($_POST['userid']);
 
-    $sql = "UPDATE account SET status = 'rejected' WHERE userid = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "🚫 User account rejected successfully.";
-        $_SESSION['alert_type'] = "warning";
+    $sql = "UPDATE account SET status = 'rejected' WHERE userid = $userId";
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['message'] = "User Account Rejected Successfully";
     } else {
-        $_SESSION['message'] = "❌ Error rejecting account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
+        $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
     }
 
-    $stmt->close();
-    header("Location: ../admin/pages/admin_accveri.php");
+    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
     exit();
 }
+
+if (isset($_POST['superadmin_reject_user'])) {
+    $userId = intval($_POST['userid']);
+
+    $sql = "UPDATE account SET status = 'rejected' WHERE userid = $userId";
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['message'] = "User Account Rejected Successfully";
+    } else {
+        $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
+    }
+
+    header("Location:../superAdmin/pages/superadmin_accveri.php?userid={$userid}");
+    exit();
+}
+
 
 function getUserQRCode($conn, $userid)
 {

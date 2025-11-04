@@ -95,7 +95,7 @@ $user = mysqli_fetch_assoc($result);
           $offset = ($page - 1) * $records_per_page;
 
           // Count total records
-          $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'User' AND status = 'not verified'";
+          $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'admin' AND status = 'pending'";
           $countResult = mysqli_query($conn, $countQuery);
           $total_records = mysqli_fetch_assoc($countResult)['total'];
           $total_pages = ceil($total_records / $records_per_page);
@@ -129,16 +129,16 @@ $user = mysqli_fetch_assoc($result);
                   <span class="badge bg-warning text-dark">Pending</span>
                 </td>
                 <td>
-                  <?php if ($row['status'] === "not verified"): ?>
+                  <?php if ($row['status'] === "pending"): ?>
                     <form action="../../function/function.php" method="POST" class="d-inline">
                       <input type="hidden" name="userid" value="<?= $row['userid'] ?>">
-                      <button type="submit" name="approve_user" class="btn btn-success btn-sm">
+                      <button type="submit" name="superadmin_approve_user" class="btn btn-success btn-sm">
                         <i class="fa fa-check"></i>
                       </button>
                     </form>
                     <form action="../../function/function.php" method="POST" class="d-inline">
                       <input type="hidden" name="userid" value="<?= $row['userid'] ?>">
-                      <button type="submit" name="reject_user" class="btn btn-danger btn-sm">
+                      <button type="submit" name="superadmin_reject_user" class="btn btn-danger btn-sm">
                         <i class="fa fa-times"></i>
                       </button>
                     </form>
