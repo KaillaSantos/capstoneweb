@@ -24,9 +24,11 @@ $userid = $_SESSION['userid'];
   <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
   <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
-  <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css">
-  <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ✅ Use CDN instead of local bootstrap paths (fixes 404 errors) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <style>
     /* === General === */
@@ -37,6 +39,28 @@ $userid = $_SESSION['userid'];
       padding: 0;
     }
 
+    /* === Fix Sidebar Toggle Visibility === */
+    #toggleSidebar {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: #1A4314;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #toggleSidebar:hover {
+      background: #2C5E1A;
+    }
+
     /* === Profile Container === */
     .profile-container {
       display: flex;
@@ -44,6 +68,8 @@ $userid = $_SESSION['userid'];
       align-items: flex-start;
       padding: 20px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     /* === Profile Card === */
@@ -122,14 +148,15 @@ $userid = $_SESSION['userid'];
       box-sizing: border-box;
     }
 
-    /* === Password Icon === */
+    /* === Password Icon (Fixed alignment) === */
     .toggle-password {
       position: absolute;
       right: 12px;
-      padding-top:40px;
+      top: 65%;
       transform: translateY(-50%);
       cursor: pointer;
       color: #666;
+      font-size: 16px;
     }
 
     .toggle-password:hover {
@@ -181,24 +208,31 @@ $userid = $_SESSION['userid'];
         flex-direction: column;
         align-items: center;
         text-align: center;
-        max-width: 380px;
+        width: 100%;
+        max-width: 420px;
+        padding: 25px;
       }
 
       .profile-right {
-        width: 80%;
-        /* max-width: 400px; */
+        width: 100%;
       }
 
       .form-buttons {
         flex-direction: column;
         align-items: center;
-        gap: 10px;
       }
 
       .save-btn,
       .cancel-btn {
         width: 90%;
         max-width: 320px;
+      }
+
+      #toggleSidebar {
+        top: 15px;
+        left: 15px;
+        padding: 8px 12px;
+        font-size: 16px;
       }
     }
   </style>
@@ -218,6 +252,9 @@ if (isset($_GET['userid'])) {
 
 <?php include '../includes/sidebar.php'; ?>
 
+<!-- ✅ Sidebar Toggle Button -->
+<button id="toggleSidebar"><i class="fa fa-bars"></i></button>
+
 <div class="content">
   <header class="dashboard-header">
     <div class="header-left">
@@ -236,7 +273,7 @@ if (isset($_GET['userid'])) {
     <div class="profile-container">
       <div class="profile-card">
         
-        <!-- ✅ Two-Column Layout -->
+        <!-- Profile Left -->
         <div class="profile-left">
           <div class="profile-img-wrapper">
             <img id="profilePreview" src="<?= $userImage ?>" alt="Profile Image">
@@ -245,6 +282,7 @@ if (isset($_GET['userid'])) {
           <small>Allowed types: jpg, png | Max: 5MB</small>
         </div>
 
+        <!-- Profile Right -->
         <div class="profile-right">
           <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
             <input type="hidden" name="userid" value="<?= $rows['userid'] ?>">
@@ -262,13 +300,13 @@ if (isset($_GET['userid'])) {
             <div class="form-group position-relative">
               <label for="password">Password:</label>
               <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
-              <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+              <i class="fa-solid fa-eye toggle-password"></i>
             </div>
 
             <div class="form-group position-relative">
               <label for="repassword">Re-enter Password:</label>
               <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
-              <i class="fa-solid fa-eye toggle-password" id="toggleRePassword"></i>
+              <i class="fa-solid fa-eye toggle-password"></i>
             </div>
 
             <div class="form-buttons">
@@ -277,6 +315,7 @@ if (isset($_GET['userid'])) {
             </div>
           </form>
         </div>
+
       </div>
     </div>
   </div>
