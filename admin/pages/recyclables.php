@@ -19,86 +19,85 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     /* === Recyclables Container (2 per row layout) === */
-.container .row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+    .container .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-/* === Card Styling (modern, announcement-inspired look) === */
-.card {
-  flex: 1 1 calc(50% - 20px); /* two cards per row */
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  background-color: #ffffff;
-  border: 1px solid #e6f4ea;
-  border-left: 6px solid #2c5e1a;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(44, 94, 26, 0.1);
-  padding: 20px;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
+    /* === Card Styling (modern, announcement-inspired look) === */
+    .card {
+      flex: 1 1 calc(50% - 20px); /* two cards per row */
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: #ffffff;
+      border: 1px solid #e6f4ea;
+      border-left: 6px solid #2c5e1a;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(44, 94, 26, 0.1);
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
 
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(44, 94, 26, 0.2);
-}
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(44, 94, 26, 0.2);
+    }
 
-/* Image on the left */
-.card-img {
-  width: 250px;
-  height: 250;
-  flex-shrink: 0;
-}
+    /* Image on the left */
+    .card-img {
+      width: 250px;
+      height: 250;
+      flex-shrink: 0;
+    }
 
-/* === Card Body (text area) === */
-.card-body {
-  text-align: left;
-  padding: 0;
-}
+    /* === Card Body (text area) === */
+    .card-body {
+      text-align: left;
+      padding: 0;
+    }
 
-.card-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #2c5e1a;
-  margin-bottom: 5px;
-}
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c5e1a;
+      margin-bottom: 5px;
+    }
 
-.card-body p {
-  font-size: 1rem;
-  color: #333;
-  margin: 0;
-  text-align: center;
-}
+    .card-body p {
+      font-size: 1rem;
+      color: #333;
+      margin: 0;
+      text-align: center;
+    }
 
-/* === Responsive Design === */
-@media (max-width: 992px) {
-  .card {
-    flex: 1 1 100%; /* stack to 1 per row on smaller screens */
-  }
-}
+    /* === Responsive Design === */
+    @media (max-width: 992px) {
+      .card {
+        flex: 1 1 100%; /* stack to 1 per row on smaller screens */
+      }
+    }
 
-@media (max-width: 768px) {
-  .card {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
+    @media (max-width: 768px) {
+      .card {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
 
-  .card-img {
-    width: 90px;
-    margin-bottom: 10px;
-  }
+      .card-img {
+        width: 90px;
+        margin-bottom: 10px;
+      }
 
-  .card-body {
-    text-align: center;
-  }
-}
-
+      .card-body {
+        text-align: center;
+      }
+     }
   </style>
 </head>
 
