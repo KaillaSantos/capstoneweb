@@ -179,62 +179,61 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         echo "<p class='text-center mt-4'>No pending reward requests yet.</p>";
       }
       ?>
-    </div>
+  </div>
 
     <!-- Pagination -->
     <?php
-    $countQuery = "SELECT COUNT(*) AS total FROM user_rewards WHERE status = 'Pending'";
-    $countResult = mysqli_query($conn, $countQuery);
-    $total_records = mysqli_fetch_assoc($countResult)['total'];
-    $total_pages = ceil($total_records / $records_per_page);
+      $countQuery = "SELECT COUNT(*) AS total FROM user_rewards WHERE status = 'Pending'";
+      $countResult = mysqli_query($conn, $countQuery);
+      $total_records = mysqli_fetch_assoc($countResult)['total'];
+      $total_pages = ceil($total_records / $records_per_page);
 
-    if ($total_pages > 1): ?>
-      <div class="d-flex justify-content-center mt-4 mb-4">
-        <nav>
-          <ul class="pagination">
-            <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
-            </li>
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-              <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+      if ($total_pages > 1): ?>
+        <div class="d-flex justify-content-center mt-4 mb-4">
+          <nav>
+            <ul class="pagination">
+              <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
               </li>
-            <?php endfor; ?>
-            <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+              <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+              <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
     <?php endif; ?>
 
-  </div>
+  <script src="\capstoneweb/assets/sidebarToggle.js"></script>
 
-  <!-- Verify Password Modal -->
-  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form method="post" action="">
-          <div class="modal-header">
-            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="verifyPassword" class="form-label">Enter Password</label>
-              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+  <!-- 🔐 Password Verification Modal -->
+    <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form method="post" action="">
+            <input type="hidden" name="redirect" value="/capstoneweb/superAdmin/pages/accsetting.php">
+            <div class="modal-header">
+              <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-          </div>
-        </form>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="verifyPassword" class="form-label">Enter Password</label>
+                <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="\capstoneweb/assets/sidebarToggle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Automatically fade out the alert after 3 seconds
     setTimeout(() => {
