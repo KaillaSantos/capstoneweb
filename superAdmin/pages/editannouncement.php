@@ -132,7 +132,7 @@ if (!isset($_GET['id'])) {
             <!-- Show current image -->
             <?php if (!empty($announcement['announce_img'])): ?>
                 <label for="current_img">Current Image:</label>
-                <img src="/capstoneweb/announceImg/<?= htmlspecialchars($announcement['announce_img']) ?>" 
+                <img src="capstoneweb/announceImg/<?= htmlspecialchars($announcement['announce_img']) ?>" 
                     alt="Announcement Image" style="width:150px; height:auto; margin-bottom:10px; border: 2px solid black; border-radius: 8px;">
             <?php endif; ?>
 
