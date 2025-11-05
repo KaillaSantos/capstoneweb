@@ -91,17 +91,17 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       if (mysqli_num_rows($run) > 0) {
         while ($rows = mysqli_fetch_assoc($run)) {
           $rewardImage = !empty($rows['product_img'])
-            ? "../../productImg/" . $rows['product_img']
-            : "../../productImg/rewardPlaceholder.jpg"; // Placeholder image path
+            ? "../../uploads/productImg/" . $rows['product_img']
+            : "../../uploads/productImg/rewardPlaceholder.jpg"; // Placeholder image path
       ?>
           <div class="col">
             <div class="reward-card">
               <img src="<?php echo $rewardImage; ?>" alt="Reward" class="reward-img">
               <div class="reward-body">
-                <h5><?= htmlspecialchars($rows['product_name']) ?></h5>
-                <p><?= htmlspecialchars($rows['product_points']) ?></p>
-                <p class="date"><?= date("m/d/Y", strtotime($rows['product_date'])) ?></p>
-                <p><?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
+                <h5 style="text-transform: capitalize;"><?= htmlspecialchars($rows['product_name']) ?></h5>
+                <p>⭐ <?= htmlspecialchars($rows['product_points']) ?></p>
+                <p class="date"><i class="fa fa-calendar"> </i><?= date("m/d/Y", strtotime($rows['product_date'])) ?></p>
+                <p><i class="fa-regular fa-note-sticky"></i><?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
                 <div class="reward-actions">
                   <button type="button" class="btn btn-link read-more-btn"
                     data-title="<?= htmlspecialchars($rows['product_name']) ?>"
