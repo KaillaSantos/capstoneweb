@@ -71,9 +71,9 @@
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required />
                             </div>
-                            <div class="mb-1 ">
+                            <div class="mb-1 password-container">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" id="passWord" name="passWord" class="form-control password-container" placeholder="Password" required />
+                                <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
                                 <i class="bi bi-eye-slash" id="togglePassword"></i>
                             </div>
                             <button type="submit" name="submit" class="btn btn-success w-100 mt-3">Log-in</button>
