@@ -99,7 +99,7 @@ if (isset($_POST['signup'])) {
     }
 
     //  Set status
-    $status = ($role === 'user') ? 'pending' : 'approved';
+    $status = ($role === 'user' || $role === 'admin') ? 'pending' : 'approved';
 
     // Insert user
     $query = "INSERT INTO account (userName, passWord, email, role, purok, status)
