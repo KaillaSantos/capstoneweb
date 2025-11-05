@@ -135,7 +135,7 @@ try {
   <div class="container mt-5" style="padding-top:250px">
     <div class="col-md-5 mx-auto">
       <div class="card p-4">
-        <h3 class="mb-3">Recover Password</h3>
+        <h3 class="mb-3" style="align-content:center;">Recover Password</h3>
         <?= $message; ?>
         <form method="post">
           <div class="mb-3">
