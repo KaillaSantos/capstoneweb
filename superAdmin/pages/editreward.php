@@ -135,7 +135,7 @@ if (mysqli_num_rows($result) > 0) {
             <!-- Show current image -->
             <?php if (!empty($reward['product_img'])): ?>
                 <label for="current_img">Current Image:</label>
-                <img src="../productImg/<?= htmlspecialchars($reward['product_img']) ?>" 
+                <img src="/capstoneweb/productImg/<?= htmlspecialchars($reward['product_img']) ?>" 
                     alt="Reward Image" style="width:150px; height:auto; margin-bottom:10px; border: 2px solid black; border-radius: 8px;">
             <?php endif; ?>
 

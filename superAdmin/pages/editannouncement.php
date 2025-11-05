@@ -25,7 +25,7 @@ if (!isset($_GET['id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>E-Recycle - Edit Announcement</title>
-  <link rel="stylesheet" href="../user-admin.css">
+  <link rel="stylesheet" href="../../../user-admin.css">
   <link rel="stylesheet" href="../assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="../assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/fontawesome-free-7.0.1-web/css/all.min.css">
@@ -132,7 +132,7 @@ if (!isset($_GET['id'])) {
             <!-- Show current image -->
             <?php if (!empty($announcement['announce_img'])): ?>
                 <label for="current_img">Current Image:</label>
-                <img src="../announceImg/<?= htmlspecialchars($announcement['announce_img']) ?>" 
+                <img src="\capstoneweb\announceImg\<?= htmlspecialchars($announcement['announce_img']) ?>" 
                     alt="Announcement Image" style="width:150px; height:auto; margin-bottom:10px; border: 2px solid black; border-radius: 8px;">
             <?php endif; ?>
 
