@@ -59,7 +59,6 @@ if (!isset($_GET['id'])) {
         }
 
 
-
         .announce-panel label {
             display: block;
             margin-top: 15px;
@@ -95,7 +94,7 @@ if (!isset($_GET['id'])) {
         .close-btn {
             position: absolute;
             top: 10px;
-            right: 15px;
+            right: 25px;
             font-size: 22px;
             z-index: 100; /* stays above */
             text-decoration: none;
