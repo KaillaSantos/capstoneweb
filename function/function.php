@@ -177,7 +177,7 @@ if (isset($_POST['submitsetting'])) {
     if (!empty($_FILES["userimg"]["name"])) {
         $filename = basename($_FILES["userimg"]["name"]);
         $tempname = $_FILES["userimg"]["tmp_name"];
-        $folder   = __DIR__ . "../user/image/" . $filename; // ✅ User image path
+        $folder   = __DIR__ . "/../user/image/" . $filename; // ✅ User image path
 
         $allowed = ['jpg', 'jpeg', 'png'];
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
