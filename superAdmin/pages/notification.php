@@ -210,6 +210,29 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 
   </div>
 
+  <!-- Verify Password Modal -->
+  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="post" action="">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="verifyPassword" class="form-label">Enter Password</label>
+              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script>
