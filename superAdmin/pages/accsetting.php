@@ -293,58 +293,35 @@ $userid = $_SESSION['userid'];
       }
     }
 
-    /* === Fix for Mobile Input Visibility === */
-@media (max-width: 768px) {
+    @media (max-width: 768px) {
+      .profile-card {
+        flex-direction: column;  /* Stack vertically on small screens */
+        align-items: center;
+        text-align: center;
+      }
 
-  .profile-container {
-    padding: 10px;
-  }
+      .profile-right {
+        width: 100%;
+        max-width: 400px;
+      }
 
-  /* Stack image + inputs vertically */
-  .profile-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-  }
+      .form-group input {
+        width: 100%;
+      }
 
-  /* Ensure form takes full width */
-  form {
-    width: 100%;
-    display: block;
-  }
+      .form-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
 
-  /* Make inputs visible and full width */
-  .profile-right {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .form-group {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-
-  .form-group input {
-    width: 100%;
-    display: block;
-  }
-
-  /* Buttons centered and not cut off */
-  .form-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .save-btn,
-  .cancel-btn {
-    width: 90%;
-    max-width: 300px;
-  }
-}
-
+      .save-btn,
+      .cancel-btn {
+        width: 90%;
+        max-width: 320px;
+      }
+    }
   </style>
 
 </head>
