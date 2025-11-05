@@ -354,11 +354,17 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
 }
 
 /* ===========================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (Mobile)
 =========================== */
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
   header {
-    padding: 10px 5%;
+    padding: 10px 20px;
   }
 
   .menu-toggle {
@@ -369,23 +375,75 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
     display: none;
   }
 
+  nav.active {
+    display: flex;
+  }
+
   header .logo img {
     width: 50px;
     height: 50px;
+    margin-right: 8px;
   }
 
+  header .logo {
+    font-size: 1.1rem;
+  }
+
+  /* HOME SECTION */
   .home {
     flex-direction: column;
+    padding: 110px 7% 60px;
     text-align: center;
-    padding: 100px 8%;
+  }
+
+  .home-content {
+    padding-right: 0;
+  }
+
+  .home-content h1 {
+    font-size: 2rem;
+  }
+
+  .home-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .home-content p {
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    width: 70%;
+    max-width: 250px;
+    margin: 10px auto;
   }
 
   .home-img img {
-    width: 80%;
-    margin-top: 20px;
+    width: 70%;
+    max-width: 300px;
+    margin-top: 30px;
+  }
+
+  /* SECTIONS SPACING */
+  #front,
+  #services,
+  #vision-mission,
+  #contact {
+    padding: 60px 6%;
+  }
+
+  #services h2,
+  #front h2,
+  #vision-mission h2 {
+    font-size: 1.7rem;
+  }
+
+  .services-container {
+    grid-template-columns: 1fr;
   }
 
   .vm-container {
     flex-direction: column;
   }
 }
+
