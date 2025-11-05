@@ -171,17 +171,9 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
       
       <div class="card chart">
         <h2>Recycling Overview</h2>
-        
-        <!-- Dropdown -->
-        <div style="margin-bottom: 20px;">
-          <select id="householdSelect" class="form-select" style="max-width: 300px;">
-            <option value="">Total Recycled</option>
-          </select>
-        </div>
-        
-        <!-- Chart -->
-        <div class="chart-wrapper" style="margin-top: 20px;">
-          <canvas id="recordChart"></canvas>
+
+        <div class="chart-wrapper">
+          <canvas id="purokChart"><?php require_once __DIR__ . '/../includes/purokChart.php'; ?></canvas>
         </div>
       </div>
 
