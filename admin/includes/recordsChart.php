@@ -19,15 +19,16 @@ if (isset($_GET['ajax'])) {
             ORDER BY r.RM_name ASC
         ";
     } else {
-        // Compare total recyclables per household (overall comparison)
+        // Default: total recyclables per category across all households
         $query = "
             SELECT 
-                rec.record_name AS household,
+                r.RM_name,
                 SUM(ri.quantity) AS total_quantity
             FROM record_items ri
+            INNER JOIN recyclable r ON ri.recyclable_id = r.id
             INNER JOIN records rec ON ri.record_id = rec.id
-            GROUP BY rec.record_name
-            ORDER BY total_quantity DESC
+            GROUP BY r.RM_name
+            ORDER BY r.RM_name ASC
         ";
     }
 
@@ -62,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const households = <?php echo json_encode($households); ?>;
 
   // Populate dropdown
-  select.innerHTML = '<option value="">All Households Comparison</option>';
+  select.innerHTML = '<option value="">Total Recyclables per Category</option>';
   households.forEach(h => {
     const opt = document.createElement("option");
     opt.value = h;
@@ -83,8 +84,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let labels, datasets;
 
     if (!recordName) {
-      // Case 1: No household selected → total recyclables per household
-      labels = data.map(item => item.household);
+      // Case 1: Default view → total recyclables per category
+      labels = data.map(item => item.RM_name);
       datasets = [{
         label: "Total Recyclables (kg)",
         data: data.map(item => item.total_quantity),
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const chartTitle = recordName
       ? `Recyclables per Category — ${recordName} vs Total`
-      : "Total Recyclables per Household";
+      : "Total Recyclables per Category (All Households)";
 
     if (!chartInstance) {
       chartInstance = new Chart(chartCtx, {
