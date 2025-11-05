@@ -14,12 +14,13 @@
     <style>
         html {
             scroll-behavior: smooth;
+
         }
     </style>
 </head>
 <body>
   <header>
-  <a href="test.php" class="logo">
+  <a href="index.php" class="logo">
     <img src="assets/logo_matimbubong.jpeg" alt=""> E-Recycle
   </a>
 
