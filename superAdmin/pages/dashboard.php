@@ -9,7 +9,7 @@ $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
 
-$query1 = "SELECT COUNT(role) AS total FROM account WHERE role = 'superAdmin'";
+$query1 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
 $result1 = mysqli_query($conn, $query1);
 
 if ($result1) {
