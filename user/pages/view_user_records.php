@@ -146,7 +146,7 @@ function resolveRecordImageUrl($filename) {
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p>No records found for this user. When the admin adds records with <code>user_id = <?= $userid ?></code>, they will appear here.</p>
+        <p>No records found for this specific user.</p>
     <?php endif; ?>
 </div>
 </body>
