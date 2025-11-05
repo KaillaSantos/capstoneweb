@@ -10,6 +10,24 @@
     <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">    
     <title>E-Recycle</title>
+
+    <style>
+        /* 👁️ Eye icon styling */
+        .password-container {
+            position: relative;
+        }
+        #togglePassword {
+            position: absolute;
+            right: 15px;
+            top: 70%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+        #togglePassword:hover {
+            color: #198754; /* Bootstrap green hover color */
+        }
+    </style>
 </head>
 
 <body>  
@@ -33,7 +51,6 @@
         </nav>
     </header>
 
-
     <div class="break" style="margin-top: 150px;"></div>
 
     <div class="container mt-5">
@@ -54,17 +71,17 @@
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required />
                             </div>
-                            <div class="mb-1">
+                            <div class="mb-1 password-container">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
                                 <i class="bi bi-eye-slash" id="togglePassword"></i>
                             </div>
-                            <button type="submit" name="submit" class="btn btn-success w-100 mt-3" > Log-in </button>
+                            <button type="submit" name="submit" class="btn btn-success w-100 mt-3">Log-in</button>
                         </form>
                         <p class="text-center mt-3">
                             Don't have an account? <a href="signUp.php" style="text-decoration: none;">Sign up here</a>
                         </p>
-                        <p class ="text-center mt-3">
+                        <p class="text-center mt-3">
                             <a href="recoverPassword.php" style="font-size: 12px; text-decoration: none;">Recover Password</a>
                         </p>
                     </div>
@@ -73,69 +90,36 @@
         </div>
     </div>
 
+    <!-- Fixed password toggle script -->
     <script>
-        // Password toggle functionality
-        const togglePassword = (fieldId, iconId) => {
-            const field = document.getElementById(fieldId);
-            const icon = document.getElementById(iconId);
-            const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
-            field.setAttribute('type', type);
-            icon.classList.toggle('bi-eye-slash');
-            icon.classList.toggle('bi-eye');
-        };
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('passWord');
 
-        document.getElementById('togglePassword').addEventListener('click', () => {
-            togglePassword('passWord', 'togglePassword');
-        });
-
-        document.getElementById('toggleRePassword').addEventListener('click', () => {
-            togglePassword('rePassword', 'toggleRePassword');
-        });
-
-        // Real-time password validation
-        document.addEventListener('DOMContentLoaded', () => {
-            const passwordField = document.getElementById('passWord');
-            const rePasswordField = document.getElementById('rePassword');
-            const form = document.querySelector('form');
-
-            // Real-time matching indicator
-            rePasswordField.addEventListener('input', () => {
-                if (passwordField.value !== rePasswordField.value) {
-                    rePasswordField.setCustomValidity('Passwords do not match');
-                } else {
-                    rePasswordField.setCustomValidity('');
-                }
-            });
-
-            // Form submission validation
-            form.addEventListener('submit', (e) => {
-                if (passwordField.value !== rePasswordField.value) {
-                    e.preventDefault();
-                    alert('Passwords do not match');
-                    rePasswordField.focus();
-                }
-            });
+        togglePassword.addEventListener('click', () => {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            togglePassword.classList.toggle('bi-eye');
+            togglePassword.classList.toggle('bi-eye-slash');
         });
     </script>
+
+    <!-- Responsive navigation -->
     <script>
         const menuToggle = document.querySelector('.menu-toggle');
         const nav = document.querySelector('nav');
 
-        // Toggle mobile nav
         menuToggle.addEventListener('click', () => {
             nav.classList.toggle('active');
             menuToggle.classList.toggle('open');
         });
 
-        // Close menu when clicking a link
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', () => {
-            nav.classList.remove('active');
-            menuToggle.classList.remove('open');
+                nav.classList.remove('active');
+                menuToggle.classList.remove('open');
             });
         });
 
-        // Header shrink on scroll
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 50) header.classList.add('scrolled');
