@@ -207,7 +207,8 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         </nav>
       </div>
     <?php endif; ?>
-    <!-- 🔐 Password Verification Modal -->
+  </div>
+  <!-- 🔐 Password Verification Modal -->
     <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -230,8 +231,6 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         </div>
       </div>
     </div>
-
-  </div>
 
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
