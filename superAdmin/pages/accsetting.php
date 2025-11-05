@@ -219,7 +219,7 @@ $userid = $_SESSION['userid'];
       }
 
       .form-group {
-        width: 8  0%;
+        width: 80%;
       }
 
       .form-buttons {
