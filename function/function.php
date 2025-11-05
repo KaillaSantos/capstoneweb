@@ -686,6 +686,30 @@ if (isset($_POST['superadmin_reject_user'])) {
     exit();
 }
 
+// Handle reward approval
+if (isset($_POST['approve_reward'])) {
+    $userid = intval($_POST['user_id']); 
+    $reward_id = intval($_POST['reward_id']);
+    $role = $_SESSION['role'];
+
+    // Update the reward status
+    $query = "UPDATE user_rewards SET status = 'Approved' WHERE user_id = '$userid' AND reward_id='$reward_id'";
+    if (mysqli_query($conn, $query)) {
+        $_SESSION['notif_success'] = "Reward successfully approved!";
+    } else {
+        $_SESSION['notif_error'] = "Failed to approve reward. Please try again.";
+    }
+
+    // Role-based redirect path
+    if ($role === 'admin') {
+        header("Location: ../admin/pages/notification.php?userid={$userid}");
+    } elseif ($role === 'super_admin') {
+        header("Location: ../superAdmin/pages/notification.php?userid={$userid}");
+    } else {
+        header("Location: ../login.php");
+    }
+    exit;
+}
 
 function getUserQRCode($conn, $userid)
 {
