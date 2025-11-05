@@ -206,7 +206,7 @@ $userid = $_SESSION['userid'];
     @media (max-width: 768px) {
       .profile-card {
         flex-direction: column;
-        /* align-items: center; */
+        align-items: center;
         text-align: center;
         width: 100%;
         max-width: 420px;
