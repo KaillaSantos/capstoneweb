@@ -132,7 +132,7 @@ try {
         <a href="index.php#contact">Contact</a>
     </nav>
   </header>
-  <div class="container mt-5">
+  <div class="container mt-5" style="padding-top:500px">
     <div class="col-md-5 mx-auto">
       <div class="card p-4">
         <h3 class="mb-3">Recover Password</h3>
@@ -148,5 +148,33 @@ try {
       </div>
     </div>
   </div>
+
+  <script>
+
+  // nav toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('nav');
+
+  // Toggle mobile nav
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+
+  // Close menu when clicking a link
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('active');
+      menuToggle.classList.remove('open');
+    });
+  });
+
+  // Header shrink on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+
+    </script>
 </body>
 </html>
