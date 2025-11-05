@@ -392,39 +392,56 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
   /* HOME SECTION */
   .home {
     flex-direction: column;
-    padding: 110px 7% 60px;
+    justify-content: center;
+    align-items: center;
+    padding: 130px 8% 70px;
     text-align: center;
+    background: linear-gradient(135deg, #e6f7f4, #ffffff);
   }
 
   .home-content {
-    padding-right: 0;
+    width: 100%;
+    max-width: 380px;
+    padding: 0;
+    margin: 0 auto;
   }
 
   .home-content h1 {
     font-size: 2rem;
+    margin-bottom: 10px;
   }
 
   .home-content h3 {
     font-size: 1.2rem;
+    margin-bottom: 15px;
   }
 
   .home-content p {
     font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
   }
 
   .btn {
-    width: 70%;
-    max-width: 250px;
-    margin: 10px auto;
+    width: 80%;
+    max-width: 260px;
+    margin: 8px auto;
+    display: block;
+  }
+
+  .home-img {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
   }
 
   .home-img img {
     width: 70%;
-    max-width: 300px;
-    margin-top: 30px;
+    max-width: 280px;
+    border-radius: 20px;
   }
 
-  /* SECTIONS SPACING */
+  /* OTHER SECTIONS */
   #front,
   #services,
   #vision-mission,
@@ -446,4 +463,3 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
     flex-direction: column;
   }
 }
-
