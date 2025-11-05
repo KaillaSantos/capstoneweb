@@ -53,14 +53,40 @@ if ($token) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Reset Password | E-Recycle</title>
     <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css">
+    <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">  
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="Landing.css">
+    <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">  
 </head>
 <body>
-<div class="container mt-5">
+
+<header>
+    <a href="test.php" class="logo">
+        <img src="assets/logo_matimbubong.jpeg" alt=""> E-Recycle
+    </a>
+
+    <div class="menu-toggle">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <nav>
+        <a href="index.php#home">Home</a>
+        <a href="index.php#front">Barangay</a>
+        <a href="index.php#services">Services</a>
+        <a href="index.php#vision-mission">Vision & Mission</a>
+        <a href="index.php#contact">Contact</a>
+    </nav>
+  </header>
+
+<div class="container mt-5" style="padding:250px;">
     <div class="col-md-5 mx-auto">
-        <div class="card p-4 shadow">
+        <div class="card shadow" style="padding:35px;">
             <h3 class="mb-3 text-center">Reset Password</h3>
             <?= $message; ?>
             
@@ -82,5 +108,31 @@ if ($token) {
         </div>
     </div>
 </div>
+
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('nav');
+
+  // Toggle mobile nav
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+
+  // Close menu when clicking a link
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('active');
+      menuToggle.classList.remove('open');
+    });
+  });
+
+  // Header shrink on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+</script>
 </body>
 </html>
