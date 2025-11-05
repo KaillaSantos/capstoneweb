@@ -206,7 +206,7 @@ $userid = $_SESSION['userid'];
     @media (max-width: 768px) {
       .profile-card {
         flex-direction: column;
-        align-items: center;
+        /* align-items: center; */
         text-align: center;
         width: 100%;
         max-width: 420px;
@@ -219,7 +219,7 @@ $userid = $_SESSION['userid'];
       }
 
       .form-group {
-        width: 80%;
+        width: 8  0%;
       }
 
       .form-buttons {
@@ -229,7 +229,7 @@ $userid = $_SESSION['userid'];
 
       .save-btn,
       .cancel-btn {
-        width: 50%;
+        width: 60%;
         max-width: 320px;
       }
 
