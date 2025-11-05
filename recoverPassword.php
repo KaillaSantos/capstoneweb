@@ -5,8 +5,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// --- Step 1: Check if user submitted the email ---
 $message = "";
+
+// --- Step 1: Check if user submitted the email ---
 if (isset($_POST['find_email'])) {
     $email = trim($_POST['email']);
     $query = "SELECT * FROM account WHERE email = ?";
@@ -16,27 +17,45 @@ if (isset($_POST['find_email'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $message = "<div class='alert alert-success'>Account found! You can now set a new password below.</div>";
-        $show_reset_form = true;
+        // Generate a secure token and expiry (1 hour)
+        $token = bin2hex(random_bytes(50));
+        $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
+
+        // Store token in database
+        $update = $conn->prepare("UPDATE account SET reset_token = ?, token_expiry = ? WHERE email = ?");
+        $update->bind_param("sss", $token, $expiry, $email);
+        $update->execute();
+
+        // Create password reset link
+        $resetLink = "http://localhost/capstoneweb/reset_password.php?token=" . $token;
+
+        // Email content
+        $subject = "E-Recycle Password Reset Request";
+        $body = "
+            <p>Hello,</p>
+            <p>We received a request to reset your password for your E-Recycle account.</p>
+            <p>Please click the link below to reset your password:</p>
+            <p><a href='$resetLink'>$resetLink</a></p>
+            <p>This link will expire in 1 hour. If you did not request a password reset, please ignore this message.</p>
+        ";
+
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: E-Recycle <no-reply@erecycle.com>" . "\r\n";
+
+        // Send email
+        if (mail($email, $subject, $body, $headers)) {
+            $message = "<div class='alert alert-success'>
+                            Password reset link sent to <strong>$email</strong>. 
+                            Please check your inbox.
+                        </div>";
+        } else {
+            $message = "<div class='alert alert-danger'>
+                            Failed to send email. Please try again later.
+                        </div>";
+        }
     } else {
         $message = "<div class='alert alert-danger'>Email not found in our system.</div>";
-    }
-}
-
-// --- Step 2: If user submitted new password ---
-if (isset($_POST['reset_password'])) {
-    $email = trim($_POST['email']);
-    $new_password = trim($_POST['new_password']);
-    $hashed = $new_password; // optional: you can add password_hash($new_password, PASSWORD_DEFAULT)
-
-    $query = "UPDATE account SET passWord = ? WHERE email = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $hashed, $email);
-    if ($stmt->execute()) {
-        $message = "<div class='alert alert-success'>Password successfully updated! You can now <a href='login.php'>log in</a>.</div>";
-        $show_reset_form = false;
-    } else {
-        $message = "<div class='alert alert-danger'>Error updating password. Please try again.</div>";
     }
 }
 ?>
@@ -80,28 +99,14 @@ if (isset($_POST['reset_password'])) {
                         <h3 class="text-center mb-4">Recover Password</h3>
                         <?= $message; ?>
 
-                        <?php if (!isset($show_reset_form)) : ?>
-                            <!-- Step 1: Enter Email -->
-                            <form method="post">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Enter your registered email</label>
-                                    <input type="email" id="email" name="email" class="form-control" required placeholder="example@email.com">
-                                </div>
-                                <button type="submit" name="find_email" class="btn btn-success w-100">Find Account</button>
-                            </form>
-                        <?php endif; ?>
-
-                        <?php if (isset($show_reset_form) && $show_reset_form): ?>
-                            <!-- Step 2: Reset Password -->
-                            <form method="post">
-                                <input type="hidden" name="email" value="<?= htmlspecialchars($email); ?>">
-                                <div class="mb-3">
-                                    <label for="new_password" class="form-label">New Password</label>
-                                    <input type="password" id="new_password" name="new_password" class="form-control" required>
-                                </div>
-                                <button type="submit" name="reset_password" class="btn btn-success w-100">Update Password</button>
-                            </form>
-                        <?php endif; ?>
+                        <!-- Step 1: Enter Email -->
+                        <form method="post">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Enter your registered email</label>
+                                <input type="email" id="email" name="email" class="form-control" required placeholder="example@email.com">
+                            </div>
+                            <button type="submit" name="find_email" class="btn btn-success w-100">Send Reset Link</button>
+                        </form>
 
                         <p class="text-center mt-3">
                             <a href="login.php" style="text-decoration: none;">Back to Login</a>
