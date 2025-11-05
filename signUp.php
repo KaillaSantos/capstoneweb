@@ -28,6 +28,24 @@
     .strength-strong {
       color: green;
     }
+
+    /* 👁️ Password visibility toggle styles */
+    .password-container {
+      position: relative;
+    }
+
+    .password-container i {
+      position: absolute;
+      right: 15px;
+      padding-top: 20px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #6c757d;
+    }
+
+    .password-container i:hover {
+      color: #198754;
+    }
   </style>
 </head>
 
@@ -109,18 +127,20 @@
                 <input type="hidden" name="purok_hidden" id="purokHidden" value="">
               </div>
 
-              <div class="mb-3">
+              <div class="mb-3 password-container">
                 <label for="passWord" class="form-label">Password</label>
                 <input type="password" id="passWord" name="passWord" class="form-control" placeholder="Password" required />
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
                 <div class="password-strength" id="passwordStrength"></div>
                 <div class="text-danger mt-1 d-none" id="passwordError">
                   Password must be at least 8 characters long, include one uppercase letter and one number.
                 </div>
               </div>
 
-              <div class="mb-3">
+              <div class="mb-3 password-container">
                 <label for="rePassword" class="form-label">Re-enter Password</label>
                 <input type="password" id="rePassword" name="rePassword" class="form-control" placeholder="Re-enter Password" required />
+                <i class="bi bi-eye-slash" id="toggleRePassword"></i>
                 <div class="text-danger mt-1 d-none" id="matchError">Passwords do not match.</div>
               </div>
 
@@ -134,6 +154,7 @@
   </div>
 
   <script>
+    // Role toggle logic
     const roleUser = document.getElementById('roleUser');
     const roleAdmin = document.getElementById('roleAdmin');
     const purokContainer = document.getElementById('purokContainer');
@@ -156,11 +177,11 @@
     roleUser.addEventListener('change', togglePurok);
     roleAdmin.addEventListener('change', togglePurok);
 
-    // ✅ Password strength check
+    // Password strength + validation
     const passwordInput = document.getElementById('passWord');
+    const rePassword = document.getElementById('rePassword');
     const strengthText = document.getElementById('passwordStrength');
     const passwordError = document.getElementById('passwordError');
-    const rePassword = document.getElementById('rePassword');
     const matchError = document.getElementById('matchError');
     const signupForm = document.getElementById('signupForm');
 
@@ -190,11 +211,9 @@
       const password = passwordInput.value.trim();
       const confirm = rePassword.value.trim();
       const role = document.querySelector('input[name="role"]:checked').value;
-
       const passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
       let valid = true;
 
-      // Check password pattern
       if (!passwordPattern.test(password)) {
         passwordError.classList.remove('d-none');
         valid = false;
@@ -202,7 +221,6 @@
         passwordError.classList.add('d-none');
       }
 
-      // Check password match
       if (password !== confirm) {
         matchError.classList.remove('d-none');
         valid = false;
@@ -210,16 +228,33 @@
         matchError.classList.add('d-none');
       }
 
-      // Check purok if user
       if (role === 'user' && purokSelect.value === "") {
         alert("Please select a Purok.");
         valid = false;
       }
 
-      if (!valid) e.preventDefault(); // Stop form submission
+      if (!valid) e.preventDefault();
     });
 
-    // ✅ Navbar script
+    // Password visibility toggle
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      icon.classList.toggle('bi-eye');
+      icon.classList.toggle('bi-eye-slash');
+    }
+
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      togglePasswordVisibility('passWord', 'togglePassword');
+    });
+
+    document.getElementById('toggleRePassword').addEventListener('click', () => {
+      togglePasswordVisibility('rePassword', 'toggleRePassword');
+    });
+
+    // ✅ Navbar behavior
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('nav');
     menuToggle.addEventListener('click', () => {
