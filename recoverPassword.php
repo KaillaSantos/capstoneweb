@@ -95,7 +95,7 @@ try {
                     Failed to send email. Mailer Error: {$mail->ErrorInfo}
                 </div>";
 }
-
+    }
 }
 ?>
 <!-- (keep your existing HTML form here) -->
@@ -125,3 +125,4 @@ try {
 </div>
 </body>
 </html>
+}
