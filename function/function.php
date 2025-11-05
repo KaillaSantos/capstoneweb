@@ -27,6 +27,11 @@ if (isset($_POST['submit'])) {
                 header("Location: ../login.php");
                 exit();
             }
+            if ($row['role'] === 'admin' && $row['status'] !== 'approved') {
+                $_SESSION['login_error'] = "Your account is not approved yet. Please wait for SuperAdmin verification.";
+                header("Location: ../login.php");
+                exit();
+            }
 
             // ✅ Save user details in session
             $_SESSION['userid'] = $row['userid'];
