@@ -56,7 +56,7 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-body">
                         <h2 class="text-center mb-4">Log In</h2>
                         <?php
