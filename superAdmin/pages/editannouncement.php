@@ -25,7 +25,7 @@ if (!isset($_GET['id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>E-Recycle - Edit Announcement</title>
-  <link rel="stylesheet" href="../../user-admin.css">
+  <link rel="stylesheet" href="../../../user-admin.css">
   <link rel="stylesheet" href="../assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="../assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/fontawesome-free-7.0.1-web/css/all.min.css">
