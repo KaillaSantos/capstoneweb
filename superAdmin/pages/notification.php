@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../includes/authSession.php';
 include_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../conn/dbconn.php';
+include __DIR__ . '/../includes/sidebar.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +12,6 @@ require_once __DIR__ . '/../../conn/dbconn.php';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Reward Redemption Notifications | E-Recycle</title>
-
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/capstoneweb/user-admin.css">
   <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
