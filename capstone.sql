@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2025 at 08:10 AM
+-- Generation Time: Nov 05, 2025 at 01:38 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,17 +36,19 @@ CREATE TABLE `account` (
   `passWord` varchar(20) NOT NULL,
   `role` varchar(10) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'pending',
-  `qr_code` varchar(255) DEFAULT NULL
+  `qr_code` varchar(255) DEFAULT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
-(25, NULL, 'Erecycle', 'erecycle@gmail.com', 0, 'M@timbubongAdm1n', 'superAdmin', 'approved', NULL),
-(36, '1759298796_pickup.jpg', 'Admin', 'Admin@gmail.com', 0, 'Samic5709', 'admin', 'approved', 'qr_36.png'),
-(37, '1759298796_pickup.jpg', 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 3, 'Bulacantot123', 'user', 'approved', 'qr_37.png');
+INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`, `reset_token`, `token_expiry`) VALUES
+(25, NULL, 'Erecycle', 'erecyclematimbubong@gmail.com', 0, 'erecycle2025', 'superAdmin', 'approved', NULL, NULL, NULL),
+(36, '1759298796_pickup.jpg', 'Admin', 'Admin@gmail.com', 0, 'Samic5709', 'admin', 'approved', 'qr_36.png', NULL, NULL),
+(37, '1759298796_pickup.jpg', 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 3, 'S@mic5709', 'user', 'approved', 'qr_37.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
