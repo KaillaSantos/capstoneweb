@@ -1,140 +1,204 @@
-
 <?php
-
+require_once __DIR__ . '/../../includes/authSession.php';
+include_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../conn/dbconn.php';
-require __DIR__ . '/../../function/function.php';
-require_once __DIR__ . '/../includes/passwordVerification.php';
-
-
-
-// ✅ Check session
-if (!isset($_SESSION['userid'])) {
-    echo "<script>alert('Unauthorized access. Please login.');
-    window.location.href='../login.php';</script>";
-    exit();
-}
-
-$userid = $_SESSION['userid'];
-
-// ✅ Fetch user info (profile)
-$query = "SELECT * FROM account WHERE userid = '$userid'";
-$run = mysqli_query($conn, $query);
-$user = mysqli_fetch_assoc($run);
-
-// ✅ Handle Approve/Reject request
-if (isset($_POST['update_status'])) {
-    $notif_id = intval($_POST['notif_id']);
-    $new_status = mysqli_real_escape_string($conn, $_POST['new_status']);
-
-    $updateQuery = "UPDATE notifications SET status='$new_status' WHERE id='$notif_id'";
-    if (mysqli_query($conn, $updateQuery)) {
-        echo "<script>alert('Status updated to $new_status');window.location.href='notification.php';</script>";
-    } else {
-        echo "<script>alert('Error updating status');</script>";
-    }
-}
-
-// ✅ Fetch notifications
-$notifications = getNotifications($conn, $userid);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Notification | E-Recycle</title>
+  <title>Reward Redemption Notifications | E-Recycle</title>
   <link rel="stylesheet" href="\capstoneweb\user-admin.css">
   <link rel="stylesheet" href="\capstoneweb\user-admin1.css">
+  <link rel="stylesheet" href="\capstoneweb\assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="\capstoneweb\assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
-  <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
-  <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">  
-  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
+  <link rel="icon" type="image/x-icon"
+    href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .reward-card {
+      border: 1px solid #ccc;
+      border-left: 6px solid #2c5e1a;
+      /* Sleek green accent */
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      background: #fff;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      transition: 0.2s ease-in-out;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .reward-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .reward-img {
+      width: 150px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .reward-body h5 {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .reward-body p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .badge-status {
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .reward-actions {
+      margin-top: 10px;
+    }
+
+    .reward-actions .btn {
+      width: 100%;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .reward-actions .btn-success {
+      background-color: #2c5e1a;
+      border: none;
+    }
+
+    .reward-actions .btn-success:hover {
+      background-color: #4ea42fff;
+    }
+  </style>
+
 </head>
 
 <body>
 
-   <!-- ===== SIDEBAR ===== -->
-  <?php include  '../includes/sidebar.php'; ?>
+  <!-- Sidebar -->
+  <?php include '../includes/sidebar.php'; ?>
 
-  <!-- ===== TOGGLE BUTTON ===== -->
+  <!-- Sidebar Toggle -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-  <!-- ===== CONTENT AREA ===== -->
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Main Content -->
   <div class="content" id="content">
-    
-    <!-- content header -->
-     <header class="dashboard-header">
-        <div class="header-left">
+
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-left">
         <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
         <div class="header-text">
-            <h1>E-Recycle Notification Page</h1>
-            <p>Municipality of San Ildefonso</p>
+          <h1>Reward Redemption Notifications</h1>
+          <p>Municipality of San Ildefonso</p>
         </div>
-        </div>
-
-        <div class="header-right">
+      </div>
+      <div class="header-right">
         <span class="date-display"><?php echo date("F j, Y"); ?></span>
-        </div>
+      </div>
     </header>
 
-    <?php if (!empty($notifications)): ?>
-      <?php foreach ($notifications as $notif): ?>
-        <div class="notification-card">
-          <p><strong>Request Date:</strong> <?= htmlspecialchars($notif['pickup_date']) ?> at <?= htmlspecialchars($notif['pickup_time']) ?></p>
-          <?php if (!empty($notif['image_path'])): ?>
-            <p><strong>Proof Image:</strong></p>
-            <img src="/capstoneweb/assets/pickups/<?= htmlspecialchars($notif['image_path']) ?>" alt="pickup image">
-          <?php endif; ?>
+    <!-- Reward Request Cards -->
+    <div class="row row-cols-1 row-cols-md-3 g-4 reward-container">
+      <?php
+      $records_per_page = 6;
+      $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+      $offset = ($page - 1) * $records_per_page;
 
-          <p><strong>Status:</strong> <span class="status"><?= htmlspecialchars($notif['status']) ?></span></p>
-          <p><em>Submitted: <?= htmlspecialchars($notif['created_at']) ?></em></p>
+      $sql = "
+        SELECT ur.id, ur.user_id, ur.reward_id, ur.status, ur.date_redeemed,
+               a.userName, r.product_name, r.product_img
+        FROM user_rewards ur
+        JOIN account a ON ur.user_id = a.userid
+        JOIN rewards r ON ur.reward_id = r.reward_id
+        WHERE ur.status = 'pending'
+        ORDER BY ur.date_redeemed DESC
+        LIMIT $records_per_page OFFSET $offset
+      ";
 
-          <!-- Approve/Reject buttons -->
-          <form method="POST" style="margin-top:10px;">
-            <input type="hidden" name="notif_id" value="<?= $notif['id'] ?>">
-            <button type="submit" name="update_status" value="1" class="btn btn-success btn-sm btn-action" 
-              onclick="this.form.new_status.value='Approved'">Approve</button>
-            <button type="submit" name="update_status" value="1" class="btn btn-danger btn-sm" 
-              onclick="this.form.new_status.value='Rejected'">Reject</button>
-            <input type="hidden" name="new_status" value="">
-          </form>
-        </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <p>No notifications yet.</p>
-    <?php endif; ?>
-  </div>
+      $run = mysqli_query($conn, $sql);
 
-  <!-- Verify Password Modal -->
-<div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="post" action="">
-        <div class="modal-header">
-          <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="verifyPassword" class="form-label">Enter Password</label>
-            <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
+      if (mysqli_num_rows($run) > 0) {
+        while ($rows = mysqli_fetch_assoc($run)) {
+          $rewardImage = !empty($rows['product_img'])
+            ? "../../uploads/productImg/" . $rows['product_img']
+            : "../../uploads/productImg/rewardPlaceholder.jpg";
+      ?>
+          <div class="col">
+            <div class="reward-card shadow-sm">
+              <img src="<?php echo $rewardImage; ?>" alt="Reward Image" class="reward-img">
+              <div class="reward-body flex-grow-1">
+                <h5><?= htmlspecialchars($rows['product_name']) ?></h5>
+                <p><i class="fa fa-user text-success"></i> <?= htmlspecialchars($rows['userName']) ?></p>
+                <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['date_redeemed'])) ?></p>
+                <span class="badge bg-warning text-dark badge-status"><?= ucfirst($rows['status']) ?></span>
+
+                <div class="reward-actions">
+                  <form action="../../function/function.php" method="POST" class="d-inline">
+                    <input type="hidden" name="redeem_id" value="<?= htmlspecialchars($rows['id']) ?>">
+                    <button type="submit" name="approve_reward" class="btn btn-success btn-sm">
+                      <i class="fa fa-check"></i> Confirm
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-        </div>
-      </form>
+      <?php
+        }
+      } else {
+        echo "<p class='text-center mt-4'>No pending reward requests yet.</p>";
+      }
+      ?>
     </div>
+
+    <!-- Pagination -->
+    <?php
+    $countQuery = "SELECT COUNT(*) AS total FROM user_rewards WHERE status = 'pending'";
+    $countResult = mysqli_query($conn, $countQuery);
+    $total_records = mysqli_fetch_assoc($countResult)['total'];
+    $total_pages = ceil($total_records / $records_per_page);
+
+    if ($total_pages > 1): ?>
+      <div class="d-flex justify-content-center mt-4 mb-4">
+        <nav>
+          <ul class="pagination">
+            <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+              <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+            </li>
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+              <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+              </li>
+            <?php endfor; ?>
+            <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+              <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    <?php endif; ?>
+
   </div>
-</div>
 
-<script src="../assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- toggle -->  
- <script src="/capstoneweb/assets/sidebarToggle.js"></script>
-
+  <script src="\capstoneweb/assets/sidebarToggle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

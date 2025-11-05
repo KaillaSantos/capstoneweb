@@ -22,6 +22,8 @@ require_once __DIR__ . '/../../conn/dbconn.php';
   <style>
     .reward-card {
       border: 1px solid #ccc;
+      border-left: 6px solid #2c5e1a;
+      /* Sleek green accent */
       border-radius: 8px;
       padding: 15px;
       margin: 15px 0;
@@ -29,13 +31,13 @@ require_once __DIR__ . '/../../conn/dbconn.php';
       display: flex;
       align-items: flex-start;
       gap: 15px;
-      height: 100%;
       transition: 0.2s ease-in-out;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
     .reward-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
     }
 
     .reward-img {
@@ -45,17 +47,42 @@ require_once __DIR__ . '/../../conn/dbconn.php';
       border-radius: 6px;
     }
 
-    .badge-status {
+    .reward-body h5 {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .reward-body p {
+      margin: 0;
       font-size: 0.9rem;
+    }
+
+    .badge-status {
+      font-size: 0.85rem;
       padding: 4px 10px;
       border-radius: 12px;
     }
 
+    .reward-actions {
+      margin-top: 10px;
+    }
+
     .reward-actions .btn {
-      margin-top: 5px;
       width: 100%;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .reward-actions .btn-success {
+      background-color: #2c5e1a;
+      border: none;
+    }
+
+    .reward-actions .btn-success:hover {
+      background-color: #4ea42fff;
     }
   </style>
+
 </head>
 
 <body>
@@ -110,27 +137,22 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         while ($rows = mysqli_fetch_assoc($run)) {
           $rewardImage = !empty($rows['product_img'])
             ? "../../uploads/productImg/" . $rows['product_img']
-            : "../../uploads/productImg/rewardPlaceholder.jpg"; // fallback placeholder
+            : "../../uploads/productImg/rewardPlaceholder.jpg";
       ?>
           <div class="col">
             <div class="reward-card shadow-sm">
               <img src="<?php echo $rewardImage; ?>" alt="Reward Image" class="reward-img">
-              <div class="reward-body">
+              <div class="reward-body flex-grow-1">
                 <h5><?= htmlspecialchars($rows['product_name']) ?></h5>
                 <p><i class="fa fa-user text-success"></i> <?= htmlspecialchars($rows['userName']) ?></p>
                 <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['date_redeemed'])) ?></p>
                 <span class="badge bg-warning text-dark badge-status"><?= ucfirst($rows['status']) ?></span>
-                <div class="reward-actions d-flex justify-content-between mt-2">
+
+                <div class="reward-actions">
                   <form action="../../function/function.php" method="POST" class="d-inline">
                     <input type="hidden" name="redeem_id" value="<?= htmlspecialchars($rows['id']) ?>">
                     <button type="submit" name="approve_reward" class="btn btn-success btn-sm">
-                      <i class="fa fa-check"></i> Accept
-                    </button>
-                  </form>
-                  <form action="../../function/function.php" method="POST" class="d-inline">
-                    <input type="hidden" name="redeem_id" value="<?= htmlspecialchars($rows['id']) ?>">
-                    <button type="submit" name="reject_reward" class="btn btn-danger btn-sm">
-                      <i class="fa fa-times"></i> Reject
+                      <i class="fa fa-check"></i> Confirm
                     </button>
                   </form>
                 </div>
@@ -174,7 +196,6 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 
   </div>
 
-  <!-- Sidebar Toggle Script -->
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
