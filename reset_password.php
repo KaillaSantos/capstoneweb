@@ -28,13 +28,15 @@ if ($token) {
             } elseif (strlen($new_password) < 6) {
                 $message = "<div class='alert alert-warning'>Password must be at least 6 characters.</div>";
             } else {
+                // ⚠️ Password not encrypted (plain text)
                 $hashed = $new_password;
                 $update = $conn->prepare("UPDATE account SET passWord = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?");
                 $update->bind_param("ss", $hashed, $email);
 
                 if ($update->execute()) {
-                    $message = "<div class='alert alert-success'>Password updated. Redirecting to login...</div>";
-                    header("refresh:3;url=login.php"); exit;
+                    $message = "<div class='alert alert-success'>Password updated successfully! Redirecting to login...</div>";
+                    header("refresh:3;url=login.php");
+                    exit;
                 } else {
                     $message = "<div class='alert alert-danger'>Error updating password. Try again.</div>";
                 }
@@ -47,27 +49,38 @@ if ($token) {
     $message = "<div class='alert alert-danger'>Missing or invalid reset link.</div>";
 }
 ?>
-<!-- (HTML form similar to previous; show message and form if valid) -->
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Reset Password</title>
-<link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css"></head>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password | E-Recycle</title>
+    <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css">
+</head>
 <body>
 <div class="container mt-5">
-  <div class="col-md-5 mx-auto">
-    <div class="card p-4">
-      <h3 class="mb-3">Reset Password</h3>
-      <?= $message; ?>
-      <?php if (isset($email) && time() <= $expiry && !isset($_POST['reset_password'])): ?>
-      <form method="post">
-        <div class="mb-3"><label>New Password</label><input type="password" name="new_password" class="form-control" minlength="6" required></div>
-        <div class="mb-3"><label>Confirm Password</label><input type="password" name="confirm_password" class="form-control" minlength="6" required></div>
-        <button class="btn btn-success w-100" name="reset_password">Update Password</button>
-      </form>
-      <?php endif; ?>
-      <p class="mt-3"><a href="login.php">Back to login</a></p>
+    <div class="col-md-5 mx-auto">
+        <div class="card p-4 shadow">
+            <h3 class="mb-3 text-center">Reset Password</h3>
+            <?= $message; ?>
+            
+            <?php if (isset($email) && time() <= $expiry && !isset($_POST['reset_password'])): ?>
+                <form method="post">
+                    <div class="mb-3">
+                        <label>New Password</label>
+                        <input type="password" name="new_password" class="form-control" minlength="6" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" minlength="6" required>
+                    </div>
+                    <button type="submit" name="reset_password" class="btn btn-success w-100">Update Password</button>
+                </form>
+            <?php endif; ?>
+
+            <p class="mt-3 text-center"><a href="login.php">Back to login</a></p>
+        </div>
     </div>
-  </div>
 </div>
 </body>
 </html>
