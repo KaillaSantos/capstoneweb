@@ -162,6 +162,8 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
                   <?php 
                   while ($user = mysqli_fetch_assoc($resultTopUsers)) {
                       echo "<li><span>{$user['userName']}</span><span>⭐ {$user['total_contribution']}</span></li>";
+                  } else {
+                    echo "No Top Record."
                   }
                   ?>
               </ul>
@@ -191,6 +193,8 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
               <?php 
               while ($purok = mysqli_fetch_assoc($resultTopPuroks)) {
                   echo "<li><span>Purok {$purok['purok']}</span><span>⭐ {$purok['total_contribution']}</span></li>";
+              } else {
+                echo "No Top Record."
               }
               ?>
           </ul>
