@@ -231,7 +231,6 @@ $userid = $_SESSION['userid'];
       .cancel-btn {
         width: 50%;
         max-width: 320px;
-        padding-right: 40px;
       }
 
       #toggleSidebar {
