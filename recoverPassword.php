@@ -150,8 +150,6 @@ try {
   </div>
 
   <script>
-
-  // nav toggle
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('nav');
 
@@ -174,7 +172,7 @@ try {
     const header = document.querySelector('header');
     if (window.scrollY > 50) header.classList.add('scrolled');
     else header.classList.remove('scrolled');
-
-    </script>
+  });
+</script>
 </body>
 </html>
