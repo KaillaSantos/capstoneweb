@@ -67,7 +67,7 @@ if ($token) {
     .password-wrapper i {
       position: absolute;
       right: 10px;
-      top: 50%;
+      padding-top: 20px;
       transform: translateY(-50%);
       cursor: pointer;
       color: #6c757d;
