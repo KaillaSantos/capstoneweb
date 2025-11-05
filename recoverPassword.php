@@ -99,29 +99,54 @@ try {
 }
 ?>
 <!-- (keep your existing HTML form here) -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Recover Password | E-Recycle</title>
-<link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css">
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Recover Password | E-Recycle</title>
+  <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css">
+  <link rel="icon" type="image/x-icon" href="assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">  
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="Landing.css">
+  <link rel="stylesheet" href="assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/bootstrap-icons-1.13.1/bootstrap-icons.css">  
+
 </head>
 <body>
-<div class="container mt-5">
-  <div class="col-md-5 mx-auto">
-    <div class="card p-4">
-      <h3 class="mb-3">Recover Password</h3>
-      <?= $message; ?>
-      <form method="post">
-        <div class="mb-3">
-          <label>Email</label>
-          <input type="email" name="email" class="form-control" required placeholder="you@example.com">
-        </div>
-        <button class="btn btn-success w-100" name="find_email">Send Reset Link</button>
-      </form>
-      <p class="mt-3"><a href="login.php">Back to login</a></p>
+  <header>
+    <a href="test.php" class="logo">
+        <img src="assets/logo_matimbubong.jpeg" alt=""> E-Recycle
+    </a>
+
+    <div class="menu-toggle">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <nav>
+        <a href="index.php#home">Home</a>
+        <a href="index.php#front">Barangay</a>
+        <a href="index.php#services">Services</a>
+        <a href="index.php#vision-mission">Vision & Mission</a>
+        <a href="index.php#contact">Contact</a>
+    </nav>
+  </header>
+  <div class="container mt-5">
+    <div class="col-md-5 mx-auto">
+      <div class="card p-4">
+        <h3 class="mb-3">Recover Password</h3>
+        <?= $message; ?>
+        <form method="post">
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required placeholder="you@example.com">
+          </div>
+          <button class="btn btn-success w-100" name="find_email">Send Reset Link</button>
+        </form>
+        <p class="mt-3"><a href="login.php">Back to login</a></p>
+      </div>
     </div>
   </div>
-</div>
 </body>
 </html>
