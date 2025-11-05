@@ -74,7 +74,7 @@ $rewards = $conn->query($rewardQuery);
           ?>
           <div class="col-md-4 mb-4">
             <div class="card h-100">
-              <img src="..\uploads\productImg<?php echo $reward['product_img']; ?>" class="card-img-top" alt="Reward">
+              <img src="..\..\uploads\productImg<?php echo $reward['product_img']; ?>" class="card-img-top" alt="Reward">
               <div class="card-body">
                 <h5 class="card-title"><?php echo $reward['product_name']; ?></h5>
                 <p class="card-text"><?php echo $reward['product_description']; ?></p>
