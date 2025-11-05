@@ -131,7 +131,7 @@ if ($userid) {
                     <a href="#" class="btn btn-small btn-success viewImageBtn" 
                        data-bs-toggle="modal" 
                        data-bs-target="#imageModal"
-                       data-img="../assets/proofs/<?= htmlspecialchars($rec['rec_img']) ?>" 
+                       data-img="../../assets/proofs/<?= htmlspecialchars($rec['rec_img']) ?>" 
                        data-name="<?= htmlspecialchars($rec['name']) ?>">
                        <i class="fa-solid fa-eye"></i>
                     </a>
