@@ -214,7 +214,8 @@ $userid = $_SESSION['userid'];
       }
 
       .profile-right {
-        width: 100%;
+        width: 80%;
+        max-width: 400px;
       }
 
       .form-buttons {
