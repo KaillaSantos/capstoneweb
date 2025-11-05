@@ -48,45 +48,54 @@ if (isset($_POST['find_email'])) {
         ";
 
         // send via PHPMailer + Gmail app password
-        $mail = new PHPMailer(true);
-        try {
-            $mail->SMTPDebug = 0; // set 2 for troubleshooting
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'sanchez.aquino.092@gmail.com';            // <-- replace
-            $mail->Password = 'vpna fpbs kwsl unll';      // <-- replace with app password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+$mail = new PHPMailer(true);
+try {
+    $mail->SMTPDebug = 0; // 2 = verbose debug output
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'sanchez.aquino.092@gmail.com';     // <-- your Gmail account
+    $mail->Password = 'vpna fpbs kwsl unll';              // <-- your Gmail app password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
 
-            $mail->setFrom('yourgmail@gmail.com', 'E-Recycle');
-            $mail->addAddress($email);
+    // --- Send to the user first ---
+    $mail->setFrom('sanchez.aquino.092@gmail.com', 'E-Recycle Support');
+    $mail->addAddress($email); // user’s email
+    $mail->isHTML(true);
+    $mail->Subject = "E-Recycle Password Reset Request";
+    $mail->Body = "
+        <p>Hello,</p>
+        <p>We received a request to reset your password for your E-Recycle account.</p>
+        <p>Please click the link below to reset your password:</p>
+        <p><a href='$resetLink'>$resetLink</a></p>
+        <p>This link will expire in 1 hour. If you did not request a password reset, please ignore this message.</p>
+    ";
+    $mail->send();
 
-            $mail->isHTML(true);
-            $mail->Subject = $subject;
-            $mail->Body    = $body;
-
-            $mail->send();
-
-            // optional admin notification
-            try {
-                $adminEmail = 'erecyclematimbubong@gmail.com'; // replace with real admin email
-                $mail->clearAddresses();
-                $mail->addAddress($adminEmail);
-                $mail->Subject = "Password reset requested for $email";
-                $mail->Body = "<p>User <strong>$email</strong> requested a password reset.</p>";
-                $mail->send();
-            } catch (Exception $ex) {
-                // admin notification failed — nonfatal
-            }
-
-            $message = "<div class='alert alert-success'>Reset link sent to <strong>$email</strong>. Check your inbox.</div>";
-        } catch (Exception $e) {
-            $message = "<div class='alert alert-danger'>Failed to send email. Mailer Error: {$mail->ErrorInfo}</div>";
-        }
-    } else {
-        $message = "<div class='alert alert-danger'>Email not found in our system.</div>";
+    // --- Notify all admins and superAdmin ---
+    $adminQuery = $conn->query("SELECT email FROM account WHERE role IN ('admin', 'superAdmin')");
+    while ($admin = $adminQuery->fetch_assoc()) {
+        $mail->clearAddresses();
+        $mail->addAddress($admin['email']);
+        $mail->Subject = "Password Reset Requested for $email";
+        $mail->Body = "
+            <p>User <strong>$email</strong> requested a password reset.</p>
+            <p>If this was unexpected, please verify the user activity in your admin dashboard.</p>
+        ";
+        $mail->send();
     }
+
+    $message = "<div class='alert alert-success'>
+                    Reset link sent to <strong>$email</strong>. Admins notified as well.
+                </div>";
+
+} catch (Exception $e) {
+    $message = "<div class='alert alert-danger'>
+                    Failed to send email. Mailer Error: {$mail->ErrorInfo}
+                </div>";
+}
+
 }
 ?>
 <!-- (keep your existing HTML form here) -->
