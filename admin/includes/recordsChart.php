@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const households = <?php echo json_encode($households); ?>;
 
   // Populate dropdown
-  select.innerHTML = '<option value="">Total Recyclables per Category</option>';
+  select.innerHTML = '<option value="">Total Recyclables</option>';
   households.forEach(h => {
     const opt = document.createElement("option");
     opt.value = h;
