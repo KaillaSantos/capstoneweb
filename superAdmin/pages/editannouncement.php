@@ -45,13 +45,13 @@ if (!isset($_GET['id'])) {
         .announce-panel {
             width: 100%;
             max-width: 500px;
-            padding: 40px 30px;
+            padding: 40px 0px;
             text-align: center;
             position: relative;
         }
 
         .announce-panel h2 {
-            margin-top: 200px;   /* push it down from the close button */
+            margin-top: 100px;   /* push it down from the close button */
             margin-bottom: 25px;
             font-size: 28px;
             font-weight: bold;
