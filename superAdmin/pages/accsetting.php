@@ -126,7 +126,7 @@ $userid = $_SESSION['userid'];
     .toggle-password {
       position: absolute;
       right: 12px;
-      top: 50%;
+      padding-top:20px;
       transform: translateY(-50%);
       cursor: pointer;
       color: #666;
