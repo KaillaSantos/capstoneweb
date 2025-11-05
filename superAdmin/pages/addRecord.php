@@ -81,7 +81,7 @@ $result = mysqli_query($conn, $query);
     </style>
 </head>
 <body>
-    <a href="/capstoneweb/admin/pages/record.php?userid=<?= $userid ?>" class="close-btn">✖</a>
+    <a href="/capstoneweb/superAdmin/pages/record.php?userid=<?= $userid ?>" class="close-btn">✖</a>
     <div class="redeem_panel">
         <h2>Redeem Materials</h2>
         <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">

@@ -39,8 +39,36 @@ if($result3) {
   $pending_notifications = 0;
 }
 
+// Top Performing Users
+$queryTopUsers = "
+    SELECT 
+        a.userid,
+        a.userName,
+        SUM(ri.quantity) AS total_contribution
+    FROM account a
+    JOIN records r ON a.userid = r.user_id
+    JOIN record_items ri ON r.id = ri.record_id
+    WHERE a.role = 'user'
+    GROUP BY a.userid
+    ORDER BY total_contribution DESC
+    LIMIT 5
+";
+$resultTopUsers = mysqli_query($conn, $queryTopUsers);
 
-// $pending_notifications = 3;
+// Top Performing Puroks
+$queryTopPuroks = "
+    SELECT 
+        a.purok,
+        SUM(ri.quantity) AS total_contribution
+    FROM account a
+    JOIN records r ON a.userid = r.user_id
+    JOIN record_items ri ON r.id = ri.record_id
+    GROUP BY a.purok
+    ORDER BY total_contribution DESC
+    LIMIT 5
+";
+$resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
+
 ?>
 
 <!DOCTYPE html>
@@ -115,8 +143,8 @@ if($result3) {
         <h2>Recycling Overview</h2>
 
         <!-- Dropdown -->
-        <div style="margin-bottom: 20px;">
-          <select id="householdSelect" class="form-select" style="max-width: 300px;">
+        <div>
+          <select id="householdSelect" class="form-select" style="max-width: 150px;">
             <option value="">Total Recycled</option>
           </select>
         </div>
@@ -128,14 +156,18 @@ if($result3) {
       </div>
       
       <div class="card">
-        <div class="ranking">
-          <h2>Top Performing Users</h2>
-          <ul>
-            <li><span>User 1</span><span>⭐ 231</span></li>
-            <li><span>User 3</span><span>⭐ 192</span></li>
-          </ul>
-        </div>
+          <div class="ranking">
+              <h2>Top Performing Users</h2>
+              <ul>
+                  <?php 
+                  while ($user = mysqli_fetch_assoc($resultTopUsers)) {
+                      echo "<li><span>{$user['userName']}</span><span>⭐ {$user['total_contribution']}</span></li>";
+                  }
+                  ?>
+              </ul>
+          </div>
       </div>
+
       
       <div class="card chart">
         <h2>Recycling Overview</h2>
@@ -154,15 +186,16 @@ if($result3) {
       </div>
 
       <div class="card ranking">
-        <h2>Top Performing Puroks</h2>
-        <ul>
-          <li><span>Purok 1</span><span>⭐ 320</span></li>
-          <li><span>Purok 3</span><span>⭐ 295</span></li>
-          <li><span>Purok 4</span><span>⭐ 270</span></li>
-          <li><span>Purok 2</span><span>⭐ 255</span></li>
-          <li><span>Purok 5</span><span>⭐ 245</span></li>
-        </ul>
+          <h2>Top Performing Puroks</h2>
+          <ul>
+              <?php 
+              while ($purok = mysqli_fetch_assoc($resultTopPuroks)) {
+                  echo "<li><span>Purok {$purok['purok']}</span><span>⭐ {$purok['total_contribution']}</span></li>";
+              }
+              ?>
+          </ul>
       </div>
+
 
     </section>
 

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 05, 2025 at 01:38 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Nov 05, 2025 at 04:16 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -48,7 +48,8 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`, `reset_token`, `token_expiry`) VALUES
 (25, NULL, 'Erecycle', 'erecyclematimbubong@gmail.com', 0, 'erecycle2025', 'superAdmin', 'approved', NULL, NULL, NULL),
 (36, '1759298796_pickup.jpg', 'Admin', 'Admin@gmail.com', 0, 'Samic5709', 'admin', 'approved', 'qr_36.png', NULL, NULL),
-(37, '1759298796_pickup.jpg', 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 3, 'S@mic5709', 'user', 'approved', 'qr_37.png', NULL, NULL);
+(37, '1759298796_pickup.jpg', 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 3, 'S@mic5709', 'user', 'approved', 'qr_37.png', NULL, NULL),
+(38, NULL, 'Kailla Santos', 'kaillasantos.basc@gmail.com', 4, 'Kai04santos', 'user', 'approved', 'qr_38.png', '7cdc5f47a90526a43bd376b74aa642dd484abe224a909619ed253b0a186413b9', '2025-11-05 15:34:47');
 
 -- --------------------------------------------------------
 
@@ -100,7 +101,7 @@ CREATE TABLE `records` (
   `id` int(11) NOT NULL,
   `record_name` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `rec_img` varchar(100) NOT NULL,
+  `rec_img` varchar(100) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -109,7 +110,8 @@ CREATE TABLE `records` (
 --
 
 INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
-(40, 'Geb Sanchez', '2025-11-05', '1762325623_1757030543_1757030494_OIP.webp', 37);
+(40, 'Geb Sanchez', '2025-11-05', '1762325623_1757030543_1757030494_OIP.webp', 37),
+(42, 'Kailla Santos', '2025-11-05', NULL, 38);
 
 -- --------------------------------------------------------
 
@@ -130,7 +132,9 @@ CREATE TABLE `record_items` (
 --
 
 INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `unit`) VALUES
-(6, 40, 13, 15, 'kg');
+(6, 40, 13, 15, 'kg'),
+(7, 41, 13, 26, 'kg'),
+(8, 42, 13, 26, 'kg');
 
 -- --------------------------------------------------------
 
@@ -171,7 +175,8 @@ CREATE TABLE `rewards` (
 --
 
 INSERT INTO `rewards` (`reward_id`, `product_name`, `product_description`, `product_points`, `product_date`, `product_img`) VALUES
-(8, 'Kape ni wally Bayola', 'bigyan ng KOPIKO YAN!!!!', 15, '2025-11-04 16:00:00', 'Kopiko_BlancaTwinPack58g-Resized1_grande.jpeg');
+(8, 'Kape ni wally Bayola', 'bigyan ng KOPIKO YAN!!!!', 15, '2025-11-04 16:00:00', 'Kopiko_BlancaTwinPack58g-Resized1_grande.jpeg'),
+(9, 'Bigas', 'Jasmine Rice', 50, '2025-11-04 16:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -257,7 +262,7 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `announcement`
@@ -275,13 +280,13 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `record_items`
 --
 ALTER TABLE `record_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
@@ -293,7 +298,7 @@ ALTER TABLE `recyclable`
 -- AUTO_INCREMENT for table `rewards`
 --
 ALTER TABLE `rewards`
-  MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_rewards`
