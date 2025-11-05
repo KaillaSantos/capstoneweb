@@ -51,7 +51,7 @@ if (mysqli_num_rows($result) > 0) {
         }
 
         .reward-panel h2 {
-            margin-top: 200px;   /* push it down from the close button */
+            margin-top: 50px;   /* push it down from the close button */
             margin-bottom: 25px;
             font-size: 28px;
             font-weight: bold;
@@ -94,7 +94,7 @@ if (mysqli_num_rows($result) > 0) {
         .close-btn {
             position: absolute;
             top: 10px;
-            right: 15px;
+            right: 25px;
             font-size: 22px;
             z-index: 100; /* stays above */
             text-decoration: none;
@@ -135,7 +135,7 @@ if (mysqli_num_rows($result) > 0) {
             <!-- Show current image -->
             <?php if (!empty($reward['product_img'])): ?>
                 <label for="current_img">Current Image:</label>
-                <img src="/capstoneweb/productImg/<?= htmlspecialchars($reward['product_img']) ?>" 
+                <img src="/capstoneweb/uploads/productImg/<?= htmlspecialchars($reward['product_img']) ?>" 
                     alt="Reward Image" style="width:150px; height:auto; margin-bottom:10px; border: 2px solid black; border-radius: 8px;">
             <?php endif; ?>
 
