@@ -112,7 +112,7 @@ require_once __DIR__ . '/../../includes/authSession.php';
   </style>
 </head>
 <body>
-    <a href="/capstoneweb/superAdmin/pages/announcement.php?userid=<?=$userid?>" class="close-btn" aria-label="Close form">✖</a>
+    <a href="/capstoneweb/superAdmin/pages/reward.php?userid=<?=$userid?>" class="close-btn" aria-label="Close form">✖</a>
 
     <div class="announce-panel">
         <h2>Add New Reward</h2>
