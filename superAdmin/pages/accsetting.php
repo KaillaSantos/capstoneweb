@@ -218,6 +218,10 @@ $userid = $_SESSION['userid'];
         max-width: 400px;
       }
 
+      .form-group {
+        width: 70%;
+      }
+
       .form-buttons {
         flex-direction: column;
         align-items: center;
@@ -225,7 +229,7 @@ $userid = $_SESSION['userid'];
 
       .save-btn,
       .cancel-btn {
-        width: 90%;
+        width: 50%;
         max-width: 320px;
       }
 
@@ -298,13 +302,13 @@ if (isset($_GET['userid'])) {
               <input type="email" name="email" value="<?= $rows['email'] ?>" placeholder="Enter email">
             </div>
 
-            <div class="form-group position-relative">
+            <div class="form-group">
               <label for="password">Password:</label>
               <input type="password" id="password" name="passWord" value="<?= $rows['passWord'] ?>" placeholder="Enter password">
               <i class="fa-solid fa-eye toggle-password"></i>
             </div>
 
-            <div class="form-group position-relative">
+            <div class="form-group">
               <label for="repassword">Re-enter Password:</label>
               <input type="password" id="repassword" name="rePassword" placeholder="Re-enter password">
               <i class="fa-solid fa-eye toggle-password"></i>
