@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2025 at 04:40 AM
+-- Generation Time: Nov 05, 2025 at 08:10 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -44,7 +44,9 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
-(25, NULL, 'Erecycle', 'erecycle@gmail.com', 0, 'M@timbubongAdm1n', 'superAdmin', 'approved', NULL);
+(25, NULL, 'Erecycle', 'erecycle@gmail.com', 0, 'M@timbubongAdm1n', 'superAdmin', 'approved', NULL),
+(36, '1759298796_pickup.jpg', 'Admin', 'Admin@gmail.com', 0, 'Samic5709', 'admin', 'approved', 'qr_36.png'),
+(37, '1759298796_pickup.jpg', 'Geb Sanchez', 'sanchez.aquino.092@gmail.com', 3, 'Bulacantot123', 'user', 'approved', 'qr_37.png');
 
 -- --------------------------------------------------------
 
@@ -60,6 +62,14 @@ CREATE TABLE `announcement` (
   `announce_date` date NOT NULL,
   `announce_img` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `announcement`
+--
+
+INSERT INTO `announcement` (`announce_id`, `announce_name`, `announce_text`, `status`, `announce_date`, `announce_img`) VALUES
+(10, 'Announcement 1', 'Test CSS', 'Archived', '2025-11-05', '1184118.jpg'),
+(11, 'Si Eli tigang nanaman na Boang', 'Down bad chinese mofo', 'Posted', '2025-11-06', 'Screenshot 2025-11-04 211904.png');
 
 -- --------------------------------------------------------
 
@@ -92,6 +102,13 @@ CREATE TABLE `records` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `records`
+--
+
+INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
+(40, 'Geb Sanchez', '2025-11-05', '1762325623_1757030543_1757030494_OIP.webp', 37);
+
 -- --------------------------------------------------------
 
 --
@@ -106,6 +123,13 @@ CREATE TABLE `record_items` (
   `unit` varchar(10) NOT NULL DEFAULT 'kg'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `record_items`
+--
+
+INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `unit`) VALUES
+(6, 40, 13, 15, 'kg');
+
 -- --------------------------------------------------------
 
 --
@@ -117,6 +141,13 @@ CREATE TABLE `recyclable` (
   `RM_name` varchar(20) NOT NULL COMMENT '20',
   `RM_img` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `recyclable`
+--
+
+INSERT INTO `recyclable` (`id`, `RM_name`, `RM_img`) VALUES
+(13, 'Bakal', '1762324760_1761829012_1757030543_1757030494_OIP.webp');
 
 -- --------------------------------------------------------
 
@@ -133,6 +164,13 @@ CREATE TABLE `rewards` (
   `product_img` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `rewards`
+--
+
+INSERT INTO `rewards` (`reward_id`, `product_name`, `product_description`, `product_points`, `product_date`, `product_img`) VALUES
+(8, 'Kape ni wally Bayola', 'bigyan ng KOPIKO YAN!!!!', 15, '2025-11-04 16:00:00', 'Kopiko_BlancaTwinPack58g-Resized1_grande.jpeg');
+
 -- --------------------------------------------------------
 
 --
@@ -146,6 +184,13 @@ CREATE TABLE `user_rewards` (
   `status` varchar(50) DEFAULT 'Pending',
   `date_redeemed` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_rewards`
+--
+
+INSERT INTO `user_rewards` (`id`, `user_id`, `reward_id`, `status`, `date_redeemed`) VALUES
+(3, 37, 8, 'Pending', '2025-11-05 06:56:38');
 
 --
 -- Indexes for dumped tables
@@ -210,13 +255,13 @@ ALTER TABLE `user_rewards`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `announce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -228,31 +273,31 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `record_items`
 --
 ALTER TABLE `record_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
 --
 ALTER TABLE `recyclable`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `rewards`
 --
 ALTER TABLE `rewards`
-  MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `reward_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user_rewards`
 --
 ALTER TABLE `user_rewards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
