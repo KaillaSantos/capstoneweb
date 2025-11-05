@@ -31,7 +31,7 @@ $rewards = $conn->query($rewardQuery);
   <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="\capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png"> 
+  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link rel="stylesheet" href="\capstoneweb/user-admin.css">
   <link rel="stylesheet" href="\capstoneweb/user-admin1.css">
 </head>
@@ -60,6 +60,17 @@ $rewards = $conn->query($rewardQuery);
       </div>
     </header>
 
+    <?php
+    if (isset($_SESSION['success'])) {
+      echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+      unset($_SESSION['success']);
+    }
+    if (isset($_SESSION['error'])) {
+      echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+      unset($_SESSION['error']);
+    }
+    ?>
+
     <!--  Rewards Section -->
     <div class="container mt-4">
       <h3 class="mb-3">Available Rewards</h3>
@@ -68,9 +79,9 @@ $rewards = $conn->query($rewardQuery);
       <div class="row">
         <?php while ($reward = $rewards->fetch_assoc()): ?>
           <?php
-            $requiredPoints = $reward['product_points'];
-            $canRedeem = $totalKg >= $requiredPoints;
-            $progress = min(100, ($totalKg / $requiredPoints) * 100);
+          $requiredPoints = $reward['product_points'];
+          $canRedeem = $totalKg >= $requiredPoints;
+          $progress = min(100, ($totalKg / $requiredPoints) * 100);
           ?>
           <div class="col-md-4 mb-4">
             <div class="card h-100">
@@ -80,10 +91,10 @@ $rewards = $conn->query($rewardQuery);
                 <p class="card-text"><?php echo $reward['product_description']; ?></p>
                 <div class="progress mb-2">
                   <div class="progress-bar"
-                      role="progressbar"
-                      data-progress="<?php echo $progress; ?>"
-                      style="width: 0%"
-                      aria-valuemin="0" aria-valuemax="100">
+                    role="progressbar"
+                    data-progress="<?php echo $progress; ?>"
+                    style="width: 0%"
+                    aria-valuemin="0" aria-valuemax="100">
                   </div>
                 </div>
 
@@ -114,26 +125,26 @@ $rewards = $conn->query($rewardQuery);
         </thead>
         <tbody>
           <?php
-            $track = $conn->query("
+          $track = $conn->query("
               SELECT r.product_name, ur.status, ur.date_redeemed
               FROM user_rewards ur
               JOIN rewards r ON ur.reward_id = r.reward_id
               WHERE ur.user_id = '$user_id'
               ORDER BY ur.date_redeemed DESC
             ");
-            if ($track->num_rows > 0):
-              while ($row = $track->fetch_assoc()):
+          if ($track->num_rows > 0):
+            while ($row = $track->fetch_assoc()):
           ?>
-            <tr>
-              <td><?php echo $row['product_name']; ?></td>
-              <td><?php echo $row['status']; ?></td>
-              <td><?php echo date("F j, Y", strtotime($row['date_redeemed'])); ?></td>
-            </tr>
+              <tr>
+                <td><?php echo $row['product_name']; ?></td>
+                <td><?php echo $row['status']; ?></td>
+                <td><?php echo date("F j, Y", strtotime($row['date_redeemed'])); ?></td>
+              </tr>
           <?php
-              endwhile;
-            else:
-              echo "<tr><td colspan='3' class='text-center'>No redeemed rewards yet.</td></tr>";
-            endif;
+            endwhile;
+          else:
+            echo "<tr><td colspan='3' class='text-center'>No redeemed rewards yet.</td></tr>";
+          endif;
           ?>
         </tbody>
       </table>
@@ -165,23 +176,24 @@ $rewards = $conn->query($rewardQuery);
 
   <script src="../../assets/sidebarToggle.js"></script>
   <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const bars = document.querySelectorAll('.progress-bar');
+    document.addEventListener("DOMContentLoaded", function() {
+      const bars = document.querySelectorAll('.progress-bar');
 
-  bars.forEach(bar => {
-    const target = parseFloat(bar.getAttribute('data-progress')) || 0;
-    let current = 0;
+      bars.forEach(bar => {
+        const target = parseFloat(bar.getAttribute('data-progress')) || 0;
+        let current = 0;
 
-    const animate = setInterval(() => {
-      if (current >= target) {
-        clearInterval(animate);
-      } else {
-        current += 1; // Speed — increase for faster animation
-        bar.style.width = current + "%";
-      }
-    }, 10); // Interval speed (ms)
-  });
-});
-</script>
+        const animate = setInterval(() => {
+          if (current >= target) {
+            clearInterval(animate);
+          } else {
+            current += 1; // Speed — increase for faster animation
+            bar.style.width = current + "%";
+          }
+        }, 10); // Interval speed (ms)
+      });
+    });
+  </script>
 </body>
+
 </html>

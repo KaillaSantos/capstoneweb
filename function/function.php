@@ -703,7 +703,7 @@ if (isset($_POST['approve_reward'])) {
     // Role-based redirect path
     if ($role === 'admin') {
         header("Location: ../admin/pages/notification.php?userid={$userid}");
-    } elseif ($role === 'super_admin') {
+    } elseif ($role === 'superAdmin') {
         header("Location: ../superAdmin/pages/notification.php?userid={$userid}");
     } else {
         header("Location: ../login.php");
