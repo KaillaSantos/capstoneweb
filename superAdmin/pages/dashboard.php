@@ -203,7 +203,7 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
 
   <script src="/capstoneweb/assets/sidebarToggle.js"></script>
 
-  <!-- Verify Password Modal -->
+   <!-- Verify Password Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
