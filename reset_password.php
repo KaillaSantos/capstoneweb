@@ -93,7 +93,7 @@ if ($token) {
             <?php if (isset($email) && time() <= $expiry && !isset($_POST['reset_password'])): ?>
                 <form method="post">
                     <div class="mb-3">
-                        <label>New Password</label>
+                        <label class="form-label">New Password</label>
                         <input type="password" name="new_password" class="form-control" minlength="6" required>
                     </div>
                     <div class="mb-3">
