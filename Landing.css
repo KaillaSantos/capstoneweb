@@ -377,14 +377,6 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
 
   nav.active {
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: #4c8c2b;
-    text-align: center;
-    padding: 25px 0;
   }
 
   header .logo img {
@@ -400,50 +392,34 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
   /* HOME SECTION */
   .home {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 110px 7% 60px;
     text-align: center;
-    padding: 120px 7% 60px;
-    width: 100%;
   }
 
   .home-content {
     padding-right: 0;
-    width: 100%;
-    text-align: center;
   }
 
   .home-content h1 {
     font-size: 2rem;
-    line-height: 1.3;
   }
 
   .home-content h3 {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .home-content p {
-    font-size: 1rem;
-    margin-top: 5px;
+    font-size: 0.95rem;
   }
 
-  /* Center Buttons */
   .btn {
-    display: block;
-    width: 85%;
-    max-width: 260px;
-    margin: 12px auto;
-    text-align: center;
-  }
-
-  .home-img {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    width: 70%;
+    max-width: 250px;
+    margin: 10px auto;
   }
 
   .home-img img {
-    width: 75%;
+    width: 70%;
     max-width: 300px;
     margin-top: 30px;
   }
@@ -453,8 +429,7 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
   #services,
   #vision-mission,
   #contact {
-    padding: 60px 7%;
-    text-align: center;
+    padding: 60px 6%;
   }
 
   #services h2,
@@ -471,5 +446,4 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
     flex-direction: column;
   }
 }
-
 
