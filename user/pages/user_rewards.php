@@ -87,8 +87,8 @@ $rewards = $conn->query($rewardQuery);
             <div class="card h-100">
               <img src="..\..\uploads\productImg\<?php echo $reward['product_img']; ?>" class="card-img-top" alt="Reward">
               <div class="card-body">
-                <h5 class="card-title"><?php echo $reward['product_name']; ?></h5>
-                <p class="card-text"><?php echo $reward['product_description']; ?></p>
+                <h5 class="card-title" style="text-transform: capitalize;"><?php echo $reward['product_name']; ?></h5>
+                <p class="card-text" style="text-transform: capitalize;"><?php echo $reward['product_description']; ?></p>
                 <div class="progress mb-2">
                   <div class="progress-bar"
                     role="progressbar"
