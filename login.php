@@ -19,7 +19,7 @@
         #togglePassword {
             position: absolute;
             right: 15px;
-            top: 70%;
+            padding-top: 20px;
             transform: translateY(-50%);
             cursor: pointer;
             color: #6c757d;
