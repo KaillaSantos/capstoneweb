@@ -157,8 +157,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       if (mysqli_num_rows($run) > 0) {
         while ($rows = mysqli_fetch_assoc($run)) {
           $rewardImage = !empty($rows['product_img'])
-            ? "/../uploads/productImg/" . $rows['product_img']
-            : "/../uploads/productImg/rewardPlaceholder.jpg";
+            ? "../../uploads/productImg/" . $rows['product_img']
+            : "../../uploads/productImg/rewardPlaceholder.jpg";
       ?>
           <div class="col">
             <div class="reward-card shadow-sm">
