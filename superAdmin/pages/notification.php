@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../../includes/authSession.php';
 include_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../conn/dbconn.php';
-include __DIR__ . '/../includes/sidebar.php';
 
 ?>
 <!DOCTYPE html>
