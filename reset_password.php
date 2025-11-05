@@ -28,7 +28,7 @@ if ($token) {
             } elseif (strlen($new_password) < 6) {
                 $message = "<div class='alert alert-warning'>Password must be at least 6 characters.</div>";
             } else {
-                $hashed = password_hash($new_password, PASSWORD_DEFAULT);
+                $hashed = $new_password;
                 $update = $conn->prepare("UPDATE account SET passWord = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?");
                 $update->bind_param("ss", $hashed, $email);
 
