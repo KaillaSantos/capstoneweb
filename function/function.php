@@ -543,11 +543,11 @@ if (isset($_POST['submit_rewards'])) {
     if (!empty($_FILES['product_img']['name'])) {
         $filename = time() . "_" . basename($_FILES['product_img']['name']);
         $tempname = $_FILES['product_img']['tmp_name'];
-        $folder   = "../admin/productImg/" . $filename;
+        $folder   = "../productImg/" . $filename;
 
         // Create folder if not exists
-        if (!file_exists("../admin/productImg/")) {
-            mkdir("../admin/productImg/", 0777, true);
+        if (!file_exists("../productImg/")) {
+            mkdir("../productImg/", 0777, true);
         }
 
         // Move uploaded file
