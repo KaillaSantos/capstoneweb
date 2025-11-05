@@ -44,7 +44,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `userimg`, `userName`, `email`, `purok`, `passWord`, `role`, `status`, `qr_code`) VALUES
-(25, NULL, 'Erecycle', 'erecycle@gmail.com', 0, 'erecycleSuperAdmin25', 'superAdmin', 'approved', NULL);
+(25, NULL, 'Erecycle', 'erecycle@gmail.com', 0, 'M@timbubongAdm1n', 'superAdmin', 'approved', NULL);
 
 -- --------------------------------------------------------
 
