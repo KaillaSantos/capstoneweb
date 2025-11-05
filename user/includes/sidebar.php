@@ -26,7 +26,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <a href="/capstoneweb/user/pages/user_recyclables.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_recyclables.php') ? 'active' : '' ?>"><i class="fas fa-recycle"></i><span class="link-text"> Recyclables</span></a>
     <a href="/capstoneweb/user/pages/user_rewards.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_rewards.php') ? 'active' : '' ?>"><i class="fa-solid fa-award"></i><span class="link-text"> Reward</span></a>
     <a href="/capstoneweb/user/pages/user_notification.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_notification.php') ? 'active' : '' ?>"><i class="fas fa-exclamation-circle"></i><span class="link-text"> Notification</span></a>
-    <a href="#" data-bs-toggle="modal" data-bs-target="#verifyPasswordModal" class="<?= ($current_page == 'user_accsettings.php') ? 'active' : '' ?>">
+    <a href="#" data-bs-toggle="modal" data-bs-target="#verifyPasswordModal" class="<?= ($current_page == 'user_accsetting.php') ? 'active' : '' ?>">
       <i class="fa-solid fa-gears"></i> <span class="link-text"> Account Settings </span>
     </a>
     <a href="/capstoneweb/user/function/logout.php"><i class="fas fa-door-open"></i><span class="link-text"> Logout </span></a>
