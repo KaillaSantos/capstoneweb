@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 if (isset($_POST['verify_submit'])) {
   $password = $_POST['verify_password'];
   $userid = $_SESSION['userid'] ?? null;
-  $redirect = $_POST['redirect'] ?? '/capstoneweb/admin/pages/accsetting.php';
+  $redirect = $_POST['redirect'] ?? '/capstoneweb/superAdmin/pages/accsetting.php';
 
   if (!$userid) {
     echo "<script>alert('Session expired. Please login again.');
