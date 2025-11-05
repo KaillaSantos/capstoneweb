@@ -126,7 +126,7 @@ $userid = $_SESSION['userid'];
     .toggle-password {
       position: absolute;
       right: 12px;
-      padding-top:20px;
+      padding-top:40px;
       transform: translateY(-50%);
       cursor: pointer;
       color: #666;
@@ -185,7 +185,7 @@ $userid = $_SESSION['userid'];
 
       .profile-right {
         width: 100%;
-        max-width: 400px;
+        /* max-width: 400px; */
       }
 
       .form-buttons {
