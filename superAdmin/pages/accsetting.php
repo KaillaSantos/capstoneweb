@@ -181,10 +181,11 @@ $userid = $_SESSION['userid'];
         flex-direction: column;
         align-items: center;
         text-align: center;
+        max-width: 380px;
       }
 
       .profile-right {
-        width: 100%;
+        width: 80%;
         /* max-width: 400px; */
       }
 
