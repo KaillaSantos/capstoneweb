@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
@@ -171,24 +168,16 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
                       echo "<li>No data available</li>";
                   }
                   ?>
-                </ul>
+              </ul>
           </div>
       </div>
 
       
       <div class="card chart">
         <h2>Recycling Overview</h2>
-        
-        <!-- Dropdown -->
-        <div style="margin-bottom: 20px;">
-          <select id="householdSelect" class="form-select" style="max-width: 300px;">
-            <option value="">Total Recycled</option>
-          </select>
-        </div>
-        
-        <!-- Chart -->
-        <div class="chart-wrapper" style="margin-top: 20px;">
-          <canvas id="recordChart"></canvas>
+
+        <div class="chart-wrapper">
+          <canvas id="purokChart"><?php require_once __DIR__ . '/../includes/purokChart.php'; ?></canvas>
         </div>
       </div>
 
@@ -213,8 +202,6 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
   </div>
 
   <script src="/capstoneweb/assets/sidebarToggle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
 
   <!-- Verify Password Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
