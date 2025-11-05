@@ -354,11 +354,17 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
 }
 
 /* ===========================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (Mobile)
 =========================== */
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
   header {
-    padding: 10px 5%;
+    padding: 10px 20px;
   }
 
   .menu-toggle {
@@ -369,20 +375,88 @@ nav.active a:nth-child(5) { animation-delay: 0.5s; }
     display: none;
   }
 
+  nav.active {
+    display: flex;
+  }
+
   header .logo img {
     width: 50px;
     height: 50px;
+    margin-right: 8px;
   }
 
+  header .logo {
+    font-size: 1.1rem;
+  }
+
+  /* HOME SECTION */
   .home {
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 130px 8% 70px;
     text-align: center;
-    padding: 100px 8%;
+    background: linear-gradient(135deg, #e6f7f4, #ffffff);
+  }
+
+  .home-content {
+    width: 100%;
+    max-width: 380px;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .home-content h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .home-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .home-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+  }
+
+  .btn {
+    width: 80%;
+    max-width: 260px;
+    margin: 8px auto;
+    display: block;
+  }
+
+  .home-img {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
   }
 
   .home-img img {
-    width: 80%;
-    margin-top: 20px;
+    width: 70%;
+    max-width: 280px;
+    border-radius: 20px;
+  }
+
+  /* OTHER SECTIONS */
+  #front,
+  #services,
+  #vision-mission,
+  #contact {
+    padding: 60px 6%;
+  }
+
+  #services h2,
+  #front h2,
+  #vision-mission h2 {
+    font-size: 1.7rem;
+  }
+
+  .services-container {
+    grid-template-columns: 1fr;
   }
 
   .vm-container {

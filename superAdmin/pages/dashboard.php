@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
@@ -160,11 +163,15 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
               <h2>Top Performing Users</h2>
               <ul>
                   <?php 
-                  while ($user = mysqli_fetch_assoc($resultTopUsers)) {
-                      echo "<li><span>{$user['userName']}</span><span>⭐ {$user['total_contribution']}</span></li>";
+                  if ($resultTopUsers && mysqli_num_rows($resultTopUsers) > 0) {
+                      while ($user = mysqli_fetch_assoc($resultTopUsers)) {
+                          echo "<li><span>{$user['userName']}</span><span>⭐ {$user['total_contribution']}</span></li>";
+                      }
+                  } else {
+                      echo "<li>No data available</li>";
                   }
                   ?>
-              </ul>
+                </ul>
           </div>
       </div>
 
@@ -189,8 +196,12 @@ $resultTopPuroks = mysqli_query($conn, $queryTopPuroks);
           <h2>Top Performing Puroks</h2>
           <ul>
               <?php 
-              while ($purok = mysqli_fetch_assoc($resultTopPuroks)) {
+              if($resultTopPuroks && mysqli_num_rows($resultTopPuroks) > 0) {
+                while ($purok = mysqli_fetch_assoc($resultTopPuroks)) {
                   echo "<li><span>Purok {$purok['purok']}</span><span>⭐ {$purok['total_contribution']}</span></li>";
+                }
+              } else {
+                echo "<li>No data available</li>";
               }
               ?>
           </ul>
