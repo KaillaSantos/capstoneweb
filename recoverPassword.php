@@ -5,11 +5,20 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer-master/src/Exception.php';
+require 'PHPMailer-master/src/PHPMailer.php';
+require 'PHPMailer-master/src/SMTP.php';
+
 $message = "";
 
 // --- Step 1: Check if user submitted the email ---
 if (isset($_POST['find_email'])) {
     $email = trim($_POST['email']);
+
+    // Check if email exists in the account table
     $query = "SELECT * FROM account WHERE email = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $email);
@@ -17,41 +26,69 @@ if (isset($_POST['find_email'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Generate a secure token and expiry (1 hour)
+        // Generate secure token and expiry (1 hour)
         $token = bin2hex(random_bytes(50));
         $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-        // Store token in database
+        // Store token and expiry in database
         $update = $conn->prepare("UPDATE account SET reset_token = ?, token_expiry = ? WHERE email = ?");
         $update->bind_param("sss", $token, $expiry, $email);
         $update->execute();
 
-        // Create password reset link
+        // Password reset link
         $resetLink = "http://localhost/capstoneweb/reset_password.php?token=" . $token;
 
         // Email content
         $subject = "E-Recycle Password Reset Request";
         $body = "
             <p>Hello,</p>
-            <p>We received a request to reset your password for your E-Recycle account.</p>
+            <p>We received a request to reset your password for your <strong>E-Recycle</strong> account.</p>
             <p>Please click the link below to reset your password:</p>
             <p><a href='$resetLink'>$resetLink</a></p>
-            <p>This link will expire in 1 hour. If you did not request a password reset, please ignore this message.</p>
+            <p>This link will expire in 1 hour. If you did not request this, please ignore this email.</p>
+            <br>
+            <p>— E-Recycle Team</p>
         ";
 
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: E-Recycle <no-reply@erecycle.com>" . "\r\n";
+        // --- Send Email using PHPMailer ---
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com'; // Use Gmail SMTP
+            $mail->SMTPAuth = true;
+            $mail->Username = 'yourgmail@gmail.com'; // Replace with your Gmail
+            $mail->Password = 'your_app_password';   // Use Gmail App Password
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-        // Send email
-        if (mail($email, $subject, $body, $headers)) {
+            $mail->setFrom('no-reply@erecycle.com', 'E-Recycle');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+
+            $mail->send();
+
+            // --- Optional: Notify the Admin ---
+            $adminEmail = "admin@erecycle.com"; // Replace with real admin email
+            $adminSubject = "Password Reset Requested";
+            $adminBody = "
+                <p>User with email <strong>$email</strong> requested a password reset on E-Recycle.</p>
+            ";
+
+            $mail->clearAddresses();
+            $mail->addAddress($adminEmail);
+            $mail->Subject = $adminSubject;
+            $mail->Body = $adminBody;
+            $mail->send();
+
             $message = "<div class='alert alert-success'>
                             Password reset link sent to <strong>$email</strong>. 
                             Please check your inbox.
                         </div>";
-        } else {
+        } catch (Exception $e) {
             $message = "<div class='alert alert-danger'>
-                            Failed to send email. Please try again later.
+                            Failed to send email. Mailer Error: {$mail->ErrorInfo}
                         </div>";
         }
     } else {
@@ -99,7 +136,6 @@ if (isset($_POST['find_email'])) {
                         <h3 class="text-center mb-4">Recover Password</h3>
                         <?= $message; ?>
 
-                        <!-- Step 1: Enter Email -->
                         <form method="post">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Enter your registered email</label>
