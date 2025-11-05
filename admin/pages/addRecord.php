@@ -93,7 +93,7 @@ $result = mysqli_query($conn, $query);
                     <option value="">-- Select Household --</option>
                     <?php
                     // Fetch only non-admin users
-                    $userQuery = "SELECT userid, userName FROM account WHERE role != 'admin', 'superAdmin' ORDER BY userName ASC";
+                    $userQuery = "SELECT userid, userName FROM account WHERE role != 'admin' ORDER BY userName ASC";
                     $userResult = mysqli_query($conn, $userQuery);
                     while ($u = mysqli_fetch_assoc($userResult)) {
                         echo '<option value="' . $u['userid'] . '" data-name="' . htmlspecialchars($u['userName']) . '">' 
