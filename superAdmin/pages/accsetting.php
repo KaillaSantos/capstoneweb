@@ -74,6 +74,9 @@ $userid = $_SESSION['userid'];
 
     .profile-card {
       display: flex;
+      flex-direction: row; /* ✅ Two-column layout by default */
+      align-items: flex-start;
+      justify-content: center;
       flex-wrap: wrap;
       background: #fff;
       border-radius: 10px;
@@ -81,16 +84,16 @@ $userid = $_SESSION['userid'];
       max-width: 950px;
       width: 100%;
       padding: 25px;
-      gap: 25px;
-      justify-content: center;
+      gap: 40px;
     }
 
+
     /* === Left (Profile Image) === */
-      .profile-left {
+     .profile-left {
       flex: 1;
-      min-width: 220px;
+      min-width: 250px;
+      max-width: 300px; /* prevent it from getting too wide */
       text-align: center;
-      justify-content: center;
     }
 
     .profile-img-wrapper {
@@ -120,11 +123,12 @@ $userid = $_SESSION['userid'];
     }
 
     /* === Right (Form Fields) === */
+    
     .profile-right {
       flex: 2;
-      min-width: 280px;
+      min-width: 400px;
     }
-
+    
     .form-group {
       margin-bottom: 15px;
       position: relative;
