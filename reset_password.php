@@ -82,7 +82,7 @@ if ($token) {
         <a href="index.php#vision-mission">Vision & Mission</a>
         <a href="index.php#contact">Contact</a>
     </nav>
-  </header>
+</header>
 
 <div class="container mt-5" style="padding:250px;">
     <div class="col-md-5 mx-auto">
@@ -94,11 +94,11 @@ if ($token) {
                 <form method="post">
                     <div class="mb-3">
                         <label class="form-label">New Password</label>
-                        <input type="password" name="new_password" class="form-control" minlength="6" required>
+                        <input type="password" name="new_password" class="form-control" minlength="8" required>
                     </div>
                     <div class="mb-3">
                         <label>Confirm Password</label>
-                        <input type="password" name="confirm_password" class="form-control" minlength="6" required>
+                        <input type="password" name="confirm_password" class="form-control" minlength="8" required>
                     </div>
                     <button type="submit" name="reset_password" class="btn btn-success w-100">Update Password</button>
                 </form>

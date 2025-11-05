@@ -139,7 +139,7 @@ try {
         <?= $message; ?>
         <form method="post">
           <div class="mb-3">
-            <label>Email</label>
+            <label class="form-label">Email</label>
             <input type="email" name="email" class="form-control" required placeholder="you@example.com">
           </div>
           <button class="btn btn-success w-100" name="find_email">Send Reset Link</button>
