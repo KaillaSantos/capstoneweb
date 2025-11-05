@@ -229,8 +229,9 @@ $userid = $_SESSION['userid'];
 
       .save-btn,
       .cancel-btn {
-        width: 60%;
+        width: 50%;
         max-width: 320px;
+        padding-right: 40px;
       }
 
       #toggleSidebar {
