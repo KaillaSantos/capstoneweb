@@ -134,8 +134,8 @@ try {
   </header>
   <div class="container mt-5" style="padding-top:250px">
     <div class="col-md-5 mx-auto">
-      <div class="card shadow" style="padding:35px">
-        <h3 class="mb-3" style="align-content:center;">Recover Password</h3>
+      <div class="card shadow" style="padding:35px;">
+        <h3 class="mb-3 text-center" >Recover Password</h3>
         <?= $message; ?>
         <form method="post">
           <div class="mb-3">
@@ -144,7 +144,7 @@ try {
           </div>
           <button class="btn btn-success w-100" name="find_email">Send Reset Link</button>
         </form>
-        <p class="mt-3"><a href="login.php">Back to login</a></p>
+        <p class="mt-3 text-center"><a href="login.php">Back to login</a></p>
       </div>
     </div>
   </div>
