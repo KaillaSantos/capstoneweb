@@ -132,7 +132,7 @@ try {
         <a href="index.php#contact">Contact</a>
     </nav>
   </header>
-  <div class="container mt-5" style="padding-top:500px">
+  <div class="container mt-5" style="padding-top:250px">
     <div class="col-md-5 mx-auto">
       <div class="card p-4">
         <h3 class="mb-3">Recover Password</h3>
