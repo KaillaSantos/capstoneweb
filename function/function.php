@@ -257,6 +257,24 @@ if (isset($_POST['adminsetting'])) {
 
 // new announcement
 if (isset($_POST['submit_announcement'])) {
+    echo "<pre>";
+        print_r($_FILES);
+        echo "</pre>";
+        exit;
+
+        Array
+(
+    [announce_img] => Array
+        (
+            [name] => myimage.png
+            [type] => image/png
+            [tmp_name] => /tmp/phpd2sdF3
+            [error] => 0
+            [size] => 15234
+        )
+)
+
+
     $announce_name = mysqli_real_escape_string($conn, $_POST['announce_name']);
     $announce_text = mysqli_real_escape_string($conn, $_POST['announce_text']);
     $announce_date = mysqli_real_escape_string($conn, $_POST['announce_date']);
