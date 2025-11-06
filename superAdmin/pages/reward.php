@@ -178,9 +178,14 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                     Read More »
                   </button>
                 </div>
-                <a href="/capstoneweb/admin/pages/editreward.php?id=<?= $rows['reward_id'] ?>" class="btn btn-warning btn-sm">
+               <button class="btn btn-success btn-sm edit-reward-btn"
+                  data-id="<?= $row['reward_id'] ?>"
+                  data-name="<?= htmlspecialchars($row['product_name']) ?>"
+                  data-description="<?= htmlspecialchars($row['product_description']) ?>"
+                  data-points="<?= htmlspecialchars($row['product_points']) ?>"
+                  data-img="<?= htmlspecialchars($row['product_img']) ?>">
                   <i class="fa fa-edit"></i> Edit
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -322,6 +327,126 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
   });
 </script>
 
+<!-- 🟩 Edit Reward Modal -->
+<div class="modal fade" id="editRewardModal" tabindex="-1" aria-labelledby="editRewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-bold" id="editRewardModalLabel">Edit Reward Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data" id="editRewardForm">
+          <input type="hidden" name="reward_id" id="edit_reward_id">
+
+          <div class="mb-3">
+            <label for="edit_product_name" class="form-label fw-semibold">Reward Title:</label>
+            <input type="text" class="form-control" id="edit_product_name" name="product_name" style="text-transform: capitalize;" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="edit_product_description" class="form-label fw-semibold">Reward Description:</label>
+            <textarea class="form-control" id="edit_product_description" name="product_description" rows="2" style="text-transform: capitalize;" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="edit_product_points" class="form-label fw-semibold">Points:</label>
+            <input type="number" class="form-control" id="edit_product_points" name="product_points" required>
+          </div>
+
+          <!-- Removed product_date field (auto today handled on add modal) -->
+
+          <div class="mb-3">
+            <label for="edit_product_img" class="form-label fw-semibold">Upload Image (optional):</label>
+            <input type="file" class="form-control" id="edit_product_img" name="product_img" accept="image/*">
+          </div>
+
+          <div class="mb-3" id="currentImageContainerReward" style="display: none;">
+            <label class="form-label fw-semibold">Current / Preview Image:</label><br>
+            <img id="currentImageReward" src="" alt="Reward Image"
+                 style="width:150px; height:auto; border:2px solid #2c5e1a; border-radius:8px; cursor:pointer;"
+                 title="Click to enlarge">
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" name="update_reward" class="btn btn-success fw-semibold">
+              <i class="fa fa-save"></i> Update Reward
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🟦 Image Preview Lightbox Modal -->
+<div class="modal fade" id="imagePreviewModalReward" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0 text-center">
+      <img id="largePreviewReward" src="" alt="Preview" class="img-fluid rounded shadow" style="max-height: 90vh;">
+    </div>
+  </div>
+</div>
+
+<script>
+// 🟩 Handle edit button click
+document.querySelectorAll('.edit-reward-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    const id = this.getAttribute('data-id');
+    const name = this.getAttribute('data-name');
+    const description = this.getAttribute('data-description');
+    const points = this.getAttribute('data-points');
+    const img = this.getAttribute('data-img');
+
+    document.getElementById('edit_reward_id').value = id;
+    document.getElementById('edit_product_name').value = name;
+    document.getElementById('edit_product_description').value = description;
+    document.getElementById('edit_product_points').value = points;
+
+    const imgContainer = document.getElementById('currentImageContainerReward');
+    const currentImage = document.getElementById('currentImageReward');
+
+    if (img && img.trim() !== '') {
+      currentImage.src = `/capstoneweb/uploads/productImg/${img}`;
+      imgContainer.style.display = 'block';
+    } else {
+      imgContainer.style.display = 'none';
+    }
+
+    document.getElementById('edit_product_img').value = '';
+
+    const modal = new bootstrap.Modal(document.getElementById('editRewardModal'));
+    modal.show();
+  });
+});
+
+// 🟨 Live preview when uploading new image
+document.getElementById('edit_product_img').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const imgContainer = document.getElementById('currentImageContainerReward');
+  const currentImage = document.getElementById('currentImageReward');
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentImage.src = e.target.result;
+      imgContainer.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    imgContainer.style.display = 'none';
+  }
+});
+
+// 🟦 Click to enlarge image
+document.getElementById('currentImageReward').addEventListener('click', function() {
+  const largePreview = document.getElementById('largePreviewReward');
+  largePreview.src = this.src;
+  const previewModal = new bootstrap.Modal(document.getElementById('imagePreviewModalReward'));
+  previewModal.show();
+});
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
