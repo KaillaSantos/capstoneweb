@@ -173,7 +173,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       <div class="container mt-4">
         <div class="row justify-content-center">
           <?php while ($rows = mysqli_fetch_assoc($result)) { ?>
-            <div class="col-md-4 mb-4">
+            <div>
               <div class="card text-center">
                 <div class="card-body">
                   <div class="eco-icon"><i class="fa-solid fa-leaf"></i></div>
