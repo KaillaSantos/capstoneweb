@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,9 @@ require_once __DIR__ . '/../../includes/fetchData.php';
       <h3 style="padding-left: 50px;"> </h3>
 
       <div class="d-flex gap-2">
-        <a href="\capstoneweb\superAdmin\pages\addRecord.php" class="btn btn-success" name="add"><i class="fa-solid fa-plus"></i> Add </a>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+          <i class="fa fa-plus"></i> Add Record
+        </button>
         <form action="\capstoneweb\function/function.php" method="post" class="d-inline">
           <button type="submit" name="reset_data" class="btn btn-danger" onclick="return confirm('Are you sure you want to reset all data? This cannot be undone.');"><i class="fa-solid fa-trash-can-arrow-up"></i> Reset </button>
         </form>
@@ -96,6 +99,21 @@ require_once __DIR__ . '/../../includes/fetchData.php';
               </div>
             </th>
 
+            <!-- Purok -->
+            <th>
+              <div class="d-flex align-items-center justify-content-between">
+                <span>Purok</span>
+                <div class="d-flex flex-column ms-1">
+                  <a href="?sort=purok_asc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-up <?= ($sort == 'purok_asc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                  <a href="?sort=purok_desc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-down <?= ($sort == 'purok_desc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                </div>
+              </div>
+            </th>
+
             <!-- Category Columns with sorting -->
             <?php foreach ($categories as $catId => $catName): ?>
               <th>
@@ -123,10 +141,11 @@ require_once __DIR__ . '/../../includes/fetchData.php';
               <tr>
                 <td><?= $rec['date'] ?></td>
                 <td style="text-transform: capitalize;"><?= htmlspecialchars($rec['name']) ?></td>
+                <td><?= htmlspecialchars($rec['purok'] ?? '') ?></td>
                 <?php foreach ($categories as $catId => $catName): ?>
                   <?php
                   $item = $rec['items'][$catId];
-                  $display = $item['qty'] > 0 ? $item['qty'] . " " . htmlspecialchars($item['unit']) : "0";
+                  $display = $item['qty'] > 0 ? $item['qty'] . " " . htmlspecialchars($item['unit']) : "";
                   ?>
                   <td><?= $display ?></td>
                 <?php endforeach; ?>
@@ -188,7 +207,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
         <div class="modal-body text-center">
           <img id="modalImage" src="" alt="Record Image" class="img-fluid rounded">
         </div>
-
       </div>
     </div>
   </div>
@@ -209,7 +227,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
       });
     });
   </script>
-
 
   <!-- Verify Password Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
@@ -237,6 +254,153 @@ require_once __DIR__ . '/../../includes/fetchData.php';
 
   <!-- toggle -->
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
+
+  <!-- 🔹 Add Record Modal -->
+  <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="addRecordModalLabel">Add New Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form method="POST" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+          <div class="modal-body">
+            <!-- 🔸 Select Household -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="user_id" class="form-label">Select Household (User):</label>
+                <select id="userSelect" name="user_id" class="form-control" required>
+                  <option value="">-- Select Household --</option>
+                  <?php
+                  $userQuery = "SELECT userid, userName, purok 
+                                FROM account 
+                                WHERE role NOT IN ('admin', 'superAdmin') 
+                                ORDER BY userName ASC";
+                  $userResult = mysqli_query($conn, $userQuery);
+
+                  while ($user = mysqli_fetch_assoc($userResult)) {
+                      echo "<option value='{$user['userid']}' data-purok='" . htmlspecialchars($user['purok']) . "'>"
+                            . htmlspecialchars($user['userName']) .
+                          "</option>";
+                  }
+                  ?>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Purok</label>
+                <input type="text" id="purokField" name="purok" class="form-control" readonly placeholder="Select a user first">
+              </div>
+            </div>
+
+            <!-- 🔸 Date -->
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" name="date" class="form-control" required value="<?php echo date('Y-m-d'); ?>">
+            </div>
+
+            <!-- 🔸 Upload Proof Image -->
+            <div class="mb-3">
+              <label class="form-label">Upload Proof Image (optional)</label>
+              <input type="file" name="rec_img" class="form-control" accept="image/*">
+            </div>
+
+            <hr>
+
+            <!-- 🔸 Materials -->
+            <h6 class="mb-3">Recyclable Materials</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-success text-center">
+                  <tr>
+                    <th style="width: 10%;">Select</th>
+                    <th>Material</th>
+                    <th style="width: 25%;">Quantity</th>
+                    <th style="width: 25%;">Unit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  $recyclables = mysqli_query($conn, "SELECT * FROM recyclable");
+                  while ($row = mysqli_fetch_assoc($recyclables)) {
+                    $id = $row['id'];
+                    $name = htmlspecialchars($row['RM_name']);
+                    echo "
+                      <tr>
+                        <td class='text-center'>
+                          <input type='checkbox' class='material-checkbox' data-id='{$id}'>
+                        </td>
+                        <td>{$name}</td>
+                        <td class='input-cell' id='quantityCell_{$id}' style='display:none;'>
+                          <input type='number' step='0.01' min='0' 
+                            name='materials[{$id}][quantity]' 
+                            class='form-control' 
+                            placeholder='Enter quantity'>
+                        </td>
+                        <td class='input-cell' id='unitCell_{$id}' style='display:none;'>
+                          <select name='materials[{$id}][unit]' class='form-select'>
+                            <option value='kg'>kg</option>
+                            <option value='pcs'>pcs</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ";
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" name="submit_redeem" class="btn btn-success">Save Record</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<!-- 🔹 JavaScript -->
+  <script>
+    // ✅ Auto-fill purok field based on selected user
+    document.getElementById('userSelect').addEventListener('change', function() {
+      const selected = this.options[this.selectedIndex];
+      const purok = selected.getAttribute('data-purok') || '';
+      document.getElementById('purokField').value = purok;
+    });
+
+    // ✅ Toggle material input fields visibility when checkbox is selected
+    document.querySelectorAll('.material-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const id = this.getAttribute('data-id');
+        const qtyCell = document.getElementById('quantityCell_' + id);
+        const unitCell = document.getElementById('unitCell_' + id);
+
+        if (this.checked) {
+          qtyCell.style.display = 'table-cell';
+          unitCell.style.display = 'table-cell';
+          qtyCell.classList.add('fade-in');
+          unitCell.classList.add('fade-in');
+        } else {
+          qtyCell.style.display = 'none';
+          unitCell.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+  <!-- 🔹 Optional smooth fade-in animation -->
+  <style>
+    .fade-in {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
 
 
 </body>
