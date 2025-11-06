@@ -179,13 +179,14 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                   </button>
                 </div>
                 <button class="btn btn-warning btn-sm edit-reward-btn"
-                  data-id="<?= $row['reward_id'] ?>"
-                  data-name="<?= htmlspecialchars($row['product_name']) ?>"
-                  data-description="<?= htmlspecialchars($row['product_description']) ?>"
-                  data-points="<?= htmlspecialchars($row['product_points']) ?>"
-                  data-img="<?= htmlspecialchars($row['product_img']) ?>">
+                  data-id="<?= $rows['reward_id'] ?>"
+                  data-name="<?= htmlspecialchars($rows['product_name']) ?>"
+                  data-description="<?= htmlspecialchars($rows['product_description']) ?>"
+                  data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                  data-img="<?= htmlspecialchars($rows['product_img']) ?>">
                   <i class="fa fa-edit"></i> Edit
                 </button>
+
               </div>
             </div>
           </div>
