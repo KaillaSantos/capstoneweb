@@ -18,119 +18,143 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* === Recyclables Container (3 per row layout) === */
-.container .row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* three cards per row */
-  gap: 30px;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
+    /* === Recyclables Container (2 per row layout) === */
+    .container .row {
+      display: flex;
+      flex-wrap: wrap;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+      gap: 30px;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
 
-/* === Card Styling (modern + eco lively look) === */
-.card {
-  background: linear-gradient(145deg, #ffffff, #f0f8f2);
-  border-radius: 20px;
-  border: none;
-  box-shadow: 0 6px 15px rgba(44, 94, 26, 0.15);
-  transition: all 0.3s ease;
-  overflow: hidden;
-  text-align: center;
-  padding: 25px 20px;
-  position: relative;
-  cursor: pointer;
-}
+    /* === Recyclable Card (livelier look) === */
+    .card {
+      flex: 1 1 calc(50% - 30px); /* 2 per row */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(145deg, #f5fff5, #eafbea);
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(44, 94, 26, 0.15);
+      padding: 30px 25px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      min-height: 360px;
+      cursor: pointer;
+    }
 
-/* decorative green bar on top */
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 6px;
-  width: 100%;
-  background: linear-gradient(90deg, #2c5e1a, #7cd957);
-  border-radius: 20px 20px 0 0;
-}
+    /* Hover animations */
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(44, 94, 26, 0.25);
+    }
 
-/* hover animation */
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(44, 94, 26, 0.25);
-  background: linear-gradient(145deg, #e9fbe9, #ffffff);
-}
+    /* Glowing border effect */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(120deg, #5cb85c, #c6f6c6, #5cb85c);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
 
-/* === Card Image === */
-.card-img {
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
-  margin: 15px auto;
-  transition: transform 0.3s ease;
-}
-.card:hover .card-img {
-  transform: scale(1.08);
-}
+    /* Floating bubble accent */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 130px;
+      height: 130px;
+      background: rgba(92, 184, 92, 0.1);
+      border-radius: 50%;
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
 
-/* === Card Title === */
-.card-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #2c5e1a;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
+    /* === Image === */
+    .card-img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 10px;
+      box-shadow: 0 5px 10px rgba(44, 94, 26, 0.1);
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-img {
+      transform: scale(1.08);
+    }
 
-/* === Card Text === */
-.card-body p {
-  font-size: 1rem;
-  color: #333;
-  background: #f5fbf5;
-  border-radius: 8px;
-  display: inline-block;
-  padding: 8px 16px;
-  margin-top: 10px;
-  transition: background 0.3s ease;
-}
-.card-body p i {
-  color: #2c5e1a;
-  margin-right: 8px;
-}
-.card:hover .card-body p {
-  background: #e0f7e0;
-}
+    /* === Card Title === */
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #2c5e1a;
+      margin-top: 15px;
+      z-index: 1;
+      text-transform: capitalize;
+    }
 
-/* === Fun icons in background === */
-.card::after {
-  content: "♻️";
-  font-size: 60px;
-  position: absolute;
-  bottom: 10px;
-  right: 15px;
-  opacity: 0.08;
-  pointer-events: none;
-}
+    /* === Card Text === */
+    .card-body p {
+      font-size: 1.05rem;
+      color: #333;
+      margin-top: 8px;
+      z-index: 1;
+    }
 
-/* === Responsive Design === */
-@media (max-width: 992px) {
-  .container .row {
-    grid-template-columns: repeat(2, 1fr); /* two per row for tablet */
-  }
-}
+    /* === Character Icon or Badge (optional visual mascot) === */
+    .card .eco-icon {
+      font-size: 2rem;
+      color: #5cb85c;
+      background: #e6f9e6;
+      padding: 12px;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(92, 184, 92, 0.2);
+      margin-bottom: 10px;
+      z-index: 1;
+    }
 
-@media (max-width: 768px) {
-  .container .row {
-    grid-template-columns: 1fr; /* stack vertically on small screens */
-  }
-  .card {
-    padding: 20px;
-  }
-  .card-img {
-    width: 120px;
-  }
-}
+    /* === Responsive Layout === */
+    @media (max-width: 992px) {
+      .card {
+        flex: 1 1 100%;
+      }
+    }
+    @media (max-width: 768px) {
+      .card {
+        padding: 25px 15px;
+        min-height: 300px;
+      }
+      .card-img {
+        width: 120px;
+        height: 120px;
+      }   
+      .card-title {
+        font-size: 1.3rem;
+      }
+    }
 
   </style>
 </head>
