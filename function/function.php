@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['signup'])) {
     $userName   = mysqli_real_escape_string($conn, $_POST['userName']);
     $email      = mysqli_real_escape_string($conn, $_POST['email']);
-    $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']); 
+    $passWord   = mysqli_real_escape_string($conn, $_POST['passWord']);
     $rePassword = mysqli_real_escape_string($conn, $_POST['rePassword']);
     $role       = mysqli_real_escape_string($conn, $_POST['role']);
     $purok      = isset($_POST['purok']) ? mysqli_real_escape_string($conn, $_POST['purok']) : null;
@@ -115,33 +115,33 @@ if (isset($_POST['signup'])) {
         $newUserId = $conn->insert_id;
 
         // Include QR code library
-require_once __DIR__ . '/../includes/phpqrcode/qrlib.php';
+        require_once __DIR__ . '/../includes/phpqrcode/qrlib.php';
 
-// Prepare directory for QR codes
-$qrDir = __DIR__ . '/../uploads/qrcodes/';
-if (!is_dir($qrDir)) {
-    mkdir($qrDir, 0777, true);
-}
+        // Prepare directory for QR codes
+        $qrDir = __DIR__ . '/../uploads/qrcodes/';
+        if (!is_dir($qrDir)) {
+            mkdir($qrDir, 0777, true);
+        }
 
-// ✅ Get your local IP so your phone can access localhost via Wi-Fi
-$localIP = getHostByName(getHostName());
+        // ✅ Get your local IP so your phone can access localhost via Wi-Fi
+        $localIP = getHostByName(getHostName());
 
-// ✅ Link that the QR will open when scanned
-$qrURL = "http://{$localIP}/capstoneweb/user/pages/view_user_records.php?userid=" . $newUserId;
+        // ✅ Link that the QR will open when scanned
+        $qrURL = "http://{$localIP}/capstoneweb/user/pages/view_user_records.php?userid=" . $newUserId;
 
-// Create QR code filename and path
-$qrFileName = "qr_" . $newUserId . ".png";
-$qrFilePath = $qrDir . $qrFileName;
+        // Create QR code filename and path
+        $qrFileName = "qr_" . $newUserId . ".png";
+        $qrFilePath = $qrDir . $qrFileName;
 
-// ✅ Generate QR code that links directly to the user’s records page
-QRcode::png($qrURL, $qrFilePath, QR_ECLEVEL_L, 5);
+        // ✅ Generate QR code that links directly to the user’s records page
+        QRcode::png($qrURL, $qrFilePath, QR_ECLEVEL_L, 5);
 
-// Save filename in database
-$updateQuery = "UPDATE account SET qr_code = ? WHERE userid = ?";
-$stmt = $conn->prepare($updateQuery);
-$stmt->bind_param("si", $qrFileName, $newUserId);
-$stmt->execute();
-$stmt->close();
+        // Save filename in database
+        $updateQuery = "UPDATE account SET qr_code = ? WHERE userid = ?";
+        $stmt = $conn->prepare($updateQuery);
+        $stmt->bind_param("si", $qrFileName, $newUserId);
+        $stmt->execute();
+        $stmt->close();
 
 
         // Success message
@@ -532,44 +532,61 @@ if (isset($_POST['submit_redeem'])) {
 }
 
 // submitting rewards to database
+// submitting rewards to database
 if (isset($_POST['submit_rewards'])) {
+    session_start(); // ensure session is started
+    $role = $_SESSION['role'] ?? null;
+    $userid = $_SESSION['userid'] ?? null;
+
+    if (!$role || !$userid) {
+        header("Location: ../login.php");
+        exit;
+    }
+
+    // Get inputs (HTML required ensures not empty)
     $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
     $product_description = mysqli_real_escape_string($conn, $_POST['product_description']);
-    $product_points = mysqli_real_escape_string($conn, $_POST['product_points']);
-    $product_date = mysqli_real_escape_string($conn, $_POST['product_date']);
+    $product_points = intval($_POST['product_points']);
+    $product_date = !empty($_POST['product_date']) ? $_POST['product_date'] : date('Y-m-d');
 
     // Handle image upload (optional)
     $product_img = "";
     if (!empty($_FILES['product_img']['name'])) {
         $filename = time() . "_" . basename($_FILES['product_img']['name']);
         $tempname = $_FILES['product_img']['tmp_name'];
-        $folder   = "../uploads/productImg/" . $filename;
+        $folder = "../uploads/productImg/" . $filename;
 
-        // Create folder if not exists
         if (!file_exists("../uploads/productImg/")) {
             mkdir("../uploads/productImg/", 0777, true);
         }
-
-        // Move uploaded file
-        if (move_uploaded_file($tempname, $folder)) {
-            $product_img = $filename;
-        }
+        move_uploaded_file($tempname, $folder);
+        $product_img = $filename;
     }
 
-    // Insert reward into database
+    // Insert into database
     $insert = "INSERT INTO rewards (product_name, product_description, product_points, product_date, product_img)
                VALUES ('$product_name', '$product_description', '$product_points', '$product_date', '$product_img')";
 
     if (mysqli_query($conn, $insert)) {
-        echo "<script>alert('Reward Added Successfully')</script>";
+        $_SESSION['reward_success'] = "Reward added successfully!";
     } else {
-        echo "<script>alert('Failed to add reward. Please try again.'); window.history.back();</script>";
+        $_SESSION['reward_errors'] = ["Failed to add reward. Please try again."];
+        error_log("Database error: " . mysqli_error($conn));
     }
 
-    $userid = $_SESSION['userid'] ?? 0;
-    header("Location:  ../admin/pages/reward.php?userid={$userid}");
-    exit();
+    // Role-based redirect
+    if ($role === 'admin') {
+        $redirect_url = "../admin/pages/reward.php?userid={$userid}";
+    } elseif ($role === 'superAdmin') {
+        $redirect_url = "../superAdmin/pages/reward.php?userid={$userid}";
+    } else {
+        $redirect_url = "../login.php";
+    }
+
+    header("Location: $redirect_url");
+    exit;
 }
+
 
 // Reset Button for rewards
 if (isset($_POST['reset_rewards'])) {
@@ -688,7 +705,7 @@ if (isset($_POST['superadmin_reject_user'])) {
 
 // Handle reward approval
 if (isset($_POST['approve_reward'])) {
-    $userid = intval($_POST['user_id']); 
+    $userid = intval($_POST['user_id']);
     $reward_id = intval($_POST['reward_id']);
     $role = $_SESSION['role'];
 

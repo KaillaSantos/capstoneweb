@@ -130,7 +130,7 @@ require_once __DIR__ . '/../../includes/authSession.php';
             <input type="number" class="form-control" id="product_points" name="product_points" placeholder="Enter points required" min="1" required aria-label="Points required">
 
             <label for="product_date">Date:</label>
-            <input type="date" class="form-control" id="product_date" name="product_date" required aria-label="Reward date">
+            <input type="date" class="form-control" id="product_date" name="product_date" aria-label="Reward date">
 
             <label for="product_img">Upload Image (optional):</label>
             <input type="file" class="form-control" id="product_img" name="product_img" accept="image/*" aria-label="Upload reward image">
