@@ -338,49 +338,67 @@ if (isset($_POST['add_material'])) {
 
 // add record
 if (isset($_POST['submit_redeem'])) {
+    // --- Get selected user ---
     $userid = mysqli_real_escape_string($conn, $_POST['user_id']);
-
-    // Fetch the username based on the selected user
-    $getUserQuery = "SELECT userName FROM account WHERE userid = '$userid'";
+    $getUserQuery = "SELECT userName, purok FROM account WHERE userid = '$userid'";
     $getUserResult = mysqli_query($conn, $getUserQuery);
     $userData = mysqli_fetch_assoc($getUserResult);
     $userName = mysqli_real_escape_string($conn, $userData['userName'] ?? 'Unknown');
+    $purok = mysqli_real_escape_string($conn, $userData['purok'] ?? '');
 
+    // --- Basic info ---
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
 
-    // Insert record into records table
-    $insertRecord = "INSERT INTO records (record_name, date, user_id)
-                     VALUES ('$userName', '$date', '$userid')";
-    mysqli_query($conn, $insertRecord) or die("Error inserting record: " . mysqli_error($conn));
+    // --- 1️⃣ Insert record first ---
+    $insertRecord = "INSERT INTO records (record_name, user_id, purok, date)
+                     VALUES ('$userName', '$userid', '$purok', '$date')";
+    $insertResult = mysqli_query($conn, $insertRecord);
+
+    if (!$insertResult) {
+        die("❌ Error inserting record: " . mysqli_error($conn));
+    }
+
     $record_id = mysqli_insert_id($conn);
 
-    // Optional: upload image
-    if (!empty($_FILES["rec_img"]["name"])) {
-        $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
-        $tempname = $_FILES["rec_img"]["tmp_name"];
-        $folder = "../assets/proofs/" . $filename;
-        if (move_uploaded_file($tempname, $folder)) {
-            mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
+    // --- 2️⃣ Handle file upload ---
+    if (isset($_FILES['rec_img']) && $_FILES['rec_img']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../assets/proofs/'; // Absolute path for reliability
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true); // create folder if it doesn't exist
+        }
+
+        $fileTmpPath = $_FILES['rec_img']['tmp_name'];
+        $fileName = time() . "_" . basename($_FILES['rec_img']['name']);
+        $targetPath = $uploadDir . $fileName;
+
+        if (move_uploaded_file($fileTmpPath, $targetPath)) {
+            // Save filename in DB
+            $fileNameDB = mysqli_real_escape_string($conn, $fileName);
+            $updateQuery = "UPDATE records SET rec_img = '$fileNameDB' WHERE id = $record_id";
+            mysqli_query($conn, $updateQuery);
+        } else {
+            echo "<script>alert('⚠️ Image upload failed. File could not be moved.');</script>";
         }
     }
 
-    // Insert recyclable materials
+    // --- 3️⃣ Insert recyclable materials ---
     foreach ($materials as $recyclable_id => $data) {
         if (!isset($data['quantity']) || trim($data['quantity']) === '') continue;
         $quantity = (float)$data['quantity'];
         $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
-        mysqli_query($conn, "INSERT INTO record_items (record_id, recyclable_id, quantity, unit)
-                             VALUES ($record_id, $recyclable_id, $quantity, '$unit')");
+        $insertItem = "INSERT INTO record_items (record_id, recyclable_id, quantity, unit)
+                       VALUES ($record_id, $recyclable_id, $quantity, '$unit')";
+        mysqli_query($conn, $insertItem);
     }
 
+    // --- ✅ Redirect ---
     echo "<script>
-        alert('Record saved successfully!');
+        alert('Record and image saved successfully!');
         window.location.href = '{$_SERVER['HTTP_REFERER']}';
     </script>";
     exit();
 }
-
 
 // Reset Button for records
 if (isset($_POST['reset_data'])) {
