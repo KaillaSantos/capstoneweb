@@ -178,7 +178,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                     Read More »
                   </button>
                 </div>
-                <button class="btn btn-success btn-sm edit-reward-btn"
+                <button class="btn btn-warning btn-sm edit-reward-btn"
                   data-id="<?= $row['reward_id'] ?>"
                   data-name="<?= htmlspecialchars($row['product_name']) ?>"
                   data-description="<?= htmlspecialchars($row['product_description']) ?>"
