@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,6 +96,8 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                 </div>
               </div>
             </th>
+
+
 
             <!-- Category Columns with sorting -->
             <?php foreach ($categories as $catId => $catName): ?>
