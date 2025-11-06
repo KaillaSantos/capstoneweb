@@ -351,8 +351,8 @@ if (isset($_POST['submit_redeem'])) {
     $materials = $_POST['materials'] ?? [];
 
     // --- 1️⃣ Insert record first ---
-    $insertRecord = "INSERT INTO records (record_name, user_id, purok, date)
-                     VALUES ('$userName', '$userid', '$purok', '$date')";
+    $insertRecord = "INSERT INTO records (record_name, user_id, date)
+                     VALUES ('$userName', '$userid', '$date')";
     $insertResult = mysqli_query($conn, $insertRecord);
 
     if (!$insertResult) {
