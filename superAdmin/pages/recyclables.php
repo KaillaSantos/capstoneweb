@@ -23,81 +23,138 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+      gap: 30px;
+      max-width: 1100px;
+      margin: 40px auto;
     }
 
-    /* === Card Styling (modern, announcement-inspired look) === */
+    /* === Recyclable Card (livelier look) === */
     .card {
-      flex: 1 1 calc(50% - 20px); /* two cards per row */
+      flex: 1 1 calc(50% - 30px); /* 2 per row */
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 20px;
-      background-color: #ffffff;
-      border: 1px solid #e6f4ea;
-      border-left: 6px solid #2c5e1a;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(44, 94, 26, 0.1);
-      padding: 20px;
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 10px rgba(44, 94, 26, 0.2);
-    }
-
-    /* Image on the left */
-    .card-img {
-      width: 250px;
-      height: 250;
-      flex-shrink: 0;
-    }
-
-    /* === Card Body (text area) === */
-    .card-body {
-      text-align: left;
-      padding: 0;
-    }
-
-    .card-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #2c5e1a;
-      margin-bottom: 5px;
-    }
-
-    .card-body p {
-      font-size: 1rem;
-      color: #333;
-      margin: 0;
+      background: linear-gradient(145deg, #f5fff5, #eafbea);
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(44, 94, 26, 0.15);
+      padding: 30px 25px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      min-height: 360px;
+      cursor: pointer;
     }
 
-    /* === Responsive Design === */
+    /* Hover animations */
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(44, 94, 26, 0.25);
+    }
+
+    /* Glowing border effect */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(120deg, #5cb85c, #c6f6c6, #5cb85c);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* Floating bubble accent */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 130px;
+      height: 130px;
+      background: rgba(92, 184, 92, 0.1);
+      border-radius: 50%;
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* === Image === */
+    .card-img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 10px;
+      box-shadow: 0 5px 10px rgba(44, 94, 26, 0.1);
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-img {
+      transform: scale(1.08);
+    }
+
+    /* === Card Title === */
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #2c5e1a;
+      margin-top: 15px;
+      z-index: 1;
+      text-transform: capitalize;
+    }
+
+    /* === Card Text === */
+    .card-body p {
+      font-size: 1.05rem;
+      color: #333;
+      margin-top: 8px;
+      z-index: 1;
+    }
+
+    /* === Character Icon or Badge (optional visual mascot) === */
+    .card .eco-icon {
+      font-size: 2rem;
+      color: #5cb85c;
+      background: #e6f9e6;
+      padding: 12px;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(92, 184, 92, 0.2);
+      margin-bottom: 10px;
+      z-index: 1;
+    }
+
+    /* === Responsive Layout === */
     @media (max-width: 992px) {
       .card {
-        flex: 1 1 100%; /* stack to 1 per row on smaller screens */
+        flex: 1 1 100%;
+      }
+    }
+    @media (max-width: 768px) {
+      .card {
+        padding: 25px 15px;
+        min-height: 300px;
+      }
+      .card-img {
+        width: 120px;
+        height: 120px;
+      }
+      .card-title {
+        font-size: 1.3rem;
       }
     }
 
-    @media (max-width: 768px) {
-      .card {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-      }
-
-      .card-img {
-        width: 90px;
-        margin-bottom: 10px;
-      }
-
-      .card-body {
-        text-align: center;
-      }
-     }
   </style>
 </head>
 
@@ -162,11 +219,10 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
             <div class="col-md-4 mb-4">
               <div class="card text-center">
                 <div class="card-body">
-                  <h4 class="card-title" style=" border-left: 5px soild green"><?= $rows['RM_name']; ?></h4>
+                  <div class="eco-icon"><i class="fa-solid fa-leaf"></i></div>
+                  <h4 class="card-title"><?= $rows['RM_name']; ?></h4>
                   <img src="/capstoneweb/assets/<?= $rows['RM_img'] ?>" class="card-img">
-                  <p class="mt-3" style="font-size: 20px;">
-                    <i class="fa-solid fa-recycle"></i> Total: <?= $rows['total_quantity']; ?> <?= htmlspecialchars($rows['unit']); ?>
-                  </p>
+                  <p><i class="fa-solid fa-recycle"></i> Total: <?= $rows['total_quantity']; ?> <?= htmlspecialchars($rows['unit']); ?></p>
                 </div>
               </div>
             </div>
