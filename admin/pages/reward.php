@@ -266,7 +266,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 
           <div class="mb-3">
             <label for="product_date" class="form-label fw-semibold">Date:</label>
-            <input type="date" class="form-control" id="product_date" name="product_date">
+            <input type="date" class="form-control" id="product_date" name="product_date" required>
           </div>
 
           <div class="mb-3">
@@ -310,6 +310,17 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
 });
 </script>
 
+<script>
+  // 🗓️ Auto-fill today's date and prevent past dates
+  document.addEventListener("DOMContentLoaded", function() {
+    const today = new Date().toISOString().split("T")[0];
+    const dateInput = document.getElementById("product_date");
+    if (dateInput) {
+      dateInput.value = today;
+      dateInput.setAttribute("min", today); // Optional: disables past dates
+    }
+  });
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
