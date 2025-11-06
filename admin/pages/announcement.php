@@ -113,8 +113,8 @@
               <img src="<?= $announceImage ?>" alt="Announcement" class="announcement-img" style="height: 150px;">
               <div class="announcement-body">
                 <h2><i class="fa-solid fa-pencil"></i> <?= htmlspecialchars($rows['announce_name']) ?></h2>
-                <p class="date"><i class="fa-solid fa-pencil"></i> <?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
-                <p class="announcement-text"><i class="fa-solid fa-pencil"></i> <?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
+                <p class="date"><i class="fa-solid fa-ca;endar"></i> <?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
+                <p class="announcement-text"><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
 
                 <div class="announcement-actions">
                   <button type="button" class="btn btn-link read-more-btn"
