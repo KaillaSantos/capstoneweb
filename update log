@@ -21,7 +21,7 @@ OTHER PAGES IN ADMIN AND SUPERADMIN
 ✅ NEW RECORD PAGE - gawing check box sa mga recyclables tas pag sinelect lalabas na yung input box
 ❌ PAGES NA MAY INPUT NA DATE - sa mga dates, need naka auto na today 
 ✅ RECORD PAGE - add table sa records for puroks
-❌ RECYCLABLE - css 
+✅ RECYCLABLE - css 
 ❌ SUPER ADMIN ONLY - ACCOUNT VERIFICATION PAGE - account dissable. Add new table don para sa mga active na accounts, actions don is disable(need din secondary verification)
 
 USER SIDE
