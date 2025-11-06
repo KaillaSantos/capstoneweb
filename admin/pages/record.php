@@ -99,6 +99,21 @@ require_once __DIR__ . '/../../includes/fetchData.php';
               </div>
             </th>
 
+            <!-- Purok -->
+            <th>
+              <div class="d-flex align-items-center justify-content-between">
+                <span>Purok</span>
+                <div class="d-flex flex-column ms-1">
+                  <a href="?sort=purok_asc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-up <?= ($sort == 'purok_asc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                  <a href="?sort=purok_desc" class="text-light text-decoration-none small">
+                    <i class="fa-solid fa-caret-down <?= ($sort == 'purok_desc') ? 'text-warning' : '' ?>"></i>
+                  </a>
+                </div>
+              </div>
+            </th>
+
             <!-- Category Columns with sorting -->
             <?php foreach ($categories as $catId => $catName): ?>
               <th>
@@ -126,6 +141,7 @@ require_once __DIR__ . '/../../includes/fetchData.php';
               <tr>
                 <td><?= $rec['date'] ?></td>
                 <td style="text-transform: capitalize;"><?= htmlspecialchars($rec['name']) ?></td>
+                <td><?= htmlspecialchars($rec['purok'] ?? '') ?></td>
                 <?php foreach ($categories as $catId => $catName): ?>
                   <?php
                   $item = $rec['items'][$catId];

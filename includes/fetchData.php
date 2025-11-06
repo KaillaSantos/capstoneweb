@@ -51,9 +51,10 @@ $totalPages = ceil($totalRecords / $limit);
 if ($sortCategory) {
   // ✅ Sort by specific category total
   $recordSql = "
-    SELECT r.id, r.date, r.record_name, r.rec_img,
+    SELECT r.id, r.date, a.userName AS record_name, a.purok, r.rec_img,
            COALESCE(catTotals.total_qty, 0) AS cat_total
     FROM records r
+    JOIN account a ON r.user_id = a.userid
     LEFT JOIN (
       SELECT record_id, SUM(quantity) AS total_qty
       FROM record_items
@@ -64,10 +65,11 @@ if ($sortCategory) {
     LIMIT $limit OFFSET $offset
   ";
 } else {
-  // ✅ Default sorting (date/name)
+  // ✅ Default sorting (date/name/purok)
   $recordSql = "
-    SELECT r.id, r.date, r.record_name, r.rec_img
+    SELECT r.id, r.date, a.userName AS record_name, a.purok, r.rec_img
     FROM records r
+    JOIN account a ON r.user_id = a.userid
     ORDER BY $orderBy
     LIMIT $limit OFFSET $offset
   ";
@@ -82,6 +84,7 @@ while ($row = mysqli_fetch_assoc($recordResult)) {
   $records[$row['id']] = [
     'date' => $row['date'],
     'name' => $row['record_name'],
+    'purok' => $row['purok'],
     'rec_img' => $row['rec_img'],
     'items' => array_fill_keys(array_keys($categories), ['qty' => 0, 'unit' => ''])
   ];
