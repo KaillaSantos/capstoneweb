@@ -112,7 +112,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 
 /* === Card Text === */
 .card-body p {
-  font-size: 1.05rem;
+  font-size: 1.5rem;
   color: #333;
   margin-top: 8px;
   z-index: 1;
