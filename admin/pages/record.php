@@ -253,20 +253,26 @@ require_once __DIR__ . '/../../includes/fetchData.php';
           <!-- 🔸 Select Household -->
           <div class="row mb-3">
             <div class="col-md-6">
-
               <label for="user_id" class="form-label">Select Household (User):</label>
-                <select id="userSelect" name="user_id" class="form-control" required>
-                    <option value="">-- Select Household --</option>
-                    <?php
-                    // Fetch only non-admin users
-                    $userQuery = "SELECT userid, userName, purok FROM account WHERE role = 'user' ORDER BY userName ASC";
-                    $userResult = mysqli_query($conn, $userQuery);
-                    while ($u = mysqli_fetch_assoc($userResult)) {
-                         echo "<option value='{$user['userid']}' data-purok='{$user['purok']}'>{$user['userName']}</option>";
+              <select id="userSelect" name="user_id" class="form-control" required>
+                  <option value="">-- Select Household --</option>
+                  <?php
+                  // Fetch only non-admin users
+                  $userQuery = "SELECT userid, userName, purok 
+                                FROM account 
+                                WHERE role NOT IN ('admin', 'superAdmin') 
+                                ORDER BY userName ASC";
 
-                    }
-                    ?>
-                </select>
+                  $userResult = mysqli_query($conn, $userQuery);
+
+                  while ($user = mysqli_fetch_assoc($userResult)) {
+                      echo "<option value='{$user['userid']}' data-purok='{$user['purok']}'>
+                              {$user['userName']}
+                            </option>";
+                  }
+                  ?>
+              </select>
+
             </div>
 
             <div class="col-md-6">
