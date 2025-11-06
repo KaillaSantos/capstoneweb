@@ -308,35 +308,38 @@ if (isset($_POST['archive_selected'])) {
     exit();
 }
 
-// <!-- add material -->
+// add material/recyclables
 if (isset($_POST['add_material'])) {
     $RM_name = mysqli_real_escape_string($conn, $_POST['RM_name']);
-    $points  = mysqli_real_escape_string($conn, $_POST['points']);
+    $points  = mysqli_real_escape_string($conn, $_POST['points'] ?? '');
 
-    // Handle image upload
     $filename = "";
     if (!empty($_FILES["RM_img"]["name"])) {
-        $filename = time() . "_" . basename($_FILES["RM_img"]["name"]); // unique filename
-        $tempname = $_FILES["RM_img"]["tmp_name"];
-        $folder   = "../assets/" . $filename;
+        $uploadDir = __DIR__ . "/../assets/"; // safer absolute path
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0775, true);
+        }
 
-        if (!move_uploaded_file($tempname, $folder)) {
-            $filename = ""; // fallback if upload fails
+        $filename = time() . "_" . basename($_FILES["RM_img"]["name"]);
+        $tempname = $_FILES["RM_img"]["tmp_name"];
+        $targetFile = $uploadDir . $filename;
+
+        if (!move_uploaded_file($tempname, $targetFile)) {
+            echo "<script>alert('Failed to upload image.');</script>";
+            $filename = "";
         }
     }
 
-    $insert = "INSERT INTO recyclable (RM_name, RM_img) 
-               VALUES ('$RM_name', '$filename')";
-
+    $insert = "INSERT INTO recyclable (RM_name, RM_img) VALUES ('$RM_name', '$filename')";
     if (mysqli_query($conn, $insert)) {
-
-        $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : 0;
+        $userid = $_SESSION['userid'] ?? 0;
         header("Location: ../admin/pages/recyclables.php?userid={$userid}");
         exit();
     } else {
-        echo "<script>alert('Failed to add material.');</script>";
+        echo "<script>alert('Failed to add material: " . mysqli_error($conn) . "');</script>";
     }
 }
+
 
 if (isset($_POST['submit_redeem'])) {
     $userid = mysqli_real_escape_string($conn, $_POST['user_id']); // user selected by admin

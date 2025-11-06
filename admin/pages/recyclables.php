@@ -186,11 +186,11 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
           <h5 class="modal-title">Add New Recyclable Material</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+        <form method="post" action="../../function/function.php" enctype="multipart/form-data">
           <div class="modal-body">
             <label>Material Name:</label>
             <!-- <input type="text" name="RM_name" class="form-control" placeholder="e.g. Plastic Bottle" required> -->
-            <select name="RM_name" class="form-control" placeholder="Choose Recyclables">
+            <select name="RM_name" class="form-control">
               <option value="Plastik">Plastik</option>
               <option value="Bakal">Bakal/Metal</option>
               <option value="Lata">Lata</option>
