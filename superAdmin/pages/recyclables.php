@@ -22,7 +22,6 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 .container .row {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
-  justify-content: center;
   gap: 30px;
   max-width: 1100px;
   margin: 40px auto;
@@ -37,6 +36,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   transition: all 0.3s ease;
   overflow: hidden;
   text-align: center;
+  justify-content: center;
   padding: 25px 20px;
   position: relative;
   cursor: pointer;
