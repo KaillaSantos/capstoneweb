@@ -135,7 +135,7 @@ try {
   <div class="container mt-5" style="padding-top:250px">
     <div class="col-md-5 mx-auto">
       <div class="card shadow" style="padding:35px;">
-        <h3 class="mb-3 text-center" >Recover Password</h3>
+        <h3 class="mb-3 text-center" >Reset Password</h3>
         <?= $message; ?>
         <form method="post">
           <div class="mb-3">
