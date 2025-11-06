@@ -135,9 +135,9 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4 class="ps-4"></h4>
       <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <a href="newreward.php" class="btn btn-success">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRewardModal">
           <i class="fa fa-plus"></i> Add New
-        </a>
+        </button>
         <form action="/capstoneweb/function/function.php" method="post" class="d-inline">
           <button type="submit" name="reset_rewards" class="btn btn-danger"
             onclick="return confirm('Are you sure you want to reset all data? This cannot be undone.');">
@@ -233,6 +233,83 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
         </div>
       </div>
     </div>
+
+<!-- Add New Reward Modal -->
+<div class="modal fade" id="addRewardModal" tabindex="-1" aria-labelledby="addRewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-bold" id="addRewardModalLabel">Add New Reward</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data" id="rewardForm">
+          <input type="hidden" name="userid" value="<?= $userid ?>">
+
+          <div class="mb-3">
+            <label for="product_name" class="form-label fw-semibold">Product:</label>
+            <input type="text" class="form-control" id="product_name" name="product_name"
+              placeholder="Enter reward name" required style="text-transform: capitalize;">
+          </div>
+
+          <div class="mb-3">
+            <label for="product_description" class="form-label fw-semibold">Description:</label>
+            <textarea class="form-control" id="product_description" name="product_description"
+              rows="4" placeholder="Enter reward description" required style="text-transform: capitalize;"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="product_points" class="form-label fw-semibold">Points Required:</label>
+            <input type="number" class="form-control" id="product_points" name="product_points"
+              placeholder="Enter points required" min="1" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="product_date" class="form-label fw-semibold">Date:</label>
+            <input type="date" class="form-control" id="product_date" name="product_date">
+          </div>
+
+          <div class="mb-3">
+            <label for="product_img" class="form-label fw-semibold">Upload Image (optional):</label>
+            <input type="file" class="form-control" id="product_img" name="product_img" accept="image/*">
+            <div id="fileError" class="text-danger mt-1" style="display: none; font-size: 14px;"></div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success" name="submit_rewards">Post Reward</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('rewardForm').addEventListener('submit', function(event) {
+  const fileInput = document.getElementById('product_img');
+  const fileError = document.getElementById('fileError');
+  const maxSize = 5 * 1024 * 1024; // 5MB
+
+  fileError.style.display = 'none';
+
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!validTypes.includes(file.type)) {
+      fileError.textContent = 'Please upload a valid image file (JPEG, PNG, or GIF).';
+      fileError.style.display = 'block';
+      event.preventDefault();
+      return;
+    }
+    if (file.size > maxSize) {
+      fileError.textContent = 'Image size exceeds 5MB limit.';
+      fileError.style.display = 'block';
+      event.preventDefault();
+    }
+  }
+});
+</script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
