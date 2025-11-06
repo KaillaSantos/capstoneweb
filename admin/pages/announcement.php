@@ -225,7 +225,7 @@
 
           <div class="mb-3">
             <label for="announce_date" class="form-label fw-bold">Date:</label>
-            <input type="date" class="form-control" name="announce_date" required>
+            <input type="date" class="form-control" id="announce_date" name="announce_date" required>
           </div>
 
           <div class="mb-3">
@@ -280,6 +280,17 @@
       const addAnnouncementModal = document.getElementById('addAnnouncementModal');
       addAnnouncementModal.addEventListener('hidden.bs.modal', function () {
         addAnnouncementModal.querySelector('form').reset();
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date().toISOString().split("T")[0];
+        const announceDate = document.getElementById("announce_date");
+        if (announceDate) {
+          announceDate.value = today;
+          announceDate.setAttribute("min", today); // Optional
+        }
       });
     </script>
 
