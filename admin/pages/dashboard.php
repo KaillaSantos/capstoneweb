@@ -1,13 +1,29 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+// Includes
+require_once __DIR__ . '/../../conn/dbconn.php';
 require_once __DIR__ . '/../../includes/authSession.php';
 require_once __DIR__ . '/../includes/passwordVerification.php';
 require_once __DIR__ . '/../../includes/fetchData.php';
 require_once __DIR__ . '/../includes/recordsChart.php';
 include __DIR__ . '/../includes/sidebar.php';
 
+// ✅ Define user ID
+$userid = $_SESSION['userid'] ?? null;
+if (!$userid) {
+  die("User not logged in");
+}
+
+// Fetch user info
 $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
+
 
 $query1 = "SELECT COUNT(role) AS total FROM account WHERE role = 'user'";
 $result1 = mysqli_query($conn, $query1);
