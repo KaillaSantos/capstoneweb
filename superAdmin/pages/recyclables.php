@@ -20,8 +20,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <style>
    /* === Recyclables Container (2 per row layout) === */
 .container .row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
   justify-content: center;
   gap: 30px;
   max-width: 1100px;
@@ -30,20 +30,15 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 
 /* === Recyclable Card (livelier look) === */
 .card {
-  flex: 1 1 calc(50% - 30px); /* 2 per row */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(145deg, #f5fff5, #eafbea);
-  border: none;
+  background: linear-gradient(145deg, #ffffff, #f0f8f2);
   border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(44, 94, 26, 0.15);
-  padding: 30px 25px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  border: none;
+  box-shadow: 0 6px 15px rgba(44, 94, 26, 0.15);
   transition: all 0.3s ease;
-  min-height: 360px;
+  overflow: hidden;
+  text-align: center;
+  padding: 25px 20px;
+  position: relative;
   cursor: pointer;
 }
 
