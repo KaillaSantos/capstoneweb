@@ -18,97 +18,140 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-   /* === Container: 3 cards per row === */
+   /* === Recyclables Container (2 per row layout) === */
 .container .row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 30px;
   max-width: 1100px;
-  margin: 50px auto;
-  padding: 0 20px;
+  margin: 40px auto;
 }
 
-/* === Card styling (balanced, not tall) === */
+/* === Recyclable Card (livelier look) === */
 .card {
-  background: #f9fff9;
-  border-radius: 20px;
-  box-shadow: 0 6px 16px rgba(44, 94, 26, 0.15);
-  text-align: center;
-  padding: 20px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 250px; /* ✅ shorter height */
+  flex: 1 1 calc(50% - 30px); /* 2 per row */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(145deg, #f5fff5, #eafbea);
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(44, 94, 26, 0.15);
+  padding: 30px 25px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  min-height: 360px;
+  cursor: pointer;
 }
 
-/* Hover effect */
+/* Hover animations */
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(44, 94, 26, 0.25);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(44, 94, 26, 0.25);
 }
 
-/* Decorative header */
+/* Glowing border effect */
 .card::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 8px;
-  width: 100%;
-  background: linear-gradient(90deg, #2c5e1a, #7cd957);
-  border-radius: 20px 20px 0 0;
+  inset: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(120deg, #5cb85c, #c6f6c6, #5cb85c);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.card:hover::before {
+  opacity: 1;
 }
 
-/* === Icon === */
-.eco-icon {
-  font-size: 1.8rem;
-  color: #2c5e1a;
-  background: #e9f9e9;
+/* Floating bubble accent */
+.card::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 130px;
+  height: 130px;
+  background: rgba(92, 184, 92, 0.1);
   border-radius: 50%;
-  padding: 8px;
-  display: inline-block;
-  margin-bottom: 8px;
+  z-index: 0;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
 }
 
 /* === Image === */
 .card-img {
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 150px;
   object-fit: contain;
-  margin: 0 auto;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 10px;
+  box-shadow: 0 5px 10px rgba(44, 94, 26, 0.1);
+  z-index: 1;
   transition: transform 0.3s ease;
 }
 .card:hover .card-img {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-/* === Title === */
+/* === Card Title === */
 .card-title {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 800;
   color: #2c5e1a;
+  margin-top: 15px;
+  z-index: 1;
+  text-transform: capitalize;
 }
 
-/* === Text === */
+/* === Card Text === */
 .card-body p {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #333;
-  margin: 0;
+  margin-top: 8px;
+  z-index: 1;
 }
 
-/* === Responsive Adjustments === */
+/* === Character Icon or Badge (optional visual mascot) === */
+.card .eco-icon {
+  font-size: 2rem;
+  color: #5cb85c;
+  background: #e6f9e6;
+  padding: 12px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(92, 184, 92, 0.2);
+  margin-bottom: 10px;
+  z-index: 1;
+}
+
+/* === Responsive Layout === */
 @media (max-width: 992px) {
-  .container .row {
-    grid-template-columns: repeat(2, 1fr);
+  .card {
+    flex: 1 1 100%;
   }
 }
 @media (max-width: 768px) {
-  .container .row {
-    grid-template-columns: 1fr;
+  .card {
+    padding: 25px 15px;
+    min-height: 300px;
+  }
+  .card-img {
+    width: 120px;
+    height: 120px;
+  }
+  .card-title {
+    font-size: 1.3rem;
   }
 }
 
