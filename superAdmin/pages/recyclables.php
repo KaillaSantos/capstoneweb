@@ -16,6 +16,12 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
 
   <style>
+/* ===== Page Background (animated bubbles) ===== */
+body {
+  background: linear-gradient(135deg, #e8f5e9, #f9fff9);
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+}
 
 /* floating bubbles */
 .bubble {
