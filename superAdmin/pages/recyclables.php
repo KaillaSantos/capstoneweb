@@ -16,122 +16,132 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
 
   <style>
-/* ===== Page Background (animated bubbles) ===== */
-body {
-  background: linear-gradient(135deg, #e8f5e9, #f9fff9);
-  overflow-x: hidden;
-  font-family: 'Poppins', sans-serif;
-}
+    /* ===== Page Background (animated bubbles) ===== */
+    body {
+      background: linear-gradient(135deg, #e8f5e9, #f9fff9);
+      overflow-x: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
 
-/* floating bubbles */
-.bubble {
-  position: fixed;
-  bottom: -100px;
-  background: rgba(76, 175, 80, 0.2);
-  border-radius: 50%;
-  animation: rise 12s infinite ease-in;
-  z-index: 0;
-}
-@keyframes rise {
-  0% { transform: translateY(0) scale(1); opacity: 0.7; }
-  100% { transform: translateY(-1200px) scale(1.3); opacity: 0; }
-}
+    /* floating bubbles */
+    .bubble {
+      position: fixed;
+      bottom: -100px;
+      background: rgba(76, 175, 80, 0.15);
+      border-radius: 50%;
+      animation: rise 12s infinite ease-in;
+      z-index: 0;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0.7; }
+      100% { transform: translateY(-1200px) scale(1.3); opacity: 0; }
+    }
 
-/* === Recyclables Container === */
-.container .row {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 25px;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
+    /* === Recyclables Container === */
+    .container .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
 
-/* === Card Styling === */
-.card {
-  border: none;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 5px 15px rgba(44, 94, 26, 0.15);
-  text-align: center;
-  padding: 25px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    /* === Card Styling === */
+    .card {
+      border: none;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 5px 15px rgba(44, 94, 26, 0.15);
+      text-align: center;
+      padding: 25px 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 300px;
+    }
 
-/* hover effect */
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(44, 94, 26, 0.25);
-}
+    /* hover effect */
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(44, 94, 26, 0.25);
+    }
 
-/* bubble accent */
-.card::after {
-  content: '';
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 100px;
-  height: 100px;
-  background: rgba(76, 175, 80, 0.1);
-  border-radius: 50%;
-  z-index: 0;
-}
+    /* bubble accent */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 90px;
+      height: 90px;
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 50%;
+      z-index: 0;
+    }
 
-/* image */
-.card-img {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
-  margin: 0 auto 15px auto;
-  position: relative;
-  z-index: 1;
-  transition: transform 0.3s ease;
-}
-.card:hover .card-img { transform: scale(1.08); }
+    /* image */
+    .card-img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-img {
+      transform: scale(1.08);
+    }
 
-/* text */
-.card-title {
-  font-weight: 700;
-  color: #2c5e1a;
-  font-size: 1.3rem;
-  margin-bottom: 5px;
-  z-index: 1;
-  position: relative;
-}
-.card p {
-  color: #333;
-  font-size: 1rem;
-  margin-top: 5px;
-  position: relative;
-  z-index: 1;
-}
+    /* text */
+    .card-title {
+      font-weight: 700;
+      color: #2c5e1a;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      z-index: 1;
+      position: relative;
+    }
+    .card p {
+      color: #333;
+      font-size: 1rem;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
 
-/* fade-up animation */
-.card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.6s ease forwards;
-}
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
+    /* fade-up animation */
+    .card {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-/* responsive tweaks */
-@media (max-width: 768px) {
-  .container .row {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-  .card-img {
-    width: 100px;
-    height: 100px;
-  }
-}
+    /* responsive tweaks */
+    @media (max-width: 768px) {
+      .container .row {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+      }
+      .card-img {
+        width: 90px;
+        height: 90px;
+      }
+      .card {
+        padding: 20px 10px;
+        min-height: 250px;
+      }
+    }
 
   </style>
 </head>
