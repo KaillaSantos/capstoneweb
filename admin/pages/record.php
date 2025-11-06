@@ -129,7 +129,7 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                 <?php foreach ($categories as $catId => $catName): ?>
                   <?php
                   $item = $rec['items'][$catId];
-                  $display = $item['qty'] > 0 ? $item['qty'] . " " . htmlspecialchars($item['unit']) : "0";
+                  $display = $item['qty'] > 0 ? $item['qty'] . " " . htmlspecialchars($item['unit']) : "";
                   ?>
                   <td><?= $display ?></td>
                 <?php endforeach; ?>
