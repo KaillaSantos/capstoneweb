@@ -338,57 +338,49 @@ if (isset($_POST['add_material'])) {
 
 // add record
 if (isset($_POST['submit_redeem'])) {
-    $userid = mysqli_real_escape_string($conn, $_POST['user_id']); // user selected by admin
+    $userid = mysqli_real_escape_string($conn, $_POST['user_id']);
 
-    // Sanitize inputs
+    // Fetch the username based on the selected user
+    $getUserQuery = "SELECT userName FROM account WHERE userid = '$userid'";
+    $getUserResult = mysqli_query($conn, $getUserQuery);
+    $userData = mysqli_fetch_assoc($getUserResult);
+    $userName = mysqli_real_escape_string($conn, $userData['userName'] ?? 'Unknown');
+
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
 
-    // Insert record (no record_name, based on your setup)
-    $insertRecord = "INSERT INTO records (date, user_id) VALUES ('$date', '$userid')";
-    $insertResult = mysqli_query($conn, $insertRecord);
-
-    if (!$insertResult) {
-        die("❌ Failed to insert record: " . mysqli_error($conn));
-    }
-
+    // Insert record into records table
+    $insertRecord = "INSERT INTO records (record_name, date, user_id)
+                     VALUES ('$userName', '$date', '$userid')";
+    mysqli_query($conn, $insertRecord) or die("Error inserting record: " . mysqli_error($conn));
     $record_id = mysqli_insert_id($conn);
 
-    // ✅ Handle optional image upload
+    // Optional: upload image
     if (!empty($_FILES["rec_img"]["name"])) {
         $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
         $tempname = $_FILES["rec_img"]["tmp_name"];
         $folder = "../assets/proofs/" . $filename;
-
         if (move_uploaded_file($tempname, $folder)) {
-            $updateImg = "UPDATE records SET rec_img = '$filename' WHERE id = $record_id";
-            mysqli_query($conn, $updateImg);
+            mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
         }
     }
 
-    // ✅ Insert recyclable materials only if checkbox selected and quantity not empty
+    // Insert recyclable materials
     foreach ($materials as $recyclable_id => $data) {
-        $quantity = trim($data['quantity'] ?? '');
+        if (!isset($data['quantity']) || trim($data['quantity']) === '') continue;
+        $quantity = (float)$data['quantity'];
         $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
-
-        // Skip if not selected or no quantity entered
-        if ($quantity === '' || $quantity === '0' || $quantity <= 0) {
-            continue; // don’t insert blank or zero
-        }
-
-        // Insert valid material entry
-        $insertItem = "INSERT INTO record_items (record_id, recyclable_id, quantity, unit) 
-                       VALUES ($record_id, $recyclable_id, '$quantity', '$unit')";
-        mysqli_query($conn, $insertItem);
+        mysqli_query($conn, "INSERT INTO record_items (record_id, recyclable_id, quantity, unit)
+                             VALUES ($record_id, $recyclable_id, $quantity, '$unit')");
     }
 
-    // ✅ Redirect after success
     echo "<script>
         alert('Record saved successfully!');
         window.location.href = '{$_SERVER['HTTP_REFERER']}';
     </script>";
     exit();
 }
+
 
 // Reset Button for records
 if (isset($_POST['reset_data'])) {

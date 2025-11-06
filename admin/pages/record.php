@@ -257,7 +257,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                 <select id="userSelect" name="user_id" class="form-control" required>
                   <option value="">-- Select Household --</option>
                   <?php
-                  // Fetch only non-admin users
                   $userQuery = "SELECT userid, userName, purok 
                                 FROM account 
                                 WHERE role NOT IN ('admin', 'superAdmin') 
@@ -265,11 +264,9 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                   $userResult = mysqli_query($conn, $userQuery);
 
                   while ($user = mysqli_fetch_assoc($userResult)) {
-                      echo '<option value="' . $user['userid'] . '" 
-                                  data-purok="' . htmlspecialchars($user['purok']) . '" 
-                                  data-name="' . htmlspecialchars($user['userName']) . '">'
-                            . htmlspecialchars($user['userName']) . 
-                          '</option>';
+                      echo "<option value='{$user['userid']}' data-purok='" . htmlspecialchars($user['purok']) . "'>"
+                            . htmlspecialchars($user['userName']) .
+                          "</option>";
                   }
                   ?>
                 </select>
