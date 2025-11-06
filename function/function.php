@@ -491,7 +491,7 @@ if (isset($_POST['update_announcement'])) {
     }
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Announcement updated successfully.'); window.location.href='. $_SERVER['HTTP_REFERER']);</script>";
+        echo "<script>alert('Announcement updated successfully.'); window.location.href='" . $_SERVER['HTTP_REFERER'] . "';</script>";
     } else {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
