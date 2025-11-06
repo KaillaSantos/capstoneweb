@@ -255,25 +255,37 @@ if (isset($_POST['adminsetting'])) {
     exit();
 }
 
+// new announcement
 if (isset($_POST['submit_announcement'])) {
     $announce_name = mysqli_real_escape_string($conn, $_POST['announce_name']);
     $announce_text = mysqli_real_escape_string($conn, $_POST['announce_text']);
     $announce_date = mysqli_real_escape_string($conn, $_POST['announce_date']);
 
     $filename = "";
+
     if (!empty($_FILES["announce_img"]["name"])) {
         $filename = basename($_FILES["announce_img"]["name"]);
-        $tempname = $_FILES["announce_img"]["tmp_name"];
-        $folder   = "../announceImg/" . $filename;
+        $targetDir = __DIR__ . "/../announceImg/";
+        $targetFile = $targetDir . $filename;
 
-        if (!move_uploaded_file($tempname, $folder)) {
-            echo "<script>alert('Image upload failed.');</script>";
+        // Ensure folder exists
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        if ($_FILES["announce_img"]["error"] === UPLOAD_ERR_OK) {
+            if (!move_uploaded_file($_FILES["announce_img"]["tmp_name"], $targetFile)) {
+                echo "<script>alert('Image upload failed. Path: $targetFile');</script>";
+                $filename = "";
+            }
+        } else {
+            echo "<script>alert('File upload error code: " . $_FILES["announce_img"]["error"] . "');</script>";
             $filename = "";
         }
     }
 
-    $query = "INSERT INTO announcement ( announce_name, announce_text, announce_date, announce_img)
-          VALUES ( '$announce_name', '$announce_text', '$announce_date', '$filename')";
+    $query = "INSERT INTO announcement (announce_name, announce_text, announce_date, announce_img)
+              VALUES ('$announce_name', '$announce_text', '$announce_date', '$filename')";
 
     if (mysqli_query($conn, $query)) {
         header("Location: ../admin/pages/announcement.php?userid={$userid}");
@@ -282,6 +294,7 @@ if (isset($_POST['submit_announcement'])) {
         echo "<script>alert('Adding announcement failed.');</script>";
     }
 }
+
 
 // archive announcement
 if (isset($_POST['archive_selected'])) {
