@@ -247,61 +247,82 @@ require_once __DIR__ . '/../../includes/fetchData.php';
         <h5 class="modal-title" id="addRecordModalLabel">Add New Record</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      
+
       <form method="POST" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
         <div class="modal-body">
-          
+          <!-- 🔸 Select Household -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label class="form-label">Record Name</label>
-              <input type="text" name="record_name" class="form-control" required>
+              <label class="form-label">Select Household User</label>
+              <select name="user_id" id="userSelect" class="form-select" required>
+                <option value="">-- Choose User --</option>
+                <?php
+                  $userQuery = "SELECT userid, userName, purok FROM account WHERE userRole = 'user'";
+                  $userResult = mysqli_query($conn, $userQuery);
+                  $userData = [];
+                  while ($user = mysqli_fetch_assoc($userResult)) {
+                    echo "<option value='{$user['userid']}' data-purok='{$user['purok']}'>{$user['userName']}</option>";
+                  }
+                ?>
+              </select>
             </div>
+
             <div class="col-md-6">
-              <label class="form-label">Date</label>
-              <input type="date" name="date" class="form-control" required>
+              <label class="form-label">Purok</label>
+              <input type="text" id="purokField" name="purok" class="form-control" readonly placeholder="Select a user first">
             </div>
           </div>
 
+          <!-- 🔸 Date -->
           <div class="mb-3">
-            <label class="form-label">Select User</label>
-            <select name="user_id" class="form-select" required>
-              <option value="">-- Choose User --</option>
-              <?php
-                $userQuery = "SELECT userid, userName FROM account WHERE userRole = 'user'";
-                $userResult = mysqli_query($conn, $userQuery);
-                while ($user = mysqli_fetch_assoc($userResult)) {
-                  echo "<option value='{$user['userid']}'>{$user['userName']}</option>";
-                }
-              ?>
-            </select>
+            <label class="form-label">Date</label>
+            <input type="date" name="date" class="form-control" required>
           </div>
 
+          <!-- 🔸 Upload Proof Image -->
           <div class="mb-3">
             <label class="form-label">Upload Proof Image (optional)</label>
             <input type="file" name="rec_img" class="form-control" accept="image/*">
           </div>
 
           <hr>
-          <h6>Select Materials</h6>
-          <?php
-            $recyclables = mysqli_query($conn, "SELECT * FROM recyclable");
-            while ($row = mysqli_fetch_assoc($recyclables)) {
-          ?>
-            <div class="row align-items-center mb-2">
-              <div class="col-md-4"><?= htmlspecialchars($row['RM_name']); ?></div>
-              <div class="col-md-4">
-                <input type="number" step="0.01" name="materials[<?= $row['id']; ?>][quantity]" class="form-control" placeholder="Quantity">
-              </div>
-              <div class="col-md-4">
-                <select name="materials[<?= $row['id']; ?>][unit]" class="form-select">
-                  <option value="kg">kg</option>
-                  <option value="pcs">pcs</option>
-                </select>
-              </div>
-            </div>
-          <?php } ?>
 
+          <!-- 🔸 Materials -->
+          <h6 class="mb-3">Recyclable Materials</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-success">
+                <tr>
+                  <th>Material</th>
+                  <th style="width: 25%;">Quantity</th>
+                  <th style="width: 25%;">Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $recyclables = mysqli_query($conn, "SELECT * FROM recyclable");
+                  while ($row = mysqli_fetch_assoc($recyclables)) {
+                    echo "
+                      <tr>
+                        <td>" . htmlspecialchars($row['RM_name']) . "</td>
+                        <td>
+                          <input type='number' step='0.01' min='0' name='materials[{$row['id']}][quantity]' class='form-control' placeholder='Enter quantity'>
+                        </td>
+                        <td>
+                          <select name='materials[{$row['id']}][unit]' class='form-select'>
+                            <option value='kg'>kg</option>
+                            <option value='pcs'>pcs</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ";
+                  }
+                ?>
+              </tbody>
+            </table>
+          </div>
         </div>
+
         <div class="modal-footer">
           <button type="submit" name="submit_redeem" class="btn btn-success">Save Record</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -310,6 +331,16 @@ require_once __DIR__ . '/../../includes/fetchData.php';
     </div>
   </div>
 </div>
+
+<!-- 🔹 JS to auto-fill purok field -->
+<script>
+document.getElementById('userSelect').addEventListener('change', function() {
+  const selected = this.options[this.selectedIndex];
+  const purok = selected.getAttribute('data-purok') || '';
+  document.getElementById('purokField').value = purok;
+});
+</script>
+
 
 
 
