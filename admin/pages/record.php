@@ -240,21 +240,21 @@ require_once __DIR__ . '/../../includes/fetchData.php';
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
 
   <!-- 🔹 Add Record Modal -->
-<div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="addRecordModalLabel">Add New Record</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+  <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="addRecordModalLabel">Add New Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
 
-      <form method="POST" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
-        <div class="modal-body">
-          <!-- 🔸 Select Household -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="user_id" class="form-label">Select Household (User):</label>
-              <select id="userSelect" name="user_id" class="form-control" required>
+        <form method="POST" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+          <div class="modal-body">
+            <!-- 🔸 Select Household -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="user_id" class="form-label">Select Household (User):</label>
+                <select id="userSelect" name="user_id" class="form-control" required>
                   <option value="">-- Select Household --</option>
                   <?php
                   // Fetch only non-admin users
@@ -271,53 +271,66 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                             </option>";
                   }
                   ?>
-              </select>
+                </select>
+              </div>
 
+              <div class="col-md-6">
+                <label class="form-label">Purok</label>
+                <input type="text" id="purokField" name="purok" class="form-control" readonly placeholder="Select a user first">
+              </div>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">Purok</label>
-              <input type="text" id="purokField" name="purok" class="form-control" readonly placeholder="Select a user first">
+            <!-- 🔸 Date -->
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" name="date" class="form-control" required>
             </div>
-          </div>
 
-          <!-- 🔸 Date -->
-          <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input type="date" name="date" class="form-control" required>
-          </div>
+            <!-- 🔸 Upload Proof Image -->
+            <div class="mb-3">
+              <label class="form-label">Upload Proof Image (optional)</label>
+              <input type="file" name="rec_img" class="form-control" accept="image/*">
+            </div>
 
-          <!-- 🔸 Upload Proof Image -->
-          <div class="mb-3">
-            <label class="form-label">Upload Proof Image (optional)</label>
-            <input type="file" name="rec_img" class="form-control" accept="image/*">
-          </div>
+            <hr>
 
-          <hr>
-
-          <!-- 🔸 Materials -->
-          <h6 class="mb-3">Recyclable Materials</h6>
-          <div class="table-responsive">
-            <table class="table table-bordered align-middle">
-              <thead class="table-success">
-                <tr>
-                  <th>Material</th>
-                  <th style="width: 25%;">Quantity</th>
-                  <th style="width: 25%;">Unit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
+            <!-- 🔸 Materials -->
+            <h6 class="mb-3">Recyclable Materials</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-success text-center">
+                  <tr>
+                    <th style="width: 10%;">Select</th>
+                    <th>Material</th>
+                    <th style="width: 25%;">Quantity</th>
+                    <th style="width: 25%;">Unit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
                   $recyclables = mysqli_query($conn, "SELECT * FROM recyclable");
                   while ($row = mysqli_fetch_assoc($recyclables)) {
+                    $id = $row['id'];
+                    $name = htmlspecialchars($row['RM_name']);
                     echo "
                       <tr>
-                        <td>" . htmlspecialchars($row['RM_name']) . "</td>
+                        <td class='text-center'>
+                          <input type='checkbox' class='material-checkbox' data-id='{$id}'>
+                        </td>
+                        <td>{$name}</td>
                         <td>
-                          <input type='number' step='0.01' min='0' name='materials[{$row['id']}][quantity]' class='form-control' placeholder='Enter quantity'>
+                          <input type='number' step='0.01' min='0' 
+                            name='materials[{$id}][quantity]' 
+                            id='quantity_{$id}' 
+                            class='form-control' 
+                            placeholder='Enter quantity' 
+                            disabled>
                         </td>
                         <td>
-                          <select name='materials[{$row['id']}][unit]' class='form-select'>
+                          <select name='materials[{$id}][unit]' 
+                            id='unit_{$id}' 
+                            class='form-select' 
+                            disabled>
                             <option value='kg'>kg</option>
                             <option value='pcs'>pcs</option>
                           </select>
@@ -325,32 +338,48 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                       </tr>
                     ";
                   }
-                ?>
-              </tbody>
-            </table>
+                  ?>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
-        <div class="modal-footer">
-          <button type="submit" name="submit_redeem" class="btn btn-success">Save Record</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        </div>
-      </form>
+          <div class="modal-footer">
+            <button type="submit" name="submit_redeem" class="btn btn-success">Save Record</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- 🔹 JS to auto-fill purok field -->
-<script>
-document.getElementById('userSelect').addEventListener('change', function() {
-  const selected = this.options[this.selectedIndex];
-  const purok = selected.getAttribute('data-purok') || '';
-  document.getElementById('purokField').value = purok;
-});
-</script>
+  <!-- 🔹 JavaScript -->
+  <script>
+    // Auto-fill purok when user selected
+    document.getElementById('userSelect').addEventListener('change', function() {
+      const selected = this.options[this.selectedIndex];
+      const purok = selected.getAttribute('data-purok') || '';
+      document.getElementById('purokField').value = purok;
+    });
 
+    // Enable/disable inputs based on checkbox
+    document.querySelectorAll('.material-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const id = this.getAttribute('data-id');
+        const quantity = document.getElementById('quantity_' + id);
+        const unit = document.getElementById('unit_' + id);
 
-
+        if (this.checked) {
+          quantity.removeAttribute('disabled');
+          unit.removeAttribute('disabled');
+        } else {
+          quantity.value = '';
+          quantity.setAttribute('disabled', true);
+          unit.setAttribute('disabled', true);
+        }
+      });
+    });
+  </script>
 
 </body>
 
