@@ -262,7 +262,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                                 FROM account 
                                 WHERE role NOT IN ('admin', 'superAdmin') 
                                 ORDER BY userName ASC";
-
                   $userResult = mysqli_query($conn, $userQuery);
 
                   while ($user = mysqli_fetch_assoc($userResult)) {
@@ -283,7 +282,7 @@ require_once __DIR__ . '/../../includes/fetchData.php';
             <!-- 🔸 Date -->
             <div class="mb-3">
               <label class="form-label">Date</label>
-              <input type="date" name="date" class="form-control" required>
+              <input type="date" name="date" class="form-control" required value="<?php echo date('Y-m-d'); ?>">
             </div>
 
             <!-- 🔸 Upload Proof Image -->
@@ -318,19 +317,14 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                           <input type='checkbox' class='material-checkbox' data-id='{$id}'>
                         </td>
                         <td>{$name}</td>
-                        <td>
+                        <td class='input-cell' id='quantityCell_{$id}' style='display:none;'>
                           <input type='number' step='0.01' min='0' 
                             name='materials[{$id}][quantity]' 
-                            id='quantity_{$id}' 
                             class='form-control' 
-                            placeholder='Enter quantity' 
-                            disabled>
+                            placeholder='Enter quantity'>
                         </td>
-                        <td>
-                          <select name='materials[{$id}][unit]' 
-                            id='unit_{$id}' 
-                            class='form-select' 
-                            disabled>
+                        <td class='input-cell' id='unitCell_{$id}' style='display:none;'>
+                          <select name='materials[{$id}][unit]' class='form-select'>
                             <option value='kg'>kg</option>
                             <option value='pcs'>pcs</option>
                           </select>
@@ -353,33 +347,46 @@ require_once __DIR__ . '/../../includes/fetchData.php';
     </div>
   </div>
 
-  <!-- 🔹 JavaScript -->
+<!-- 🔹 JavaScript -->
   <script>
-    // Auto-fill purok when user selected
+    // ✅ Auto-fill purok field based on selected user
     document.getElementById('userSelect').addEventListener('change', function() {
       const selected = this.options[this.selectedIndex];
       const purok = selected.getAttribute('data-purok') || '';
       document.getElementById('purokField').value = purok;
     });
 
-    // Enable/disable inputs based on checkbox
+    // ✅ Toggle material input fields visibility when checkbox is selected
     document.querySelectorAll('.material-checkbox').forEach(checkbox => {
       checkbox.addEventListener('change', function() {
         const id = this.getAttribute('data-id');
-        const quantity = document.getElementById('quantity_' + id);
-        const unit = document.getElementById('unit_' + id);
+        const qtyCell = document.getElementById('quantityCell_' + id);
+        const unitCell = document.getElementById('unitCell_' + id);
 
         if (this.checked) {
-          quantity.removeAttribute('disabled');
-          unit.removeAttribute('disabled');
+          qtyCell.style.display = 'table-cell';
+          unitCell.style.display = 'table-cell';
+          qtyCell.classList.add('fade-in');
+          unitCell.classList.add('fade-in');
         } else {
-          quantity.value = '';
-          quantity.setAttribute('disabled', true);
-          unit.setAttribute('disabled', true);
+          qtyCell.style.display = 'none';
+          unitCell.style.display = 'none';
         }
       });
     });
   </script>
+
+  <!-- 🔹 Optional smooth fade-in animation -->
+  <style>
+    .fade-in {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+
 
 </body>
 
