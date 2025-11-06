@@ -141,10 +141,14 @@
                     Read More »
                   </button>
 
-                  <a href="/capstoneweb/admin/pages/editannouncement.php?id=<?= $rows['announce_id'] ?>"
-                    class="btn btn-warning btn-sm">
+                  <button type="button" class="btn btn-warning btn-sm edit-btn"
+                    data-id="<?= $rows['announce_id'] ?>"
+                    data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
+                    data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
+                    data-img="<?= htmlspecialchars($rows['announce_img']) ?>">
                     <i class="fa fa-edit"></i> Edit
-                  </a>
+                  </button>
+
                 </div>
               </div>
             </div>
@@ -293,6 +297,86 @@
         }
       });
     </script>
+
+    <!-- 🟩 Edit Announcement Modal -->
+<div class="modal fade" id="editAnnouncementModal" tabindex="-1" aria-labelledby="editAnnouncementModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title fw-bold" id="editAnnouncementModalLabel">Edit Announcement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data" id="editAnnouncementForm">
+          <input type="hidden" name="announce_id" id="edit_announce_id">
+
+          <div class="mb-3">
+            <label for="edit_announce_name" class="form-label fw-semibold">Announcement Title:</label>
+            <input type="text" class="form-control" id="edit_announce_name" name="announce_name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="edit_announce_text" class="form-label fw-semibold">Announcement Body:</label>
+            <textarea class="form-control" id="edit_announce_text" name="announce_text" rows="4" required></textarea>
+          </div>
+
+          <!-- Removed date input as requested -->
+
+          <div class="mb-3">
+            <label for="edit_announce_img" class="form-label fw-semibold">Upload Image (optional):</label>
+            <input type="file" class="form-control" id="edit_announce_img" name="announce_img" accept="image/*">
+          </div>
+
+          <div class="mb-3" id="currentImageContainer" style="display: none;">
+            <label class="form-label fw-semibold">Current Image:</label><br>
+            <img id="currentImage" src="" alt="Current Image"
+                 style="width: 150px; height: auto; border-radius: 8px; border: 2px solid #333;">
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" name="update_announcement" class="btn btn-warning fw-semibold">
+              <i class="fa fa-save"></i> Update Announcement
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 🟨 Handle edit button click
+document.querySelectorAll('.edit-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    const id = this.getAttribute('data-id');
+    const title = this.getAttribute('data-title');
+    const text = this.getAttribute('data-text');
+    const img = this.getAttribute('data-img');
+
+    // Fill modal fields
+    document.getElementById('edit_announce_id').value = id;
+    document.getElementById('edit_announce_name').value = title;
+    document.getElementById('edit_announce_text').value = text;
+
+    // Show image if available
+    const imgContainer = document.getElementById('currentImageContainer');
+    const currentImage = document.getElementById('currentImage');
+
+    if (img && img.trim() !== '') {
+      currentImage.src = `/capstoneweb/announceImg/${img}`;
+      imgContainer.style.display = 'block';
+    } else {
+      imgContainer.style.display = 'none';
+    }
+
+    // Open modal
+    const modal = new bootstrap.Modal(document.getElementById('editAnnouncementModal'));
+    modal.show();
+  });
+});
+</script>
+
 
 
   </body>
