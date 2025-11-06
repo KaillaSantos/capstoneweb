@@ -18,101 +18,86 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* === Recyclables Container (3 per row layout) === */
+   /* === Container: 3 cards per row === */
 .container .row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 35px;
+  gap: 30px;
   max-width: 1100px;
   margin: 50px auto;
   padding: 0 20px;
 }
 
-/* === Card Styling (balanced lively design) === */
+/* === Card styling (balanced, not tall) === */
 .card {
-  display:flex;
-  background: linear-gradient(145deg, #f8fff8, #e8f8e8);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 6px 14px rgba(44, 94, 26, 0.15);
+  background: #f9fff9;
+  border-radius: 20px;
+  box-shadow: 0 6px 16px rgba(44, 94, 26, 0.15);
   text-align: center;
-  padding: 25px 20px;
+  padding: 20px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
   width: 100%;
-  min-height: 330px; /* ✅ shorter height */
+  height: 250px; /* ✅ shorter height */
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
 }
 
 /* Hover effect */
 .card:hover {
-  transform: translateY(-6px) scale(1.02);
+  transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(44, 94, 26, 0.25);
-  background: linear-gradient(145deg, #e9fce9, #ffffff);
 }
 
-/* Top decorative bar */
+/* Decorative header */
 .card::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  height: 5px;
+  height: 8px;
   width: 100%;
   background: linear-gradient(90deg, #2c5e1a, #7cd957);
-  border-radius: 18px 18px 0 0;
+  border-radius: 20px 20px 0 0;
+}
+
+/* === Icon === */
+.eco-icon {
+  font-size: 1.8rem;
+  color: #2c5e1a;
+  background: #e9f9e9;
+  border-radius: 50%;
+  padding: 8px;
+  display: inline-block;
+  margin-bottom: 8px;
 }
 
 /* === Image === */
 .card-img {
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
-  border-radius: 10px;
-  background: #ffffff;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(44, 94, 26, 0.1);
-  margin: 10px 0;
+  margin: 0 auto;
   transition: transform 0.3s ease;
 }
 .card:hover .card-img {
-  transform: scale(1.08);
-}
-
-/* === Icon above title === */
-.eco-icon {
-  font-size: 1.8rem;
-  color: #3c8d2f;
-  background: #ecf9ec;
-  padding: 10px;
-  border-radius: 50%;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 6px rgba(60, 141, 47, 0.2);
+  transform: scale(1.1);
 }
 
 /* === Title === */
 .card-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #2c5e1a;
-  margin-top: 10px;
-  text-transform: capitalize;
 }
 
 /* === Text === */
 .card-body p {
   font-size: 1rem;
   color: #333;
-  margin: 8px 0 0;
-}
-.card-body p i {
-  color: #2c5e1a;
-  margin-right: 6px;
+  margin: 0;
 }
 
 /* === Responsive Adjustments === */
@@ -125,14 +110,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   .container .row {
     grid-template-columns: 1fr;
   }
-  .card {
-    min-height: 300px;
-  }
-  .card-img {
-    width: 100px;
-    height: 100px;
-  }
 }
+
   </style>
 </head>
 
