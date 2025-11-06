@@ -253,18 +253,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
           <!-- 🔸 Select Household -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <!-- <label class="form-label">Select Household User</label>
-              <select name="user_id" id="userSelect" class="form-select" required>
-                <option value="">-- Choose User --</option>
-                <?php
-                  $userQuery = "SELECT userid, userName, purok FROM account WHERE userRole = 'user'";
-                  $userResult = mysqli_query($conn, $userQuery);
-                  $userData = [];
-                  while ($user = mysqli_fetch_assoc($userResult)) {
-                    echo "<option value='{$user['userid']}' data-purok='{$user['purok']}'>{$user['userName']}</option>";
-                  }
-                ?>
-              </select> -->
 
               <label for="user_id" class="form-label">Select Household (User):</label>
                 <select id="userSelect" name="user_id" class="form-control" required>
