@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 06, 2025 at 06:16 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: localhost
+-- Generation Time: Nov 06, 2025 at 03:48 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -100,20 +100,11 @@ CREATE TABLE `notifications` (
 
 CREATE TABLE `records` (
   `id` int(11) NOT NULL,
-  `record_name` varchar(100) NOT NULL,
+  `record_name` varchar(255) DEFAULT NULL,
   `date` date NOT NULL,
   `rec_img` varchar(100) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `records`
---
-
-INSERT INTO `records` (`id`, `record_name`, `date`, `rec_img`, `user_id`) VALUES
-(40, 'Geb Sanchez', '2025-11-05', '1762325623_1757030543_1757030494_OIP.webp', 37),
-(42, 'Kailla Santos', '2025-11-05', NULL, 38),
-(43, 'Geb Sanchez', '2025-11-06', NULL, 37);
 
 -- --------------------------------------------------------
 
@@ -125,19 +116,9 @@ CREATE TABLE `record_items` (
   `id` int(11) NOT NULL,
   `record_id` int(11) NOT NULL,
   `recyclable_id` int(11) NOT NULL,
-  `quantity` int(11) DEFAULT 0,
+  `quantity` int(11) DEFAULT NULL,
   `unit` varchar(10) NOT NULL DEFAULT 'kg'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `record_items`
---
-
-INSERT INTO `record_items` (`id`, `record_id`, `recyclable_id`, `quantity`, `unit`) VALUES
-(6, 40, 13, 15, 'kg'),
-(7, 41, 13, 26, 'kg'),
-(8, 42, 13, 26, 'kg'),
-(9, 43, 13, 35, 'kg');
 
 -- --------------------------------------------------------
 
@@ -157,7 +138,8 @@ CREATE TABLE `recyclable` (
 
 INSERT INTO `recyclable` (`id`, `RM_name`, `RM_img`) VALUES
 (13, 'Bakal', '1762324760_1761829012_1757030543_1757030494_OIP.webp'),
-(14, 'Plastic', '');
+(21, 'Plastik', '1762436247_1762436142_plastic-bottle.jpg'),
+(22, 'Lata', '1762436315_1756297128_tincans.jpg');
 
 -- --------------------------------------------------------
 
@@ -286,19 +268,19 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `records`
 --
 ALTER TABLE `records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `record_items`
 --
 ALTER TABLE `record_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `recyclable`
 --
 ALTER TABLE `recyclable`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `rewards`
