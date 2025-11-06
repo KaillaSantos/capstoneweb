@@ -258,7 +258,7 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                     <option value="">-- Select Household --</option>
                     <?php
                     // Fetch only non-admin users
-                    $userQuery = "SELECT userid, userName FROM account WHERE role NOT IN ('admin', 'superAdmin') ORDER BY userName ASC";
+                    $userQuery = "SELECT userid, userName, purok FROM account WHERE role NOT IN ('admin', 'superAdmin') ORDER BY userName ASC";
                     $userResult = mysqli_query($conn, $userQuery);
                     while ($u = mysqli_fetch_assoc($userResult)) {
                         echo '<option value="' . $u['userid'] . '" data-name="' . htmlspecialchars($u['userName']) . '">' 
