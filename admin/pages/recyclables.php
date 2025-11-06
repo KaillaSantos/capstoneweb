@@ -190,7 +190,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
           <div class="modal-body">
             <label>Material Name:</label>
             <!-- <input type="text" name="RM_name" class="form-control" placeholder="e.g. Plastic Bottle" required> -->
-            <select name="RM_name" class="form-control">
+            <select name="RM_name" class="form-control" placeholder="Choose Recyclables">
               <option value="Plastik">Plastik</option>
               <option value="Bakal">Bakal/Metal</option>
               <option value="Lata">Lata</option>
