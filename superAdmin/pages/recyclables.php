@@ -20,7 +20,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <style>
     /* === Recyclables Container (2 per row layout) === */
     .container .row {
-      display: flex;
+      display: grid;
       flex-wrap: wrap;
       grid-template-columns: repeat(3, 1fr);
       justify-content: center;
