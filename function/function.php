@@ -363,24 +363,24 @@ if (isset($_POST['submit_redeem'])) {
 
     // --- 2️⃣ Handle file upload ---
     if (isset($_FILES['rec_img']) && $_FILES['rec_img']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = __DIR__ . '/../assets/proofs/'; // Absolute path for reliability
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true); // create folder if it doesn't exist
-        }
+    $uploadDir = realpath(__DIR__ . '/../assets/proofs/');
 
+    if ($uploadDir === false) {
+        echo "<script>alert('⚠️ Upload folder not found. Please check path.');</script>";
+    } else {
         $fileTmpPath = $_FILES['rec_img']['tmp_name'];
         $fileName = time() . "_" . basename($_FILES['rec_img']['name']);
-        $targetPath = $uploadDir . $fileName;
+        $targetPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
 
         if (move_uploaded_file($fileTmpPath, $targetPath)) {
-            // Save filename in DB
             $fileNameDB = mysqli_real_escape_string($conn, $fileName);
-            $updateQuery = "UPDATE records SET rec_img = '$fileNameDB' WHERE id = $record_id";
-            mysqli_query($conn, $updateQuery);
+            mysqli_query($conn, "UPDATE records SET rec_img = '$fileNameDB' WHERE id = $record_id");
         } else {
-            echo "<script>alert('⚠️ Image upload failed. File could not be moved.');</script>";
+            echo "<script>alert('⚠️ move_uploaded_file() failed. Check folder permissions and paths.');</script>";
         }
     }
+}
+
 
     // --- 3️⃣ Insert recyclable materials ---
     foreach ($materials as $recyclable_id => $data) {
