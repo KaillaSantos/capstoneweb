@@ -82,7 +82,7 @@
                             Don't have an account? <a href="signUp.php" style="text-decoration: none;">Sign up here</a>
                         </p>
                         <p class="text-center mt-3">
-                            <a href="recoverPassword.php" style="font-size: 12px; text-decoration: none;">Reset Password</a>
+                            <a href="recoverPassword.php" style="font-size: 12px; text-decoration: none;">Forget Password?</a>
                         </p>
                     </div>
                 </div>
