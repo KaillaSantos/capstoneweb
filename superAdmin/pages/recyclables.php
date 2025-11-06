@@ -16,12 +16,6 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
   <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
 
   <style>
-/* ===== Page Background (animated bubbles) ===== */
-body {
-  background: linear-gradient(135deg, #e8f5e9, #f9fff9);
-  overflow-x: hidden;
-  font-family: 'Poppins', sans-serif;
-}
 
 /* floating bubbles */
 .bubble {
@@ -39,9 +33,8 @@ body {
 
 /* === Recyclables Container === */
 .container .row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 25px;
   max-width: 1200px;
   margin: 0 auto;
@@ -51,7 +44,6 @@ body {
 
 /* === Card Styling === */
 .card {
-  flex: 1 1 calc(33.333% - 25px);
   border: none;
   border-radius: 18px;
   background: #fff;
@@ -61,14 +53,18 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* hover effect */
 .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 10px 25px rgba(44, 94, 26, 0.25);
 }
 
-/* bubble accent inside card */
+/* bubble accent */
 .card::after {
   content: '';
   position: absolute;
@@ -81,7 +77,7 @@ body {
   z-index: 0;
 }
 
-/* === Card Image === */
+/* image */
 .card-img {
   width: 140px;
   height: 140px;
@@ -93,7 +89,7 @@ body {
 }
 .card:hover .card-img { transform: scale(1.08); }
 
-/* === Text === */
+/* text */
 .card-title {
   font-weight: 700;
   color: #2c5e1a;
@@ -110,7 +106,7 @@ body {
   z-index: 1;
 }
 
-/* Animated fade-up on load */
+/* fade-up animation */
 .card {
   opacity: 0;
   transform: translateY(20px);
@@ -120,19 +116,17 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* === Responsive Design === */
-@media (max-width: 992px) {
-  .card { flex: 1 1 calc(50% - 20px); }
-}
+/* responsive tweaks */
 @media (max-width: 768px) {
-  .card { flex: 1 1 100%; }
-  .card-img { width: 100px; height: 100px; }
+  .container .row {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .card-img {
+    width: 100px;
+    height: 100px;
+  }
 }
-@media (max-width: 576px) {
-  .card { padding: 18px; border-radius: 14px; }
-  .card-title { font-size: 1.1rem; }
-  .card p { font-size: 0.95rem; }
-}
+
   </style>
 </head>
 
