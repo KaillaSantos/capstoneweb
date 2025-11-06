@@ -23,7 +23,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <div class="sidenav">
     <a href="/capstoneweb/user/pages/user_announcement.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_announcement.php') ? 'active' : '' ?>"><i class="fas fa-bell"></i> <span class="link-text"> Announcement</span></a>
     <a href="/capstoneweb/user/pages/user_records.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_records.php') ? 'active' : '' ?>"><i class="fas fa-clipboard-list"></i><span class="link-text"> Records</span></a>
-    <a href="/capstoneweb/user/pages/user_recyclables.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_recyclables.php') ? 'active' : '' ?>"><i class="fas fa-recycle"></i><span class="link-text"> Recyclables</span></a>
     <a href="/capstoneweb/user/pages/user_rewards.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_rewards.php') ? 'active' : '' ?>"><i class="fa-solid fa-award"></i><span class="link-text"> Reward</span></a>
     <a href="/capstoneweb/user/pages/user_notification.php?userid=<?= $userid ?>" class="<?= ($current_page == 'user_notification.php') ? 'active' : '' ?>"><i class="fas fa-exclamation-circle"></i><span class="link-text"> Notification</span></a>
     <a href="#" data-bs-toggle="modal" data-bs-target="#verifyPasswordModal" class="<?= ($current_page == 'user_accsetting.php') ? 'active' : '' ?>">

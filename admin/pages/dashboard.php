@@ -29,7 +29,7 @@ if ($result2) {
   $total_recyclables = 0; 
 }
 
-$query3 = "SELECT COUNT(status) AS pending_notif FROM notifications WHERE status = 'Unread';";
+$query3 = "SELECT COUNT(status) AS pending_notif FROM user_rewards WHERE status = 'pending';";
 $result3 = mysqli_query($conn, $query3);
 
 if($result3) {

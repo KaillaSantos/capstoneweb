@@ -125,12 +125,13 @@ $user = mysqli_fetch_assoc($result);
                   <span class="badge bg-warning text-dark">Pending</span>
                 </td>
                 <td>
-                  <form action="../../function/function.php" method="POST" class="d-inline">
-                    <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                    <button type="submit" name="approve_user" class="btn btn-success btn-sm" title="Approve">
-                      <i class="fa fa-check"></i>
-                    </button>
-                  </form>
+                  <button type="button" 
+                          class="btn btn-success btn-sm approve-btn" 
+                          data-userid="<?= htmlspecialchars($row['userid']) ?>" 
+                          data-username="<?= htmlspecialchars($row['userName']) ?>"
+                          title="Approve">
+                    <i class="fa fa-check"></i>
+                  </button>
                   <form action="../../function/function.php" method="POST" class="d-inline">
                     <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
                     <button type="submit" name="reject_user" class="btn btn-danger btn-sm" title="Reject">
@@ -193,6 +194,30 @@ $user = mysqli_fetch_assoc($result);
     });
   </script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Auto-close alert after 3s
+      const alert = document.querySelector(".alert");
+      if (alert) {
+        setTimeout(() => new bootstrap.Alert(alert).close(), 3000);
+      }
+
+      // Handle approve modal
+      const approveModal = new bootstrap.Modal(document.getElementById('approveModal'));
+      const approveUserName = document.getElementById('approveUserName');
+      const approveUserId = document.getElementById('approveUserId');
+
+      document.querySelectorAll('.approve-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const userId = button.dataset.userid;
+          const userName = button.dataset.username;
+          approveUserName.textContent = userName;
+          approveUserId.value = userId;
+          approveModal.show();
+        });
+      });
+    });
+  </script>
 
   <!-- ===== PASSWORD VERIFY MODAL ===== -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
@@ -216,6 +241,32 @@ $user = mysqli_fetch_assoc($result);
       </div>
     </div>
   </div>
+
+  <!-- ===== SECONDARY APPROVAL MODAL ===== -->
+  <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="../../function/function.php" method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title" id="approveModalLabel">Confirm Account Approval</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to <strong>approve</strong> the account of:</p>
+            <h6 class="text-success" id="approveUserName"></h6>
+            <input type="hidden" name="userid" id="approveUserId">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" name="approve_user" class="btn btn-success">Confirm Approve</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
 
 </body>
 

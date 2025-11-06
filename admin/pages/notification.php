@@ -162,13 +162,14 @@ require_once __DIR__ . '/../../conn/dbconn.php';
                 <span class="badge bg-warning text-dark badge-status"><?= ucfirst($rows['status']) ?></span>
 
                 <div class="reward-actions">
-                  <form action="/capstoneweb/function/function.php" method="POST" class="d-inline">
-                    <input type="hidden" name="reward_id" value="<?= $rows['reward_id']; ?>">
-                    <input type="hidden" name="user_id" value="<?= $rows['user_id']; ?>">
-                    <button type="submit" name="approve_reward" class="btn btn-success btn-sm">
-                      <i class="fa fa-check"></i> Accept
-                    </button>
-                  </form>
+                  <button type="button" 
+                          class="btn btn-success btn-sm approve-btn"
+                          data-rewardid="<?= htmlspecialchars($rows['reward_id']) ?>"
+                          data-userid="<?= htmlspecialchars($rows['user_id']) ?>"
+                          data-username="<?= htmlspecialchars($rows['userName']) ?>"
+                          data-rewardname="<?= htmlspecialchars($rows['product_name']) ?>">
+                    <i class="fa fa-check"></i> Accept
+                  </button>
                 </div>
               </div>
             </div>
@@ -232,6 +233,36 @@ require_once __DIR__ . '/../../conn/dbconn.php';
       </div>
     </div>
 
+    <!-- ===== SECONDARY APPROVAL MODAL ===== -->
+    <div class="modal fade" id="approveRewardModal" tabindex="-1" aria-labelledby="approveRewardModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/capstoneweb/function/function.php" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="approveRewardModalLabel">Confirm Reward Approval</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <p>Are you sure you want to approve this reward redemption?</p>
+              <ul class="list-unstyled mb-3">
+                <li><strong>User:</strong> <span id="modalUserName" class="text-success"></span></li>
+                <li><strong>Reward:</strong> <span id="modalRewardName" class="text-primary"></span></li>
+              </ul>
+              <input type="hidden" name="reward_id" id="modalRewardId">
+              <input type="hidden" name="user_id" id="modalUserId">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" name="approve_reward" class="btn btn-success">Confirm Approve</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script>
@@ -246,6 +277,36 @@ require_once __DIR__ . '/../../conn/dbconn.php';
     }, 3000);
   </script>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Auto fade alert
+        setTimeout(() => {
+          const alert = document.getElementById('notif-alert');
+          if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500);
+          }
+        }, 3000);
+
+        // Handle approval modal
+        const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
+        const modalRewardId = document.getElementById('modalRewardId');
+        const modalUserId = document.getElementById('modalUserId');
+        const modalUserName = document.getElementById('modalUserName');
+        const modalRewardName = document.getElementById('modalRewardName');
+
+        document.querySelectorAll('.approve-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            modalRewardId.value = button.dataset.rewardid;
+            modalUserId.value = button.dataset.userid;
+            modalUserName.textContent = button.dataset.username;
+            modalRewardName.textContent = button.dataset.rewardname;
+            approveModal.show();
+          });
+        });
+      });
+    </script>
 
 </body>
 
