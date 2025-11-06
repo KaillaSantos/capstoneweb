@@ -329,7 +329,8 @@ if (isset($_POST['add_material'])) {
     $insert = "INSERT INTO recyclable (RM_name, RM_img) VALUES ('$RM_name', '$filename')";
     if (mysqli_query($conn, $insert)) {
         $userid = $_SESSION['userid'] ?? 0;
-        header("Location: ../admin/pages/recyclables.php?userid={$userid}");
+        header("Location: window.location.href = '{$_SERVER['HTTP_REFERER']}';
+    ");
         exit();
     } else {
         echo "<script>alert('Failed to add material: " . mysqli_error($conn) . "');</script>";
