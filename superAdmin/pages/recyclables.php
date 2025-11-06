@@ -86,8 +86,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 
 /* === Image === */
 .card-img {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
   object-fit: contain;
   border-radius: 12px;
   background: #ffffff;
