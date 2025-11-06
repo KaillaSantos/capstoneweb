@@ -207,9 +207,6 @@ if (isset($_POST['submitsetting'])) {
     exit();
 }
 
-
-
-
 // 🔹 ADMIN ACCOUNT SETTINGS
 if (isset($_POST['adminsetting'])) {
     $userid     = mysqli_real_escape_string($conn, $_POST['userid']);
@@ -258,7 +255,6 @@ if (isset($_POST['adminsetting'])) {
     echo "<script>alert('Account updated successfully!'); window.location.href='/capstoneweb/admin/pages/dashboard.php';</script>";
     exit();
 }
-
 
 if (isset($_POST['submit_announcement'])) {
     $announce_name = mysqli_real_escape_string($conn, $_POST['announce_name']);
@@ -340,18 +336,16 @@ if (isset($_POST['add_material'])) {
     }
 }
 
-
+// add record
 if (isset($_POST['submit_redeem'])) {
     $userid = mysqli_real_escape_string($conn, $_POST['user_id']); // user selected by admin
 
     // Sanitize inputs
-    $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $materials = $_POST['materials'] ?? [];
 
-    // Insert record into records table
-    $insertRecord = "INSERT INTO records (record_name, date, user_id) 
-                     VALUES ('$record_name', '$date', '$userid')";
+    // Insert record (no record_name, based on your setup)
+    $insertRecord = "INSERT INTO records (date, user_id) VALUES ('$date', '$userid')";
     $insertResult = mysqli_query($conn, $insertRecord);
 
     if (!$insertResult) {
@@ -360,7 +354,7 @@ if (isset($_POST['submit_redeem'])) {
 
     $record_id = mysqli_insert_id($conn);
 
-    // Handle image upload (optional)
+    // ✅ Handle optional image upload
     if (!empty($_FILES["rec_img"]["name"])) {
         $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
         $tempname = $_FILES["rec_img"]["tmp_name"];
@@ -372,26 +366,29 @@ if (isset($_POST['submit_redeem'])) {
         }
     }
 
-    // Insert recyclable materials into record_items
+    // ✅ Insert recyclable materials only if checkbox selected and quantity not empty
     foreach ($materials as $recyclable_id => $data) {
-        $quantity = (float)($data['quantity'] ?? 0);
+        $quantity = trim($data['quantity'] ?? '');
         $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
 
-        if ($quantity > 0) {
-            $insertItem = "INSERT INTO record_items (record_id, recyclable_id, quantity, unit) 
-                           VALUES ($record_id, $recyclable_id, $quantity, '$unit')";
-            mysqli_query($conn, $insertItem);
+        // Skip if not selected or no quantity entered
+        if ($quantity === '' || $quantity === '0' || $quantity <= 0) {
+            continue; // don’t insert blank or zero
         }
+
+        // Insert valid material entry
+        $insertItem = "INSERT INTO record_items (record_id, recyclable_id, quantity, unit) 
+                       VALUES ($record_id, $recyclable_id, '$quantity', '$unit')";
+        mysqli_query($conn, $insertItem);
     }
 
-    // Redirect after success
+    // ✅ Redirect after success
     echo "<script>
         alert('Record saved successfully!');
         window.location.href = '{$_SERVER['HTTP_REFERER']}';
-        </script>";
-        exit();
+    </script>";
+    exit();
 }
-
 
 // Reset Button for records
 if (isset($_POST['reset_data'])) {
