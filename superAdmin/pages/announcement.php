@@ -298,7 +298,7 @@
     });
   </script>
 
-  <!-- 🟩 Edit Announcement Modal -->
+<!-- Edit Announcement Modal -->
 <div class="modal fade" id="editAnnouncementModal" tabindex="-1" aria-labelledby="editAnnouncementModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 shadow">
@@ -321,7 +321,7 @@
             <textarea class="form-control" id="edit_announce_text" name="announce_text" rows="4" required></textarea>
           </div>
 
-          <!-- Removed date input as requested -->
+          <!-- Removed date input -->
 
           <div class="mb-3">
             <label for="edit_announce_img" class="form-label fw-semibold">Upload Image (optional):</label>
@@ -329,9 +329,10 @@
           </div>
 
           <div class="mb-3" id="currentImageContainer" style="display: none;">
-            <label class="form-label fw-semibold">Current Image:</label><br>
+            <label class="form-label fw-semibold">Current / Preview Image:</label><br>
             <img id="currentImage" src="" alt="Current Image"
-                 style="width: 150px; height: auto; border-radius: 8px; border: 2px solid #333;">
+                 style="width: 150px; height: auto; border-radius: 8px; border: 2px solid #333; cursor: pointer;"
+                 title="Click to enlarge">
           </div>
 
           <div class="d-flex justify-content-end">
@@ -341,6 +342,15 @@
           </div>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🟦 Image Preview Lightbox Modal -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0 text-center">
+      <img id="largePreview" src="" alt="Preview" class="img-fluid rounded shadow" style="max-height: 90vh;">
     </div>
   </div>
 </div>
@@ -359,7 +369,6 @@ document.querySelectorAll('.edit-btn').forEach(button => {
     document.getElementById('edit_announce_name').value = title;
     document.getElementById('edit_announce_text').value = text;
 
-    // Show image if available
     const imgContainer = document.getElementById('currentImageContainer');
     const currentImage = document.getElementById('currentImage');
 
@@ -370,10 +379,39 @@ document.querySelectorAll('.edit-btn').forEach(button => {
       imgContainer.style.display = 'none';
     }
 
-    // Open modal
+    // Reset file input preview
+    document.getElementById('edit_announce_img').value = '';
+
+    // Show modal
     const modal = new bootstrap.Modal(document.getElementById('editAnnouncementModal'));
     modal.show();
   });
+});
+
+// 🟩 Live preview when selecting a new image
+document.getElementById('edit_announce_img').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const imgContainer = document.getElementById('currentImageContainer');
+  const currentImage = document.getElementById('currentImage');
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentImage.src = e.target.result;
+      imgContainer.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    imgContainer.style.display = 'none';
+  }
+});
+
+// 🟦 Click image to enlarge
+document.getElementById('currentImage').addEventListener('click', function() {
+  const largePreview = document.getElementById('largePreview');
+  largePreview.src = this.src;
+  const previewModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+  previewModal.show();
 });
 </script>
 
