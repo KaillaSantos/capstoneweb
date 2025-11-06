@@ -385,8 +385,11 @@ if (isset($_POST['submit_redeem'])) {
     }
 
     // Redirect after success
-    header("Location: ../admin/pages/record.php?userid={$userid}");
-    exit();
+    echo "<script>
+        alert('Record saved successfully!');
+        window.location.href = '{$_SERVER['HTTP_REFERER']}';
+        </script>";
+        exit();
 }
 
 
