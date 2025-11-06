@@ -56,7 +56,9 @@ require_once __DIR__ . '/../../includes/fetchData.php';
       <h3 style="padding-left: 50px;"> </h3>
 
       <div class="d-flex gap-2">
-        <a href="\capstoneweb\admin\pages\addRecord.php" class="btn btn-success" name="add"><i class="fa-solid fa-plus"></i> Add </a>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+          <i class="fa fa-plus"></i> Add Record
+        </button>
         <form action="\capstoneweb\function/function.php" method="post" class="d-inline">
           <button type="submit" name="reset_data" class="btn btn-danger" onclick="return confirm('Are you sure you want to reset all data? This cannot be undone.');"><i class="fa-solid fa-trash-can-arrow-up"></i> Reset </button>
         </form>
@@ -96,8 +98,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
                 </div>
               </div>
             </th>
-
-
 
             <!-- Category Columns with sorting -->
             <?php foreach ($categories as $catId => $catName): ?>
@@ -191,7 +191,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
         <div class="modal-body text-center">
           <img id="modalImage" src="" alt="Record Image" class="img-fluid rounded">
         </div>
-
       </div>
     </div>
   </div>
@@ -212,7 +211,6 @@ require_once __DIR__ . '/../../includes/fetchData.php';
       });
     });
   </script>
-
 
   <!-- Verify Password Modal -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
@@ -240,6 +238,79 @@ require_once __DIR__ . '/../../includes/fetchData.php';
 
   <!-- toggle -->
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
+
+  <!-- 🔹 Add Record Modal -->
+<div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="addRecordModalLabel">Add New Record</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <form method="POST" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+        <div class="modal-body">
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Record Name</label>
+              <input type="text" name="record_name" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Date</label>
+              <input type="date" name="date" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Select User</label>
+            <select name="user_id" class="form-select" required>
+              <option value="">-- Choose User --</option>
+              <?php
+                $userQuery = "SELECT userid, userName FROM account WHERE userRole = 'user'";
+                $userResult = mysqli_query($conn, $userQuery);
+                while ($user = mysqli_fetch_assoc($userResult)) {
+                  echo "<option value='{$user['userid']}'>{$user['userName']}</option>";
+                }
+              ?>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Upload Proof Image (optional)</label>
+            <input type="file" name="rec_img" class="form-control" accept="image/*">
+          </div>
+
+          <hr>
+          <h6>Select Materials</h6>
+          <?php
+            $recyclables = mysqli_query($conn, "SELECT * FROM recyclable");
+            while ($row = mysqli_fetch_assoc($recyclables)) {
+          ?>
+            <div class="row align-items-center mb-2">
+              <div class="col-md-4"><?= htmlspecialchars($row['RM_name']); ?></div>
+              <div class="col-md-4">
+                <input type="number" step="0.01" name="materials[<?= $row['id']; ?>][quantity]" class="form-control" placeholder="Quantity">
+              </div>
+              <div class="col-md-4">
+                <select name="materials[<?= $row['id']; ?>][unit]" class="form-select">
+                  <option value="kg">kg</option>
+                  <option value="pcs">pcs</option>
+                </select>
+              </div>
+            </div>
+          <?php } ?>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" name="submit_redeem" class="btn btn-success">Save Record</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 
 </body>
