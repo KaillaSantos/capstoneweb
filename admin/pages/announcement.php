@@ -46,6 +46,21 @@
       .announce-card {
         display: flex;
       }
+
+      #addAnnouncementModal .modal-content {
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    #addAnnouncementModal label {
+      color: #1A4314;
+    }
+
+    #addAnnouncementModal .form-control:focus {
+      border-color: #2C5E1A;
+      box-shadow: 0 0 5px rgba(44,94,26,0.3);
+    }
+
     </style>
   </head>
 
@@ -185,6 +200,54 @@
       </div>
     </div>
 
+    <!-- 🟢 Add New Announcement Modal -->
+<div class="modal fade" id="addAnnouncementModal" tabindex="-1" aria-labelledby="addAnnouncementModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#1A4314; color:white;">
+        <h5 class="modal-title" id="addAnnouncementModalLabel">
+          <i class="fa-solid fa-bullhorn"></i> New Announcement
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="announce_name" class="form-label fw-bold">Announcement Title:</label>
+            <input type="text" class="form-control" name="announce_name" placeholder="Enter title" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="announce_text" class="form-label fw-bold">Announcement Body:</label>
+            <textarea class="form-control" name="announce_text" rows="4" placeholder="Enter announcement text" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="announce_date" class="form-label fw-bold">Date:</label>
+            <input type="date" class="form-control" name="announce_date" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="announce_img" class="form-label fw-bold">Upload Image (optional):</label>
+            <input type="file" class="form-control" name="announce_img" accept="image/*">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i> Cancel
+          </button>
+          <button type="submit" class="btn btn-success" name="submit_announcement">
+            <i class="fa-solid fa-paper-plane"></i> Post Announcement
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
     <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
     <script src="/capstoneweb/assets/sidebarToggle.js"></script>
 
@@ -212,6 +275,14 @@
         });
       });
     </script>
+
+    <script>
+      const addAnnouncementModal = document.getElementById('addAnnouncementModal');
+      addAnnouncementModal.addEventListener('hidden.bs.modal', function () {
+        addAnnouncementModal.querySelector('form').reset();
+      });
+    </script>
+
 
   </body>
 
