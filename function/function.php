@@ -284,6 +284,7 @@ if (isset($_POST['submit_announcement'])) {
     }
 }
 
+// archive announcement
 if (isset($_POST['archive_selected'])) {
     if (!empty($_POST['archive_ids'])) {
         $archive_ids = $_POST['archive_ids'];
@@ -300,7 +301,7 @@ if (isset($_POST['archive_selected'])) {
     }
 
     $userid = $_SESSION['userid'] ?? 0;
-    header("Location: ../admin/pages/announcement.php?userid={$userid}");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }
 
@@ -329,8 +330,7 @@ if (isset($_POST['add_material'])) {
     $insert = "INSERT INTO recyclable (RM_name, RM_img) VALUES ('$RM_name', '$filename')";
     if (mysqli_query($conn, $insert)) {
         $userid = $_SESSION['userid'] ?? 0;
-        header("Location: window.location.href = '{$_SERVER['HTTP_REFERER']}';
-    ");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     } else {
         echo "<script>alert('Failed to add material: " . mysqli_error($conn) . "');</script>";
@@ -380,7 +380,7 @@ if (isset($_POST['submit_redeem'])) {
             echo "<script>alert('⚠️ move_uploaded_file() failed. Check folder permissions and paths.');</script>";
         }
     }
-}
+    }
 
 
     // --- 3️⃣ Insert recyclable materials ---
@@ -419,7 +419,7 @@ if (isset($_POST['reset_data'])) {
     }
 
     $userid = $_SESSION['userid'] ?? 0;
-    header("Location: ../admin/pages/record.php?userid={$userid}");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }
 
@@ -446,7 +446,7 @@ if (isset($_POST['submit_pickup'])) {
                VALUES ('$userid', '$address', '$imagePath', '$pickupDate', '$pickupTime', 'Pending')";
 
     if (mysqli_query($conn, $insert)) {
-        header("Location: ../admin/pages/notification.php?userid=$userid");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     } else {
         echo "<script>alert('Failed to submit pickup request.');</script>";
@@ -492,60 +492,12 @@ if (isset($_POST['update_announcement'])) {
     }
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Announcement updated successfully.'); window.location.href='../admin/pages/announcement.php?userid={$_SESSION['userid']}';</script>";
+        echo "<script>alert('Announcement updated successfully.'); window.location.href='. $_SERVER['HTTP_REFERER']);</script>";
     } else {
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
 }
 
-if (isset($_POST['submit_redeem'])) {
-    session_start();
-
-    // Get selected user from dropdown
-    $userid = mysqli_real_escape_string($conn, $_POST['user_id']);
-
-    // Get admin ID (logged in)
-    $admin_id = $_SESSION['userid'] ?? 0;
-
-    // Other fields
-    $record_name = mysqli_real_escape_string($conn, $_POST['record_name']);
-    $date = mysqli_real_escape_string($conn, $_POST['date']);
-    $materials = $_POST['materials'] ?? [];
-
-    // Insert record (link to selected user)
-    $insertRecord = "INSERT INTO records (record_name, date, user_id, encoded_by) 
-                     VALUES ('$record_name', '$date', '$userid', '$admin_id')";
-    mysqli_query($conn, $insertRecord);
-    $record_id = mysqli_insert_id($conn);
-
-    // Handle optional image
-    if (!empty($_FILES["rec_img"]["name"])) {
-        $filename = time() . "_" . basename($_FILES["rec_img"]["name"]);
-        $tempname = $_FILES["rec_img"]["tmp_name"];
-        $folder = "../assets/proofs/" . $filename;
-
-        if (move_uploaded_file($tempname, $folder)) {
-            mysqli_query($conn, "UPDATE records SET rec_img = '$filename' WHERE id = $record_id");
-        }
-    }
-
-    // Insert recyclable materials
-    foreach ($materials as $recyclable_id => $data) {
-        $quantity = (int)($data['quantity'] ?? 0);
-        $unit = mysqli_real_escape_string($conn, $data['unit'] ?? 'kg');
-
-        if ($quantity > 0) {
-            $insertItem = "INSERT INTO record_items (record_id, recyclable_id, quantity, unit) 
-                           VALUES ($record_id, $recyclable_id, $quantity, '$unit')";
-            mysqli_query($conn, $insertItem);
-        }
-    }
-
-    header("Location: ../admin/pages/record.php?userid={$userid}");
-    exit();
-}
-
-// submitting rewards to database
 // submitting rewards to database
 if (isset($_POST['submit_rewards'])) {
     session_start(); // ensure session is started
