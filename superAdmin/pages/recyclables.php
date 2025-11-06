@@ -190,7 +190,13 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
         <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data">
           <div class="modal-body">
             <label>Material Name:</label>
-            <input type="text" name="RM_name" class="form-control" placeholder="e.g. Plastic Bottle" required>
+            <select name="RM_name" class="form-control">
+              <option value="Plastik">Plastik</option>
+              <option value="Bakal">Bakal/Metal</option>
+              <option value="Lata">Lata</option>
+              <option value="Bote">Bote/Bubog</option>
+              <option value="Karton">Karton/Papel</option>
+            </select>
 
             <label class="mt-3">Upload Image:</label>
             <input type="file" name="RM_img" class="form-control" accept="image/*">
