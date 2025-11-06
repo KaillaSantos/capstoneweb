@@ -30,6 +30,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
 
 /* === Card Styling (balanced lively design) === */
 .card {
+  display:flex;
   background: linear-gradient(145deg, #f8fff8, #e8f8e8);
   border-radius: 18px;
   border: none;
