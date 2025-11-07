@@ -4,21 +4,22 @@ $purok = $_GET['purok'] ?? 'all';
 $filter = $purok !== 'all' ? "AND a.purok = '$purok'" : '';
 
 $query = "
-  SELECT a.purok, SUM(ri.quantity) AS total
-  FROM record_items ri
-  JOIN records r ON ri.record_id = r.id
-  JOIN account a ON r.user_id = a.userid
-  WHERE a.purok IS NOT NULL AND a.purok != 0 $filter
-  GROUP BY a.purok
-  ORDER BY a.purok;
+  SELECT r.RM_name, SUM(ri.quantity) AS total_kg
+  FROM recyclable r
+  JOIN record_items ri ON ri.recyclable_id = r.id
+  JOIN records rec ON rec.id = ri.record_id
+  JOIN account a ON rec.user_id = a.userid
+  WHERE 1 $filter
+  GROUP BY r.RM_name
 ";
-$result = mysqli_query($conn, $query);
 
+$result = mysqli_query($conn, $query);
 $labels = [];
 $data = [];
+
 while ($row = mysqli_fetch_assoc($result)) {
-  $labels[] = 'Purok ' . $row['purok'];
-  $data[] = (int)$row['total'];
+  $labels[] = $row['RM_name'];
+  $data[] = (int)$row['total_kg'];
 }
 ?>
 <!DOCTYPE html>
@@ -37,9 +38,9 @@ while ($row = mysqli_fetch_assoc($result)) {
   </style>
 </head>
 <body>
-  <canvas id="purokChart"></canvas>
+  <canvas id="recyclablesChart"></canvas>
   <script>
-    const ctx = document.getElementById('purokChart');
+    const ctx = document.getElementById('recyclablesChart');
     Chart.register(ChartDataLabels);
     new Chart(ctx, {
       type: 'bar',
@@ -91,7 +92,7 @@ while ($row = mysqli_fetch_assoc($result)) {
           },
           legend: { display: false },
         },
-            tooltip: {
+        tooltip: {
             callbacks: {
               label: (ctx) => ctx.dataset.label + ': ' + ctx.parsed.y + ' kg'
             }

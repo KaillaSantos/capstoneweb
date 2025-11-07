@@ -7,14 +7,14 @@ LEGEND
 directions: only change when working and updated na. yung emoji papaltan owki. omkie.
 
 DASHBOARD ONLY - BOTH ADMIN AND SUPER ADMIN
-‌❌ For graphs, it needed numbers per bar(sa taas)
-❌ Connection of graph from household 
+✅ For graphs, it needed numbers per bar(sa taas)
+✅ Connection of graph from household 
        - Connection of graphs to top rankings(dapat gumagalaw pag nag filter sa graphs, gagalaw din data sa rankings) 
-❌ Liitan yung graphs 
-❌ Sa graphs ilalagay lahat ng recyclables, actual content (for evaluation) 
-❌ add reward supply na natitira
-❌ add din kung ilan na na redeem na supply 
-❌ alert din sa notification if yung supply is paubos na
+✅ Liitan yung graphs 
+✅ Sa graphs ilalagay lahat ng recyclables, actual content (for evaluation) 
+✅ add reward supply na natitira
+✅ add din kung ilan na na redeem na supply 
+✅ alert din sa notification if yung supply is paubos na
 
 OTHER PAGES IN ADMIN AND SUPERADMIN 
 ✅ ANNOUNCEMENT PAGE- enhanced the annoucement that would look like the reward and notification pages
