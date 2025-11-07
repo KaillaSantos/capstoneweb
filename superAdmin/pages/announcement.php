@@ -29,27 +29,123 @@
   }
   ?>
 
-  <!DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-    <title>Announcement | E-Recycle</title>
-    <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
-    <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
-    <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
-    <link rel="stylesheet" href="/capstoneweb/user-admin.css">
-    <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
-    <style>
-      .announce-card {
-        display: flex;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <title>Announcements | E-Recycle</title>
 
-      #addAnnouncementModal .modal-content {
+  <link rel="stylesheet" href="/capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
+  <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-5.3.7-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/capstoneweb/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
+  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
+  <link rel="stylesheet" href="/capstoneweb/user-admin.css">
+  <link rel="stylesheet" href="/capstoneweb/user-admin1.css">
+
+  <style>
+    /* ✅ Unified Announcement Card Grid (like rewards.php) */
+    .announcement-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      padding: 15px;
+    }
+
+    .announcement-card {
+      border: 1px solid #ccc;
+      border-left: 6px solid #2c5e1a;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .announcement-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .announcement-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .announcement-body {
+      padding: 12px 15px;
+      flex-grow: 1;
+    }
+
+    .announcement-body h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #2c5e1a;
+    }
+
+    .announcement-body .date {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .announcement-text {
+      font-size: 0.9rem;
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .announcement-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      gap: 8px;
+    }
+
+    .announcement-actions .btn-link {
+      color: #2c5e1a;
+      text-decoration: none;
+      font-weight: 500;
+      padding-left: 0;
+    }
+
+    .announcement-actions .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .announcement-actions .btn-warning {
+      background-color: #ffc107;
+      border: none;
+      color: #000;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+
+    .announcement-actions .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      accent-color: #2c5e1a;
+    }
+
+    /* === Add Announcement Modal === */
+    #addAnnouncementModal .modal-content {
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
 
     #addAnnouncementModal label {
@@ -58,110 +154,116 @@
 
     #addAnnouncementModal .form-control:focus {
       border-color: #2C5E1A;
-      box-shadow: 0 0 5px rgba(44,94,26,0.3);
+      box-shadow: 0 0 5px rgba(44, 94, 26, 0.3);
     }
 
-    </style>
-  </head>
+    @media (max-width: 768px) {
+      .announcement-card {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
 
-  <body>
+<body>
 
-    <!-- Sidebar -->
-    <?php include '../includes/sidebar.php'; ?>
+  <!-- Sidebar -->
+  <?php include '../includes/sidebar.php'; ?>
 
-    <!-- Sidebar Toggle Button -->
-    <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
+  <!-- Sidebar Toggle Button -->
+  <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
 
-    <!-- Overlay -->
-    <div class="overlay"></div>
+  <!-- Overlay -->
+  <div class="overlay"></div>
 
-    <!-- Content -->
-    <div class="content" id="content">
-      <header class="dashboard-header">
-        <div class="header-left">
-          <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
-          <div class="header-text">
-            <h1>E-Recycle Announcement Page</h1>
-            <p>Municipality of San Ildefonso</p>
-          </div>
+  <!-- Content -->
+  <div class="content" id="content">
+    <header class="dashboard-header">
+      <div class="header-left">
+        <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
+        <div class="header-text">
+          <h1>E-Recycle Announcement Page</h1>
+          <p>Municipality of San Ildefonso</p>
         </div>
-
-        <div class="header-right">
-          <span class="date-display"><?php echo date("F j, Y"); ?></span>
-        </div>
-      </header>
-
-      <div style="display:flex; justify-content:flex-end; ">
-        <form method="get" action="announcement.php" class="d-flex align-items-center mb-3" style="margin-right: 3px;">
-          <select name="status" id="status_filter" class="form-select w-auto" onchange="this.form.submit()">
-            <option value="Posted" <?= (isset($_GET['status']) && $_GET['status'] == 'Posted') ? 'selected' : '' ?>>All</option>
-            <option value="Archived" <?= (isset($_GET['status']) && $_GET['status'] == 'Archived') ? 'selected' : '' ?>>Archived</option>
-          </select>
-        </form>
-
-        <form method="post" action="../../function/function.php">
-          <button type="button" class="btn btn-md btn-success" data-bs-toggle="modal" data-bs-target="#addAnnouncementModal">
-          <i class="fa fa-plus"></i> Add New Announcement
-        </button>
-
-          <button type="submit" class="btn btn-danger" name="archive_selected"><i class="fa-solid fa-box-archive"></i> Archive</button>
       </div>
 
-      <div class="announcement-container">
-        <?php
-        $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'Posted';
-
-        if ($statusFilter === 'All') {
-          $sql = "SELECT * FROM announcement ORDER BY announce_date DESC";
-        } else {
-          $sql = "SELECT * FROM announcement WHERE status = '$statusFilter' ORDER BY announce_date DESC";
-        }
-        $run = mysqli_query($conn, $sql);
-
-        if (mysqli_num_rows($run) > 0) {
-          while ($rows = mysqli_fetch_assoc($run)) {
-            $announceImage = !empty($rows['announce_img'])
-              ? "../../announceImg/" . $rows['announce_img']
-              : "../../announceImg/announcementPlaceholder.jpg";
-        ?>
-            <div class="announcement-card">
-              <input type="checkbox" name="archive_ids[]" value="<?= $rows['announce_id'] ?>">
-              <img src="<?= $announceImage ?>" alt="Announcement" class="announcement-img" style="height: 150px;">
-              <div class="announcement-body">
-                <h2><i class="fa-solid fa-pencil"></i> <?= htmlspecialchars($rows['announce_name']) ?></h2>
-                <p class="date"><i class="fa-solid fa-calendar"></i> <?= date("m/d/Y", strtotime($rows['announce_date'])) ?></p>
-                <p class="announcement-text"><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
-
-                <div class="announcement-actions">
-                  <button type="button" class="btn btn-link read-more-btn"
-                    data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
-                    data-date="<?= date("m/d/Y", strtotime($rows['announce_date'])) ?>"
-                    data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
-                    data-image="<?= $announceImage ?>">
-                    Read More »
-                  </button>
-
-                  <button type="button" class="btn btn-warning btn-sm edit-btn"
-                    data-id="<?= $rows['announce_id'] ?>"
-                    data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
-                    data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
-                    data-img="<?= htmlspecialchars($rows['announce_img']) ?>">
-                    <i class="fa fa-edit"></i> Edit
-                  </button>
-
-                </div>
-              </div>
-            </div>
-        <?php
-          }
-        } else {
-          echo "<p>No announcements yet.</p>";
-        }
-        ?>
+      <div class="header-right">
+        <span class="date-display"><?php echo date("F j, Y"); ?></span>
       </div>
+    </header>
+
+    <!-- Filters and Buttons -->
+    <div class="d-flex justify-content-end align-items-center mb-3" style="gap:10px;">
+      <form method="get" action="announcement.php" class="d-flex align-items-center mb-0">
+        <select name="status" id="status_filter" class="form-select w-auto" onchange="this.form.submit()">
+          <option value="Posted" <?= (isset($_GET['status']) && $_GET['status'] == 'Posted') ? 'selected' : '' ?>>All</option>
+          <option value="Archived" <?= (isset($_GET['status']) && $_GET['status'] == 'Archived') ? 'selected' : '' ?>>Archived</option>
+        </select>
       </form>
+
+      <form method="post" action="../../function/function.php" class="d-flex gap-2">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAnnouncementModal">
+          <i class="fa fa-plus"></i> Add New
+        </button>
+        <button type="submit" class="btn btn-danger" name="archive_selected">
+          <i class="fa-solid fa-box-archive"></i> Archive
+        </button>
     </div>
 
+    <!-- Announcement Grid -->
+    <div class="announcement-container">
+      <?php
+      $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'Posted';
+
+      if ($statusFilter === 'All') {
+        $sql = "SELECT * FROM announcement ORDER BY announce_date DESC";
+      } else {
+        $sql = "SELECT * FROM announcement WHERE status = '$statusFilter' ORDER BY announce_date DESC";
+      }
+      $run = mysqli_query($conn, $sql);
+
+      if (mysqli_num_rows($run) > 0) {
+        while ($rows = mysqli_fetch_assoc($run)) {
+          $announceImage = !empty($rows['announce_img'])
+            ? "../../announceImg/" . $rows['announce_img']
+            : "../../announceImg/announcementPlaceholder.jpg";
+      ?>
+          <div class="announcement-card">
+            <input type="checkbox" name="archive_ids[]" value="<?= $rows['announce_id'] ?>">
+            <img src="<?= $announceImage ?>" alt="Announcement" class="announcement-img">
+            <div class="announcement-body">
+              <h2><i class="fa-solid fa-bullhorn"></i> <?= htmlspecialchars($rows['announce_name']) ?></h2>
+              <p class="date"><i class="fa-solid fa-calendar"></i> <?= date("F j, Y", strtotime($rows['announce_date'])) ?></p>
+              <p class="announcement-text"><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['announce_text'])) ?></p>
+
+              <div class="announcement-actions">
+                <button type="button" class="btn btn-link read-more-btn"
+                  data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
+                  data-date="<?= date("F j, Y", strtotime($rows['announce_date'])) ?>"
+                  data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
+                  data-image="<?= $announceImage ?>">
+                  Read More »
+                </button>
+
+                <button type="button" class="btn btn-warning btn-sm edit-btn"
+                  data-id="<?= $rows['announce_id'] ?>"
+                  data-title="<?= htmlspecialchars($rows['announce_name']) ?>"
+                  data-text="<?= htmlspecialchars($rows['announce_text']) ?>"
+                  data-img="<?= htmlspecialchars($rows['announce_img']) ?>">
+                  <i class="fa fa-edit"></i> Edit
+                </button>
+              </div>
+            </div>
+          </div>
+      <?php
+        }
+      } else {
+        echo "<p class='text-center mt-4'>No announcements yet.</p>";
+      }
+      ?>
+    </div>
+    </form>
+  </div>
     <!-- 📜 Read More Modal -->
     <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
