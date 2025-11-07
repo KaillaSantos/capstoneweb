@@ -96,7 +96,7 @@ if (isset($_SESSION['message'])) {
       filter: brightness(0.92);
     }
 
-    /* === Full-width gradient overlay === */
+    /* === Overlay content (title + edit button) === */
     .bento-overlay {
       position: absolute;
       bottom: 0;
@@ -108,9 +108,8 @@ if (isset($_SESSION['message'])) {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      flex-wrap: nowrap;
       gap: 10px;
-      z-index: 2;
+      z-index: 3;
     }
 
     .bento-text {
@@ -146,8 +145,8 @@ if (isset($_SESSION['message'])) {
       font-size: 0.78rem;
       border-radius: 6px;
       padding: 6px 9px;
-      z-index: 3;
-      /* above overlay */
+      z-index: 4;
+      /* stays above read-more */
       cursor: pointer;
     }
 
@@ -155,23 +154,24 @@ if (isset($_SESSION['message'])) {
       background: #e0a800;
     }
 
-    /* === Full overlay button (Read More) === */
+    /* ✅ Fixed Read More Overlay */
     .overlay-readmore-btn {
       position: absolute;
       inset: 0;
-      z-index: 4;
+      z-index: 2;
+      /* under edit button, above image */
       background: transparent;
       border: none;
       cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .bento-card:hover .overlay-readmore-btn {
+      background: rgba(0, 0, 0, 0.1);
     }
 
     .overlay-readmore-btn:focus {
       outline: none;
-      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
-    }
-
-    .overlay-readmore-btn:hover {
-      background: rgba(0, 0, 0, 0.12);
     }
 
     /* === Card Size Variations === */
@@ -194,38 +194,10 @@ if (isset($_SESSION['message'])) {
       grid-column: span 2;
     }
 
-    /* 🧩 Fix overlay overlap issue */
+    /* === Remove old announcement-card structure (no longer needed) */
     .announcement-card {
-      position: relative;
-      overflow: hidden;
+      display: contents;
     }
-
-    .announcement-card .read-more-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-      z-index: 1;
-      /* keep it below the edit button */
-    }
-
-    .announcement-card:hover .read-more-overlay {
-      opacity: 1;
-    }
-
-    /* 🟩 Ensure Edit button stays on top */
-    .announcement-card .edit-btn {
-      position: relative;
-      z-index: 2;
-    }
-
 
     /* === Responsive tweaks === */
     @media (max-width: 768px) {
@@ -246,22 +218,7 @@ if (isset($_SESSION['message'])) {
       }
     }
 
-    /* === Add Announcement Modal styling (kept) === */
-    #addAnnouncementModal .modal-content {
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    #addAnnouncementModal label {
-      color: #1A4314;
-    }
-
-    #addAnnouncementModal .form-control:focus {
-      border-color: #2C5E1A;
-      box-shadow: 0 0 5px rgba(44, 94, 26, 0.3);
-    }
-
-    /* === Read More Modal - ensure it's above overlays/backdrops === */
+    /* === Modal stylings unchanged === */
     #readMoreModal {
       z-index: 99999 !important;
     }
@@ -300,6 +257,7 @@ if (isset($_SESSION['message'])) {
       filter: invert(1);
     }
   </style>
+
 </head>
 
 <body>
@@ -536,7 +494,12 @@ if (isset($_SESSION['message'])) {
 
             <div class="mb-3">
               <label for="edit_announce_text" class="form-label fw-semibold">Announcement Body:</label>
-              <textarea class="form-control" id="edit_announce_text" name="announce_text" rows="4" required></textarea>
+              <textarea class="form-control" id="edit_announce_text" name="announce_text" rows="2s" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_announce_date" class="form-label">Announcement Date</label>
+              <input type="date" class="form-control" name="announce_date" id="edit_announce_date">
             </div>
 
             <div class="mb-3">
@@ -610,7 +573,7 @@ if (isset($_SESSION['message'])) {
     });
 
     // ---------------------------
-    // Edit button (event delegation)
+    // Edit button (event delegation) with auto date
     // ---------------------------
     document.addEventListener('click', function(e) {
       const editBtn = e.target.closest('.edit-btn');
@@ -631,6 +594,13 @@ if (isset($_SESSION['message'])) {
       if (idField) idField.value = id;
       if (titleField) titleField.value = title;
       if (textField) textField.value = text;
+
+      // 🗓️ Automatically fill date with today's date (editable)
+      const dateField = document.getElementById('edit_announce_date');
+      if (dateField) {
+        const today = new Date().toISOString().split('T')[0];
+        dateField.value = today;
+      }
 
       if (img && img.trim() !== '') {
         if (currentImage) {
