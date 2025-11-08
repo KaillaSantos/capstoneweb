@@ -527,6 +527,7 @@ if (isset($_POST['submit_rewards'])) {
     $product_description = mysqli_real_escape_string($conn, $_POST['product_description']);
     $product_points = intval($_POST['product_points']);
     $product_date = !empty($_POST['product_date']) ? $_POST['product_date'] : date('Y-m-d');
+    $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity'])
 
     // Handle image upload (optional)
     $product_img = "";
@@ -543,8 +544,8 @@ if (isset($_POST['submit_rewards'])) {
     }
 
     // Insert into database
-    $insert = "INSERT INTO rewards (product_name, product_description, product_points, product_date, product_img)
-               VALUES ('$product_name', '$product_description', '$product_points', '$product_date', '$product_img')";
+    $insert = "INSERT INTO rewards (product_name, product_description, product_points, product_quantity, product_date, product_img)
+               VALUES ('$product_name', '$product_description', '$product_points','$product_quantity' '$product_date', '$product_img')";
 
     if (mysqli_query($conn, $insert)) {
         $_SESSION['reward_success'] = "Reward added successfully!";

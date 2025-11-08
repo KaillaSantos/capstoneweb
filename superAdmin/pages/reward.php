@@ -273,6 +273,11 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
             <input type="date" class="form-control" id="product_date" name="product_date" required>
           </div>
 
+           <div class="mb-3">
+            <label for="product_quantity" class="form-label fw-semibold">Date:</label>
+            <input type="date" class="form-control" id="product_quantity" name="product_quantity" required>
+          </div>
+
           <div class="mb-3">
             <label for="product_img" class="form-label fw-semibold">Upload Image (optional):</label>
             <input type="file" class="form-control" id="product_img" name="product_img" accept="image/*">
