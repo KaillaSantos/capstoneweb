@@ -237,7 +237,7 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 
   <script src="/capstoneweb/assets/sidebarToggle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+  <script src="/capstoneweb/assets/html5-qrcode.min.js"></script>
 
 
   <script>
