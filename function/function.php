@@ -706,6 +706,25 @@ if (isset($_POST['superadmin_reject_user'])) {
     exit();
 }
 
+// disabling admin or user acc
+if (isset($_POST['disable_user'])) {
+    $userid = intval($_POST['userid']);
+
+    $query = "UPDATE account SET status = 'disabled' WHERE userid = $userid";
+    if (mysqli_query($conn, $query)) {
+        echo "<script>
+                alert('Account has been disabled successfully.');
+                window.location.href='../admin/pages/accounts.php';
+              </script>";
+    } else {
+        error_log('MySQL Error (disable_user): ' . mysqli_error($conn));
+        echo "<script>
+                alert('Failed to disable account. Please try again.');
+                window.history.back();
+              </script>";
+    }
+}
+
 // Handle reward approval
 if (isset($_POST['approve_reward'])) {
     $userid = intval($_POST['user_id']);

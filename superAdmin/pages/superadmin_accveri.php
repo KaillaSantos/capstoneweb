@@ -61,6 +61,7 @@ $user = mysqli_fetch_assoc($result);
         <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
+
     <?php if (isset($_SESSION['message'])): ?>
       <div class="container mt-3">
         <div class="alert alert-<?= $_SESSION['alert_type'] ?? 'info' ?> alert-dismissible fade show shadow-sm" role="alert">
@@ -73,6 +74,10 @@ $user = mysqli_fetch_assoc($result);
 
 
     <!-- ===== USERS TABLE ===== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-center">Account Verification</h4>
+      </div>
     <div class="table-responsive mt-4">
       <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark">
@@ -177,6 +182,123 @@ $user = mysqli_fetch_assoc($result);
         </div>
       <?php endif; ?>
     </div>
+
+    <!-- ACCOUNT DISSABLE -->
+    <div class="table-responsive mt-4">
+      <?php
+      // ===== PAGINATION =====
+      $records_per_page = 5;
+      $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+      $offset = ($page - 1) * $records_per_page;
+
+      // ===== COUNT TOTAL RECORDS =====
+      $countQuery = "
+        SELECT COUNT(*) AS total 
+        FROM account 
+        WHERE status = 'approved' 
+        AND (role = 'admin' OR role = 'user')
+      ";
+      $countResult = mysqli_query($conn, $countQuery);
+      $total_records = mysqli_fetch_assoc($countResult)['total'];
+      $total_pages = ceil($total_records / $records_per_page);
+
+      // ===== FETCH APPROVED ADMINS + USERS =====
+      $sql = "
+        SELECT userid, userimg, userName, email, purok, status, role
+        FROM account 
+        WHERE status = 'approved'
+        AND (role = 'admin' OR role = 'user')
+        ORDER BY userid DESC
+        LIMIT $records_per_page OFFSET $offset
+      ";
+      $result = mysqli_query($conn, $sql);
+      ?>
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-center">Approved Accounts</h4>
+      </div>
+
+      <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 80px;">Image</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Purok</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th style="width: 150px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (mysqli_num_rows($result) > 0): ?>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+              <?php
+              $imagePath = !empty($row['userimg'])
+                ? "../../image/" . htmlspecialchars($row['userimg'])
+                : "../../image/placeholder.jpg";
+              ?>
+              <tr>
+                <td>
+                  <img src="<?= $imagePath ?>" alt="User Image" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                </td>
+                <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
+                <td><?= htmlspecialchars($row['email']) ?></td>
+                <td><?= htmlspecialchars($row['purok']) ?></td>
+                <td class="text-capitalize">
+                  <?php if ($row['role'] === 'admin'): ?>
+                    <span class="badge bg-primary">Admin</span>
+                  <?php else: ?>
+                    <span class="badge bg-success">User</span>
+                  <?php endif; ?>
+                </td>
+                <td><span class="badge bg-success">Approved</span></td>
+                <td>
+                  <form action="../../function/function.php" method="POST" class="d-inline">
+                    <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
+                    <button type="submit" name="disable_user" class="btn btn-warning btn-sm" title="Disable Account" onclick="return confirm('Are you sure you want to disable this account?');">
+                      <i class="fa fa-ban"></i> Disable
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <?php endwhile; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">No approved admin or user accounts found.</td>
+            </tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
+
+      <!-- ===== PAGINATION ===== -->
+      <?php if ($total_pages > 1): ?>
+        <div class="d-flex justify-content-center mt-3">
+          <nav>
+            <ul class="pagination">
+              <!-- Prev -->
+              <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+              </li>
+
+              <!-- Page numbers -->
+              <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+
+              <!-- Next -->
+              <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      <?php endif; ?>
+    </div>
+
+
   </div>
 
   <!-- ===== JS ===== -->
