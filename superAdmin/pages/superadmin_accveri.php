@@ -318,7 +318,6 @@
 
 
       <!-- DISSABLED ACCOUNT -->
-
       <div id="disabledTableContainer" class="table-section" style="display:none;">
           <?php
             $sql = "
@@ -415,14 +414,35 @@
     <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const alert = document.querySelector(".alert");
-        if (alert) {
-          setTimeout(() => {
-            const fade = new bootstrap.Alert(alert);
-            fade.close();
-          }, 3000);
-        }
+
+        // Disable account modal
+        const disableModal = new bootstrap.Modal(document.getElementById('disableModal'));
+        const disableUserName = document.getElementById('disableUserName');
+        const disableUserId = document.getElementById('disableUserId');
+
+        document.querySelectorAll('.disable-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            disableUserName.textContent = button.dataset.username;
+            disableUserId.value = button.dataset.userid;
+            disableModal.show();
+          });
+        });
+
+        // Enable account modal
+        const enableModal = new bootstrap.Modal(document.getElementById('enableModal'));
+        const enableUserName = document.getElementById('enableUserName');
+        const enableUserId = document.getElementById('enableUserId');
+
+        document.querySelectorAll('.enable-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            enableUserName.textContent = button.dataset.username;
+            enableUserId.value = button.dataset.userid;
+            enableModal.show();
+          });
+        });
+
       });
+
     </script>
 
     <script>
