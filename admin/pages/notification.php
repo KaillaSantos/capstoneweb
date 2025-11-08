@@ -269,104 +269,128 @@ require_once __DIR__ . '/../../conn/dbconn.php';
 
 
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Automatically fade out the alert after 3 seconds
-    setTimeout(() => {
-      const alert = document.getElementById('notif-alert');
-      if (alert) {
-        alert.classList.remove('show');
-        alert.classList.add('fade');
-        setTimeout(() => alert.remove(), 500); // Cleanly remove from DOM
-      }
-    }, 3000);
-  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Auto fade alert
-        setTimeout(() => {
-          const alert = document.getElementById('notif-alert');
-          if (alert) {
-            alert.classList.remove('show');
-            alert.classList.add('fade');
-            setTimeout(() => alert.remove(), 500);
-          }
-        }, 3000);
-
-        // Handle approval modal
-        const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
-        const modalRewardId = document.getElementById('modalRewardId');
-        const modalUserId = document.getElementById('modalUserId');
-        const modalUserName = document.getElementById('modalUserName');
-        const modalRewardName = document.getElementById('modalRewardName');
-
-        document.querySelectorAll('.approve-btn').forEach(button => {
-          button.addEventListener('click', () => {
-            modalRewardId.value = button.dataset.rewardid;
-            modalUserId.value = button.dataset.userid;
-            modalUserName.textContent = button.dataset.username;
-            modalRewardName.textContent = button.dataset.rewardname;
-            approveModal.show();
-          });
-        });
-      });
-    </script>
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <script>
-      const qrResult = document.getElementById('qrResult');
-function onScanSuccess(decodedText, decodedResult) {
-  qrResult.innerText = "Processing...";
-
-  fetch("/capstoneweb/admin/api/qr_verify.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: "qr_data=" + encodeURIComponent(decodedText)
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      qrResult.innerHTML = `
-        ✅ User: <b>${data.user.userName}</b><br>
-        🪙 Points: <b>${data.user.total_points}</b>
-      `;
-
-      // 🔹 Auto-fill and open approval modal
-      const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
-      document.getElementById('modalUserId').value = data.user.userid;
-      document.getElementById('modalUserName').textContent = data.user.userName;
-      document.getElementById('modalRewardName').textContent = data.user.reward_name ?? "Scanned Reward";
-
-      // Example: set reward_id from QR if your backend includes it
-      if (data.user.reward_id) {
-        document.getElementById('modalRewardId').value = data.user.reward_id;
-      }
-
-      approveModal.show();
-    } else {
-      qrResult.innerHTML = "❌ " + data.message;
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // =================== AUTO CLOSE ALERT ===================
+  setTimeout(() => {
+    const alert = document.getElementById('notif-alert');
+    if (alert) {
+      alert.classList.remove('show');
+      alert.classList.add('fade');
+      setTimeout(() => alert.remove(), 500);
     }
-  })
-  .catch(err => {
-    qrResult.innerText = "Error: " + err;
+  }, 3000);
+
+  // =================== APPROVE MODAL LOGIC ===================
+  const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
+  const modalRewardId = document.getElementById('modalRewardId');
+  const modalUserId = document.getElementById('modalUserId');
+  const modalUserName = document.getElementById('modalUserName');
+  const modalRewardName = document.getElementById('modalRewardName');
+
+  document.querySelectorAll('.approve-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      modalRewardId.value = button.dataset.rewardid;
+      modalUserId.value = button.dataset.userid;
+      modalUserName.textContent = button.dataset.username;
+      modalRewardName.textContent = button.dataset.rewardname;
+      approveModal.show();
+    });
   });
-}
 
+  // =================== QR SCANNER LOGIC ===================
+  const qrResult = document.getElementById('qrResult');
+  const readerDiv = document.getElementById('reader');
 
-      function onScanError(errorMessage) {
-        // Optionally log errors
+  if (!readerDiv) {
+    console.error("QR reader div not found.");
+    return;
+  }
+
+  const html5QrCode = new Html5Qrcode("reader");
+  let isScanning = false;
+
+  function onScanSuccess(decodedText) {
+    if (isScanning) return; // prevent multiple triggers
+    isScanning = true;
+    qrResult.innerText = "Processing...";
+
+    fetch("/capstoneweb/admin/api/qr_verify.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "qr_data=" + encodeURIComponent(decodedText)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        qrResult.innerHTML = `
+          ✅ User: <b>${data.user.userName}</b><br>
+          🪙 Points: <b>${data.user.total_points}</b><br>
+          🎁 Reward: <b>${data.user.reward_name ?? "N/A"}</b>
+        `;
+
+        // Fill modal details
+        modalUserId.value = data.user.userid;
+        modalUserName.textContent = data.user.userName;
+        modalRewardName.textContent = data.user.reward_name ?? "Scanned Reward";
+        modalRewardId.value = data.user.reward_id ?? "";
+
+        // Stop scanner before showing modal
+        html5QrCode.stop().then(() => {
+          approveModal.show();
+        }).catch(err => console.warn("Failed to stop scanner:", err));
+
+      } else {
+        qrResult.innerHTML = "❌ " + data.message;
+        isScanning = false; // allow rescanning
       }
+    })
+    .catch(err => {
+      qrResult.innerText = "Error: " + err;
+      isScanning = false;
+    });
+  }
 
-      const html5QrCode = new Html5Qrcode("reader");
-      html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        onScanSuccess,
-        onScanError
-      ).catch(err => {
-        qrResult.innerText = "Camera access failed: " + err;
-      });
-    </script>
+  function onScanError(errorMessage) {
+    // Optional: console.log("Scan error:", errorMessage);
+  }
+
+  // Initialize camera safely
+  Html5Qrcode.getCameras()
+    .then(cameras => {
+      if (cameras && cameras.length) {
+        html5QrCode.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          onScanSuccess,
+          onScanError
+        ).catch(err => {
+          qrResult.innerText = "Camera start failed: " + err;
+        });
+      } else {
+        qrResult.innerText = "No camera found.";
+      }
+    })
+    .catch(err => {
+      qrResult.innerText = "Camera access denied: " + err;
+    });
+
+  // Restart scanner when modal closes (optional)
+  document.getElementById('approveRewardModal').addEventListener('hidden.bs.modal', () => {
+    isScanning = false;
+    html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onScanSuccess,
+      onScanError
+    ).catch(() => {}); // silently retry
+  });
+});
+</script>
+
 </body>
 
 </html>
