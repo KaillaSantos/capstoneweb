@@ -183,7 +183,7 @@ $user = mysqli_fetch_assoc($result);
 
     <!-- ACCOUNT DISSABLE -->
     <h3 class="text-center"> Active Account</h3>
-        <div class="table-responsive mt-4">
+    <div class="table-responsive mt-4">
       <?php
       // ===== PAGINATION =====
       $records_per_page = 5;
@@ -191,16 +191,22 @@ $user = mysqli_fetch_assoc($result);
       $offset = ($page - 1) * $records_per_page;
 
       // ===== COUNT TOTAL RECORDS =====
-      $countQuery = "SELECT COUNT(*) AS total FROM account WHERE status = 'approved'";
+      $countQuery = "
+        SELECT COUNT(*) AS total 
+        FROM account 
+        WHERE status = 'approved' 
+        AND (role = 'admin' OR role = 'user')
+      ";
       $countResult = mysqli_query($conn, $countQuery);
       $total_records = mysqli_fetch_assoc($countResult)['total'];
       $total_pages = ceil($total_records / $records_per_page);
 
-      // ===== FETCH APPROVED ACCOUNTS =====
+      // ===== FETCH APPROVED ADMINS + USERS =====
       $sql = "
         SELECT userid, userimg, userName, email, purok, status, role
-        FROM account
+        FROM account 
         WHERE status = 'approved'
+        AND (role = 'admin' OR role = 'user')
         ORDER BY userid DESC
         LIMIT $records_per_page OFFSET $offset
       ";
@@ -208,7 +214,7 @@ $user = mysqli_fetch_assoc($result);
       ?>
 
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold">Approved Accounts</h4>
+        <h4 class="fw-bold">Approved Accounts (Admin & User)</h4>
       </div>
 
       <table class="table table-bordered table-striped table-hover align-middle">
@@ -238,7 +244,13 @@ $user = mysqli_fetch_assoc($result);
                 <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
                 <td><?= htmlspecialchars($row['email']) ?></td>
                 <td><?= htmlspecialchars($row['purok']) ?></td>
-                <td class="text-capitalize"><?= htmlspecialchars($row['role']) ?></td>
+                <td class="text-capitalize">
+                  <?php if ($row['role'] === 'admin'): ?>
+                    <span class="badge bg-primary">Admin</span>
+                  <?php else: ?>
+                    <span class="badge bg-success">User</span>
+                  <?php endif; ?>
+                </td>
                 <td><span class="badge bg-success">Approved</span></td>
                 <td>
                   <form action="../../function/function.php" method="POST" class="d-inline">
@@ -252,7 +264,7 @@ $user = mysqli_fetch_assoc($result);
             <?php endwhile; ?>
           <?php else: ?>
             <tr>
-              <td colspan="7" class="text-center text-muted py-4">No approved accounts found.</td>
+              <td colspan="7" class="text-center text-muted py-4">No approved admin or user accounts found.</td>
             </tr>
           <?php endif; ?>
         </tbody>
@@ -284,6 +296,7 @@ $user = mysqli_fetch_assoc($result);
         </div>
       <?php endif; ?>
     </div>
+
 
   </div>
 
