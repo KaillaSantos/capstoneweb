@@ -125,7 +125,12 @@ require_once __DIR__ . '/../../conn/dbconn.php';
       </div>
       <?php unset($_SESSION['notif_success'], $_SESSION['notif_error']); ?>
     <?php endif; ?>
-
+    <!-- 🔍 QR Code Verification Section -->
+    <div class="container my-4 text-center">
+      <h4><i class="bi bi-qr-code-scan"></i> Scan User QR to Verify</h4>
+      <div id="reader" style="width:400px; margin:20px auto;"></div>
+      <p id="qrResult" class="mt-2 fw-bold text-success"></p>
+    </div>
     <!-- Reward Request Cards -->
     <div class="row row-cols-1 row-cols-md-3 g-4 reward-container">
       <?php
@@ -307,7 +312,55 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         });
       });
     </script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script>
+      const qrResult = document.getElementById('qrResult');
 
+      function onScanSuccess(decodedText, decodedResult) {
+        qrResult.innerText = "Processing...";
+
+        fetch("/capstoneweb/admin/api/qr_verify.php", {
+          method: "POST",
+          headers: {"Content-Type": "application/x-www-form-urlencoded"},
+          body: "qr_data=" + encodeURIComponent(decodedText)
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            qrResult.innerHTML = `
+              ✅ User: <b>${data.user.userName}</b><br>
+              🪙 Points: <b>${data.user.total_points}</b>
+            `;
+
+            // Optional: auto-open the approval modal (pre-fills)
+            const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
+            document.getElementById('modalUserId').value = data.user.userid;
+            document.getElementById('modalUserName').textContent = data.user.userName;
+            approveModal.show();
+
+          } else {
+            qrResult.innerHTML = "❌ " + data.message;
+          }
+        })
+        .catch(err => {
+          qrResult.innerText = "Error: " + err;
+        });
+      }
+
+      function onScanError(errorMessage) {
+        // Optionally log errors
+      }
+
+      const html5QrCode = new Html5Qrcode("reader");
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        onScanSuccess,
+        onScanError
+      ).catch(err => {
+        qrResult.innerText = "Camera access failed: " + err;
+      });
+    </script>
 </body>
 
 </html>
