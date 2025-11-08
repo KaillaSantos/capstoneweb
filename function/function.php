@@ -32,6 +32,12 @@ if (isset($_POST['submit'])) {
                 exit();
             }
 
+            if ($row['status'] === 'disabled') {
+                $_SESSION['login_error'] = "Your account has been disabled. Please contact support.";
+                header("Location: ../login.php");
+                exit();
+            }
+
             // ✅ Save user details in session
             $_SESSION['userid'] = $row['userid'];
             $_SESSION['email']  = $row['email'];
