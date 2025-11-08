@@ -18,6 +18,12 @@ if (isset($_POST['submit'])) {
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
 
+        if ($row['status'] === 'disabled') {
+                $_SESSION['login_error'] = "Your account has been disabled. Please contact Administrator.";
+                header("Location: ../login.php");
+                exit();
+            }
+
         if ($row['passWord'] === $passWord) {
 
             // ✅ Block unapproved users (only for regular users)
@@ -28,12 +34,6 @@ if (isset($_POST['submit'])) {
             }
             if ($row['role'] === 'admin' && $row['status'] !== 'approved') {
                 $_SESSION['login_error'] = "Your account is not approved yet. Please wait for SuperAdmin verification.";
-                header("Location: ../login.php");
-                exit();
-            }
-
-            if ($row['status'] === 'disabled') {
-                $_SESSION['login_error'] = "Your account has been disabled. Please contact Administrator.";
                 header("Location: ../login.php");
                 exit();
             }
