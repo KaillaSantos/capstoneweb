@@ -126,7 +126,7 @@ if ($role === 'user') {
             echo "<p><strong>Date Issued:</strong> " . date('F d, Y') . "</p>";
             echo "</div>";
 
-            echo "<p class='text-muted small mt-3'>When scanned, this QR code links to your personal record page.</p>";
+            echo "<p class='text-muted small mt-3'>Scan this QR to verify user info.</p>";
         } else {
             echo "<div class='alert alert-warning'>QR code not found. Please contact the administrator.</div>";
         }
