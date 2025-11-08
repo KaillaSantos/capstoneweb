@@ -62,6 +62,7 @@ $user = mysqli_fetch_assoc($result);
       </div>
     </header>
 
+
     <?php if (isset($_SESSION['message'])): ?>
       <div class="container mt-3">
         <div class="alert alert-<?= $_SESSION['alert_type'] ?? 'info' ?> alert-dismissible fade show shadow-sm" role="alert">
@@ -72,13 +73,25 @@ $user = mysqli_fetch_assoc($result);
       <?php unset($_SESSION['message'], $_SESSION['alert_type']); ?>
     <?php endif; ?>
 
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold text-center mb-0">Manage Accounts</h4>
+      <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          Select Table
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
+          <li><a class="dropdown-item active" href="#" data-table="pending">Account Verification</a></li>
+          <li><a class="dropdown-item" href="#" data-table="approved">Approved Accounts</a></li>
+          <li><a class="dropdown-item" href="#" data-table="disabled">Disabled Accounts</a></li>
+        </ul>
+      </div>
+    </div>
+
 
     <!-- ===== USERS TABLE ===== -->
-
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold text-center">Account Verification</h4>
-      </div>
-    <div class="table-responsive mt-4">
+      <h4 class="fw-bold text-center">Account Verification</h4>
+      <div class="table-responsive mt-4">
       <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark">
           <tr>
@@ -181,9 +194,10 @@ $user = mysqli_fetch_assoc($result);
           </nav>
         </div>
       <?php endif; ?>
+      </div>
     </div>
 
-    <!-- ACCOUNT DISSABLE -->
+    <!-- ACCOUNT DISSABLING TABLE-->
     <div class="table-responsive mt-4">
       <?php
       // ===== PAGINATION =====
@@ -298,6 +312,65 @@ $user = mysqli_fetch_assoc($result);
       <?php endif; ?>
     </div>
 
+    <!-- DISSABLED ACCOUNT -->
+    <div id="disabledTableContainer" class="table-section" style="display:none;">
+      <?php
+      $sql = "
+        SELECT userid, userimg, userName, email, purok, status, role
+        FROM account 
+        WHERE status = 'disabled'
+        ORDER BY userid DESC
+      ";
+      $result = mysqli_query($conn, $sql);
+      ?>
+      <h4 class="fw-bold text-center mb-3">Disabled Accounts</h4>
+      <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th style="width: 80px;">Image</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Purok</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th style="width: 150px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (mysqli_num_rows($result) > 0): ?>
+              <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                <?php
+                $imagePath = !empty($row['userimg'])
+                  ? "../../image/" . htmlspecialchars($row['userimg'])
+                  : "../../image/placeholder.jpg";
+                ?>
+                <tr>
+                  <td><img src="<?= $imagePath ?>" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;"></td>
+                  <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
+                  <td><?= htmlspecialchars($row['email']) ?></td>
+                  <td><?= htmlspecialchars($row['purok']) ?></td>
+                  <td class="text-capitalize"><?= htmlspecialchars($row['role']) ?></td>
+                  <td><span class="badge bg-secondary">Disabled</span></td>
+                  <td>
+                    <form action="../../function/function.php" method="POST" class="d-inline">
+                      <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
+                      <button type="submit" name="enable_user" class="btn btn-success btn-sm" title="Enable Account">
+                        <i class="fa fa-check"></i> Enable
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <?php endwhile; ?>
+            <?php else: ?>
+              <tr><td colspan="7" class="text-center text-muted py-4">No disabled accounts found.</td></tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
 
   </div>
 
@@ -340,6 +413,38 @@ $user = mysqli_fetch_assoc($result);
       });
     });
   </script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const sections = {
+    pending: document.getElementById("pendingTableContainer"),
+    approved: document.getElementById("approvedTableContainer"),
+    disabled: document.getElementById("disabledTableContainer")
+  };
+
+  dropdownItems.forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+
+      // Remove active state from all
+      dropdownItems.forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+
+      // Hide all tables
+      Object.values(sections).forEach(sec => sec.style.display = "none");
+
+      // Show selected table
+      const selected = item.dataset.table;
+      if (sections[selected]) sections[selected].style.display = "block";
+
+      // Update dropdown text
+      document.getElementById("filterDropdown").textContent = item.textContent;
+    });
+  });
+});
+</script>
+
 
   <!-- ===== PASSWORD VERIFY MODAL ===== -->
   <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
