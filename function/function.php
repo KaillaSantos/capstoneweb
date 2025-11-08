@@ -585,6 +585,7 @@ if (isset($_POST['reset_rewards'])) {
 
 // Handle reward update
 if (isset($_POST['update_reward'])) {
+    session_start(); // ensure session is active if using $_SESSION
     $id = intval($_POST['reward_id']);
     $name = mysqli_real_escape_string($conn, $_POST['product_name']);
     $description = mysqli_real_escape_string($conn, $_POST['product_description']);
@@ -592,27 +593,52 @@ if (isset($_POST['update_reward'])) {
     $date = mysqli_real_escape_string($conn, $_POST['product_date']);
     $quantity = mysqli_real_escape_string($conn, $_POST['product_quantity']);
 
-    $img = "";
-    if (!empty($_FILES['product_img']['name'])) {
-        $img = basename($_FILES['product_img']['name']);
-        $target = "../admin/productImg/" . $img;
-        move_uploaded_file($_FILES['product_img']['tmp_name'], $target);
+    // Base upload directory (absolute path for reliability)
+    $uploadDir = __DIR__ . "../uploads/productImg/";
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
 
-        $sql = "UPDATE rewards 
-                SET product_name='$name', product_description='$description', product_points=$points, product_quantity='$quantity', product_date='$date', product_img='$img'
-                WHERE reward_id=$id";
+    if (!empty($_FILES['product_img']['name'])) {
+        // Generate unique file name to avoid overwrites
+        $img = time() . "_" . basename($_FILES['product_img']['name']);
+        $target = $uploadDir . $img;
+
+        if (move_uploaded_file($_FILES['product_img']['tmp_name'], $target)) {
+            // Update DB with image
+            $sql = "UPDATE rewards 
+                    SET product_name='$name', 
+                        product_description='$description', 
+                        product_points=$points, 
+                        product_quantity='$quantity', 
+                        product_date='$date', 
+                        product_img='$img'
+                    WHERE reward_id=$id";
+        } else {
+            // Log error if upload failed
+            error_log("Image upload failed for reward ID $id");
+            echo "<script>alert('Image upload failed.'); window.history.back();</script>";
+            exit;
+        }
     } else {
+        // Update without changing the image
         $sql = "UPDATE rewards 
-                SET product_name='$name', product_description='$description', product_points=$points, product_quantity='$quantity', product_date='$date'
+                SET product_name='$name', 
+                    product_description='$description', 
+                    product_points=$points, 
+                    product_quantity='$quantity', 
+                    product_date='$date'
                 WHERE reward_id=$id";
     }
 
     if (mysqli_query($conn, $sql)) {
         echo "<script>alert('Reward updated successfully.'); window.location.href='../admin/pages/reward.php?userid={$_SESSION['userid']}';</script>";
     } else {
+        error_log("MySQL error: " . mysqli_error($conn));
         echo "<script>alert('Update failed.'); window.history.back();</script>";
     }
 }
+
 
 if (isset($_POST['approve_user'])) {
     $userId = intval($_POST['userid']);
@@ -653,7 +679,6 @@ if (isset($_POST['superadmin_approve_user'])) {
     header("Location: ../superAdmin/pages/superadmin_accveri.php");
     exit();
 }
-
 
 // user account verification "REJECT"
 if (isset($_POST['reject_user'])) {
