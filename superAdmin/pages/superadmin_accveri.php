@@ -232,7 +232,7 @@ $user = mysqli_fetch_assoc($result);
             <td><?= htmlspecialchars($row['email']) ?></td>
             <td><?= htmlspecialchars($row['purok']) ?></td>
             <td class="text-capitalize"><?= htmlspecialchars($row['role']) ?></td>
-            <td><span class="badge bg-secondary">Disabled</span></td>
+            <td><span class="badge bg-warning">Disabled</span></td>
             <td>
               <button type="button" class="btn btn-success btn-sm action-btn" 
                       data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="enable_user">
