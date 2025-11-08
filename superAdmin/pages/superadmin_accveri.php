@@ -357,7 +357,7 @@
                     <td>
                       <form action="../../function/function.php" method="POST" class="d-inline">
                         <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                        <button type="submit" name="enable_user" class="btn btn-success btn-sm" title="Enable Account">
+                        <button type="submit" name="enable_user" class="btn btn-success btn-sm" title="Enable Account" onclick="return confirm('Are you sure you want to enable this account?');">
                           <i class="fa fa-check"></i> Enable
                         </button>
                       </form>
