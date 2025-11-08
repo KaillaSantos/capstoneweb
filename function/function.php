@@ -652,46 +652,32 @@ if(isset($_POST['action_type'], $_POST['userid'])) {
 
     switch($action) {
         case 'approve_user':
-        case 'superadmin_approve_user':
             $stmt = $conn->prepare("UPDATE account SET status='approved' WHERE userid=?");
-            $stmt->bind_param("i", $userId);
-            $success_msg = "✅ User account approved successfully.";
-            $alert_type = "success";
             break;
-
         case 'reject_user':
-        case 'superadmin_reject_user':
             $stmt = $conn->prepare("UPDATE account SET status='rejected' WHERE userid=?");
-            $stmt->bind_param("i", $userId);
-            $success_msg = "❌ User account rejected successfully.";
-            $alert_type = "warning";
             break;
-
         case 'disable_user':
             $stmt = $conn->prepare("UPDATE account SET status='disabled' WHERE userid=?");
-            $stmt->bind_param("i", $userId);
-            $success_msg = "🚫 Account has been disabled successfully.";
-            $alert_type = "warning";
             break;
-
         case 'enable_user':
             $stmt = $conn->prepare("UPDATE account SET status='approved' WHERE userid=?");
-            $stmt->bind_param("i", $userId);
-            $success_msg = "✅ Account has been re-enabled successfully.";
-            $alert_type = "success";
             break;
-
         default:
-            $_SESSION['message'] = "❌ Invalid action.";
-            $_SESSION['alert_type'] = "danger";
             redirect_back();
     }
 
-    if($stmt->execute()){
-        $_SESSION['message'] = $success_msg;
-        $_SESSION['alert_type'] = $alert_type;
+    $stmt->bind_param("i", $userId);
+
+    if ($stmt->execute()) {
+        switch($action) {
+            case 'approve_user': $_SESSION['message'] = "✅ User approved successfully."; $_SESSION['alert_type'] = "success"; break;
+            case 'reject_user': $_SESSION['message'] = "❌ User rejected successfully."; $_SESSION['alert_type'] = "warning"; break;
+            case 'disable_user': $_SESSION['message'] = "🚫 User disabled."; $_SESSION['alert_type'] = "warning"; break;
+            case 'enable_user': $_SESSION['message'] = "✅ User enabled."; $_SESSION['alert_type'] = "success"; break;
+        }
     } else {
-        $_SESSION['message'] = "❌ Action failed: ".$stmt->error;
+        $_SESSION['message'] = "❌ Action failed: " . $stmt->error;
         $_SESSION['alert_type'] = "danger";
     }
 

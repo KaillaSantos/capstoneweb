@@ -12,6 +12,15 @@ include __DIR__ . '/../includes/sidebar.php';
 $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
+
+<?php if(isset($_SESSION['message'])): ?>
+  <div class="alert alert-<?= $_SESSION['alert_type'] ?> alert-dismissible fade show" role="alert">
+    <?= $_SESSION['message'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php unset($_SESSION['message'], $_SESSION['alert_type']); ?>
+<?php endif; ?>
+
 ?>
 
 <!DOCTYPE html>
