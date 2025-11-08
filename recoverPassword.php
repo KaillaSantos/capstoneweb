@@ -54,13 +54,14 @@ try {
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'sanchez.aquino.092@gmail.com';     // <-- your Gmail account
-    $mail->Password = 'vpna fpbs kwsl unll';              // <-- your Gmail app password
+    $mail->Username = 'erecyclematimbubong@gmail.com
+';     // <-- your Gmail account
+    $mail->Password = 'ulhv yeba szqx xzdt';              // <-- your Gmail app password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
 
     // --- Send to the user first ---
-    $mail->setFrom('sanchez.aquino.092@gmail.com', 'E-Recycle Support');
+    $mail->setFrom('erecyclematimbubong@gmail.com', 'E-Recycle Support');
     $mail->addAddress($email); // user’s email
     $mail->isHTML(true);
     $mail->Subject = "E-Recycle Password Reset Request";
