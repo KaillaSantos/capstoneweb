@@ -168,23 +168,28 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                 <p><i class="fa-solid fa-star text-warning"></i> <?= htmlspecialchars($rows['product_points']) ?> points</p>
                 <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['product_date'])) ?></p>
                 <p><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
+                <p><i class="fa-solid fa-boxes-packing"></i> <?= htmlspecialchars($rows['product_quantity'])?> pcs remaining</p>
                 <div class="reward-actions">
                   <button type="button" class="btn btn-link read-more-btn"
                     data-title="<?= htmlspecialchars($rows['product_name']) ?>"
                     data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                    data-quantity="<?= htmlspecialchars($rows['product_quantity'])?>"
                     data-date="<?= date("F j, Y", strtotime($rows['product_date'])) ?>"
                     data-text="<?= htmlspecialchars($rows['product_description']) ?>"
                     data-image="<?= $rewardImage ?>">
                     Read More »
                   </button>
                 </div>
-               <button class="btn btn-warning btn-sm edit-reward-btn"
+                <button class="btn btn-warning btn-sm edit-reward-btn"
                   data-id="<?= $rows['reward_id'] ?>"
                   data-name="<?= htmlspecialchars($rows['product_name']) ?>"
                   data-description="<?= htmlspecialchars($rows['product_description']) ?>"
                   data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                  data-quantity="<?= htmlspecialchars($rows['product_quantity'])?>"
                   data-img="<?= htmlspecialchars($rows['product_img']) ?>">
                   <i class="fa fa-edit"></i> Edit
+                </button>
+
               </div>
             </div>
           </div>
@@ -214,29 +219,30 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       </div>
     </div>
   </div>
+
   <!-- 🔐 Password Verification Modal -->
-    <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form method="post" action="">
-            <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
-            <div class="modal-header">
-              <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="post" action="">
+          <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="verifyPassword" class="form-label">Enter Password</label>
+              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
             </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="verifyPassword" class="form-label">Enter Password</label>
-                <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
 <!-- Add New Reward Modal -->
 <div class="modal fade" id="addRewardModal" tabindex="-1" aria-labelledby="addRewardModalLabel" aria-hidden="true">
@@ -269,13 +275,13 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
           </div>
 
           <div class="mb-3">
-            <label for="product_date" class="form-label fw-semibold">Date:</label>
-            <input type="date" class="form-control" id="product_date" name="product_date" required>
+            <label for="product_quantity" class="form-label fw-semibold">Product Quantity:</label>
+            <input type="number" class="form-control" id="product_quantity" name="product_quantity" required>
           </div>
 
-           <div class="mb-3">
-            <label for="product_quantity" class="form-label fw-semibold">Date:</label>
-            <input type="date" class="form-control" id="product_quantity" name="product_quantity" required>
+          <div class="mb-3">
+            <label for="product_date" class="form-label fw-semibold">Date:</label>
+            <input type="date" class="form-control" id="product_date" name="product_date" required>
           </div>
 
           <div class="mb-3">
@@ -319,8 +325,8 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
 });
 </script>
 
+<!-- // 🗓️ Auto-fill today's date and prevent past dates -->
 <script>
-  // 🗓️ Auto-fill today's date and prevent past dates
   document.addEventListener("DOMContentLoaded", function() {
     const today = new Date().toISOString().split("T")[0];
     const dateInput = document.getElementById("product_date");
@@ -331,126 +337,132 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
   });
 </script>
 
-<!-- 🟩 Edit Reward Modal -->
-<div class="modal fade" id="editRewardModal" tabindex="-1" aria-labelledby="editRewardModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content border-0 shadow">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title fw-bold" id="editRewardModalLabel">Edit Reward Details</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+  <!-- 🟩 Edit Reward Modal -->
+  <div class="modal fade" id="editRewardModal" tabindex="-1" aria-labelledby="editRewardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title fw-bold" id="editRewardModalLabel">Edit Reward Details</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-      <div class="modal-body">
-        <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data" id="editRewardForm">
-          <input type="hidden" name="reward_id" id="edit_reward_id">
+        <div class="modal-body">
+          <form method="post" action="/capstoneweb/function/function.php" enctype="multipart/form-data" id="editRewardForm">
+            <input type="hidden" name="reward_id" id="edit_reward_id">
 
-          <div class="mb-3">
-            <label for="edit_product_name" class="form-label fw-semibold">Reward Title:</label>
-            <input type="text" class="form-control" id="edit_product_name" name="product_name" style="text-transform: capitalize;" required>
-          </div>
+            <div class="mb-3">
+              <label for="edit_product_name" class="form-label fw-semibold">Reward Title:</label>
+              <input type="text" class="form-control" id="edit_product_name" name="product_name" style="text-transform: capitalize;" required>
+            </div>
 
-          <div class="mb-3">
-            <label for="edit_product_description" class="form-label fw-semibold">Reward Description:</label>
-            <textarea class="form-control" id="edit_product_description" name="product_description" rows="2" style="text-transform: capitalize;" required></textarea>
-          </div>
+            <div class="mb-3">
+              <label for="edit_product_description" class="form-label fw-semibold">Reward Description:</label>
+              <textarea class="form-control" id="edit_product_description" name="product_description" rows="2" style="text-transform: capitalize;" required></textarea>
+            </div>
 
-          <div class="mb-3">
-            <label for="edit_product_points" class="form-label fw-semibold">Points:</label>
-            <input type="number" class="form-control" id="edit_product_points" name="product_points" required>
-          </div>
+            <div class="mb-3">
+              <label for="edit_product_points" class="form-label fw-semibold">Points:</label>
+              <input type="number" class="form-control" id="edit_product_points" name="product_points" required>
+            </div>
 
-          <!-- Removed product_date field (auto today handled on add modal) -->
+            <div class="mb-3">
+              <label for="product_quantity" class="form-label fw-semibold">Product Quantity:</label>
+              <input type="number" class="form-control" id="edit_product_quantity" name="product_quantity" required>
+            </div>
 
-          <div class="mb-3">
-            <label for="edit_product_img" class="form-label fw-semibold">Upload Image (optional):</label>
-            <input type="file" class="form-control" id="edit_product_img" name="product_img" accept="image/*">
-          </div>
 
-          <div class="mb-3" id="currentImageContainerReward" style="display: none;">
-            <label class="form-label fw-semibold">Current / Preview Image:</label><br>
-            <img id="currentImageReward" src="" alt="Reward Image"
-                 style="width:150px; height:auto; border:2px solid #2c5e1a; border-radius:8px; cursor:pointer;"
-                 title="Click to enlarge">
-          </div>
+            <div class="mb-3">
+              <label for="edit_product_img" class="form-label fw-semibold">Upload Image (optional):</label>
+              <input type="file" class="form-control" id="edit_product_img" name="product_img" accept="image/*">
+            </div>
 
-          <div class="d-flex justify-content-end">
-            <button type="submit" name="update_reward" class="btn btn-success fw-semibold">
-              <i class="fa fa-save"></i> Update Reward
-            </button>
-          </div>
-        </form>
+            <div class="mb-3" id="currentImageContainerReward" style="display: none;">
+              <label class="form-label fw-semibold">Current / Preview Image:</label><br>
+              <img id="currentImageReward" src="" alt="Reward Image"
+                  style="width:150px; height:auto; border:2px solid #2c5e1a; border-radius:8px; cursor:pointer;"
+                  title="Click to enlarge">
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" name="update_reward" class="btn btn-success fw-semibold">
+                <i class="fa fa-save"></i> Update Reward
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- 🟦 Image Preview Lightbox Modal -->
-<div class="modal fade" id="imagePreviewModalReward" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-transparent border-0 text-center">
-      <img id="largePreviewReward" src="" alt="Preview" class="img-fluid rounded shadow" style="max-height: 90vh;">
+  <!-- 🟦 Image Preview Lightbox Modal -->
+  <div class="modal fade" id="imagePreviewModalReward" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-transparent border-0 text-center">
+        <img id="largePreviewReward" src="" alt="Preview" class="img-fluid rounded shadow" style="max-height: 90vh;">
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-// 🟩 Handle edit button click
-document.querySelectorAll('.edit-reward-btn').forEach(button => {
-  button.addEventListener('click', function() {
-    const id = this.getAttribute('data-id');
-    const name = this.getAttribute('data-name');
-    const description = this.getAttribute('data-description');
-    const points = this.getAttribute('data-points');
-    const img = this.getAttribute('data-img');
+  <script>
+  // 🟩 Handle edit button click
+  document.querySelectorAll('.edit-reward-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      const name = this.getAttribute('data-name');
+      const description = this.getAttribute('data-description');
+      const points = this.getAttribute('data-points');
+      const img = this.getAttribute('data-img');
+      const quantity = this.getAttribute('data-quantity');
 
-    document.getElementById('edit_reward_id').value = id;
-    document.getElementById('edit_product_name').value = name;
-    document.getElementById('edit_product_description').value = description;
-    document.getElementById('edit_product_points').value = points;
+      document.getElementById('edit_reward_id').value = id;
+      document.getElementById('edit_product_name').value = name;
+      document.getElementById('edit_product_description').value = description;
+      document.getElementById('edit_product_points').value = points;
+      document.getElementById('edit_product_quantity').value = quantity;
 
+      const imgContainer = document.getElementById('currentImageContainerReward');
+      const currentImage = document.getElementById('currentImageReward');
+
+      if (img && img.trim() !== '') {
+        currentImage.src = `/capstoneweb/uploads/productImg/${img}`;
+        imgContainer.style.display = 'block';
+      } else {
+        imgContainer.style.display = 'none';
+      }
+
+      document.getElementById('edit_product_img').value = '';
+
+      const modal = new bootstrap.Modal(document.getElementById('editRewardModal'));
+      modal.show();
+    });
+  });
+
+  // 🟨 Live preview when uploading new image
+  document.getElementById('edit_product_img').addEventListener('change', function(event) {
+    const file = event.target.files[0];
     const imgContainer = document.getElementById('currentImageContainerReward');
     const currentImage = document.getElementById('currentImageReward');
 
-    if (img && img.trim() !== '') {
-      currentImage.src = `/capstoneweb/uploads/productImg/${img}`;
-      imgContainer.style.display = 'block';
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentImage.src = e.target.result;
+        imgContainer.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     } else {
       imgContainer.style.display = 'none';
     }
-
-    document.getElementById('edit_product_img').value = '';
-
-    const modal = new bootstrap.Modal(document.getElementById('editRewardModal'));
-    modal.show();
   });
-});
 
-// 🟨 Live preview when uploading new image
-document.getElementById('edit_product_img').addEventListener('change', function(event) {
-  const file = event.target.files[0];
-  const imgContainer = document.getElementById('currentImageContainerReward');
-  const currentImage = document.getElementById('currentImageReward');
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      currentImage.src = e.target.result;
-      imgContainer.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    imgContainer.style.display = 'none';
-  }
-});
-
-// 🟦 Click to enlarge image
-document.getElementById('currentImageReward').addEventListener('click', function() {
-  const largePreview = document.getElementById('largePreviewReward');
-  largePreview.src = this.src;
-  const previewModal = new bootstrap.Modal(document.getElementById('imagePreviewModalReward'));
-  previewModal.show();
-});
-</script>
+  // 🟦 Click to enlarge image
+  document.getElementById('currentImageReward').addEventListener('click', function() {
+    const largePreview = document.getElementById('largePreviewReward');
+    largePreview.src = this.src;
+    const previewModal = new bootstrap.Modal(document.getElementById('imagePreviewModalReward'));
+    previewModal.show();
+  });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
@@ -461,6 +473,7 @@ document.getElementById('currentImageReward').addEventListener('click', function
         document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
         document.getElementById('modalDate').textContent = this.getAttribute('data-date');
         document.getElementById('modalText').textContent = this.getAttribute('data-text');
+        document.getElementById('modalText').textContent = this.getAttribute('data-quantity');
         document.getElementById('modalImage').src = this.getAttribute('data-image');
 
         const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
