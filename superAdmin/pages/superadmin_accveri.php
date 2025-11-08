@@ -13,13 +13,6 @@ $query = "SELECT * FROM account WHERE userid = '$userid'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
 
-if(isset($_SESSION['message'])): ?>
-  <div class="alert alert-<?= $_SESSION['alert_type'] ?> alert-dismissible fade show" role="alert">
-    <?= $_SESSION['message'] ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  <?php unset($_SESSION['message'], $_SESSION['alert_type']); ?>
-<?php endif; 
 
 ?>
 
@@ -65,6 +58,17 @@ if(isset($_SESSION['message'])): ?>
       <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
     </div>
   </header>
+
+  <?php
+    if(isset($_SESSION['message'])): ?>
+      <div class="alert alert-<?= $_SESSION['alert_type'] ?> alert-dismissible fade show" role="alert">
+        <?= $_SESSION['message'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <?php unset($_SESSION['message'], $_SESSION['alert_type']); ?>
+    <?php endif; 
+
+  ?>
 
   <!-- ===== TABLE FILTER ===== -->
   <div class="d-flex justify-content-between align-items-center mb-3">
