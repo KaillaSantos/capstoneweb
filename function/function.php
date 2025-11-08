@@ -18,6 +18,12 @@ if (isset($_POST['submit'])) {
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
 
+        if ($row['status'] === 'disabled') {
+                $_SESSION['login_error'] = "Your account has been disabled. Please contact Administrator.";
+                header("Location: ../login.php");
+                exit();
+            }
+
         if ($row['passWord'] === $passWord) {
 
             // ✅ Block unapproved users (only for regular users)
@@ -296,7 +302,6 @@ if (isset($_POST['submit_announcement'])) {
     }
 }
 
-
 // archive announcement
 if (isset($_POST['archive_selected'])) {
     if (!empty($_POST['archive_ids'])) {
@@ -567,7 +572,6 @@ if (isset($_POST['submit_rewards'])) {
     exit;
 }
 
-
 // Reset Button for rewards
 if (isset($_POST['reset_rewards'])) {
     // Delete all rows
@@ -636,93 +640,53 @@ if (isset($_POST['update_reward'])) {
     }
 }
 
+function redirect_back() {
+    $redirect = $_SERVER['HTTP_REFERER'] ?? '../admin/pages/admin_accveri.php';
+    header("Location: $redirect");
+    exit();
+}
 
-if (isset($_POST['approve_user'])) {
+if(isset($_POST['action_type'], $_POST['userid'])) {
     $userId = intval($_POST['userid']);
+    $action = $_POST['action_type'];
 
-    $sql = "UPDATE account SET status = 'approved' WHERE userid = ?";
-    $stmt = $conn->prepare($sql);
+    switch($action) {
+        case 'approve_user':
+            $stmt = $conn->prepare("UPDATE account SET status='approved' WHERE userid=?");
+            break;
+        case 'reject_user':
+            $stmt = $conn->prepare("UPDATE account SET status='rejected' WHERE userid=?");
+            break;
+        case 'disable_user':
+            $stmt = $conn->prepare("UPDATE account SET status='disabled' WHERE userid=?");
+            break;
+        case 'enable_user':
+            $stmt = $conn->prepare("UPDATE account SET status='approved' WHERE userid=?");
+            break;
+        default:
+            redirect_back();
+    }
+
     $stmt->bind_param("i", $userId);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "✅ User account approved successfully.";
-        $_SESSION['alert_type'] = "success";
+        switch($action) {
+            case 'approve_user': $_SESSION['message'] = "✅ User account approved successfully."; $_SESSION['alert_type'] = "success"; break;
+            case 'reject_user': $_SESSION['message'] = "❌ User account rejected successfully."; $_SESSION['alert_type'] = "warning"; break;
+            case 'disable_user': $_SESSION['message'] = "🚫 User account disabled successfully."; $_SESSION['alert_type'] = "warning"; break;
+            case 'enable_user': $_SESSION['message'] = "✅ User account enabled successfully."; $_SESSION['alert_type'] = "success"; break;
+        }
     } else {
-        $_SESSION['message'] = "❌ Error approving account: " . $stmt->error;
+        $_SESSION['message'] = "❌ Action failed: " . $stmt->error;
         $_SESSION['alert_type'] = "danger";
     }
 
     $stmt->close();
-    header("Location: ../admin/pages/admin_accveri.php");
-    exit();
-}
-
-if (isset($_POST['superadmin_approve_user'])) {
-    $userId = intval($_POST['userid']);
-
-    $sql = "UPDATE account SET status = 'approved' WHERE userid = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "✅ User account approved successfully.";
-        $_SESSION['alert_type'] = "success";
-    } else {
-        $_SESSION['message'] = "❌ Error approving account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
-    }
-
-    $stmt->close();
-    header("Location: ../superAdmin/pages/superadmin_accveri.php");
-    exit();
-}
-
-// user account verification "REJECT"
-if (isset($_POST['reject_user'])) {
-    $userId = intval($_POST['userid']);
-
-    $sql = "UPDATE account SET status = 'rejected' WHERE userid = $userId";
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "User Account Rejected Successfully";
-    } else {
-        $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
-    }
-
-    header("Location:../admin/pages/admin_accveri.php?userid={$userid}");
-    exit();
-}
-
-if (isset($_POST['superadmin_reject_user'])) {
-    $userId = intval($_POST['userid']);
-
-    $sql = "UPDATE account SET status = 'rejected' WHERE userid = $userId";
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "User Account Rejected Successfully";
-    } else {
-        $_SESSION['message'] = "Error Rejected Account" . mysqli_error($conn);
-    }
-
-    header("Location:../superAdmin/pages/superadmin_accveri.php?userid={$userid}");
-    exit();
-}
-
-// disabling admin or user acc
-if (isset($_POST['disable_user'])) {
-    $userid = intval($_POST['userid']);
-
-    $query = "UPDATE account SET status = 'disabled' WHERE userid = $userid";
-    if (mysqli_query($conn, $query)) {
-        echo "<script>
-                alert('Account has been disabled successfully.');
-                window.location.href='../admin/pages/accounts.php';
-              </script>";
-    } else {
-        error_log('MySQL Error (disable_user): ' . mysqli_error($conn));
-        echo "<script>
-                alert('Failed to disable account. Please try again.');
-                window.history.back();
-              </script>";
-    }
+    redirect_back();
+} else {
+    $_SESSION['message'] = "❌ Invalid request.";
+    $_SESSION['alert_type'] = "danger";
+    redirect_back();
 }
 
 // Handle reward approval
