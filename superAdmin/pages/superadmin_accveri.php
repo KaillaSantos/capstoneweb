@@ -267,18 +267,12 @@
                     <td>
                       <form action="../../function/function.php" method="POST" class="d-inline">
                         <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                        <button type="button" 
-                                class="btn btn-warning btn-sm disable-btn" 
-                                data-userid="<?= htmlspecialchars($row['userid']) ?>" 
-                                data-username="<?= htmlspecialchars($row['userName']) ?>" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#disableModal" 
-                                title="Disable Account">
-                            <i class="fa fa-ban"></i> Disable
+                        <button type="submit" name="disable_user" class="btn btn-warning btn-sm" title="Disable Account" onclick="return confirm('Are you sure you want to disable this account?');">
+                          <i class="fa fa-ban"></i> Disable
                         </button>
                       </form>
                     </td>
-                  </tr> 
+                  </tr>
                 <?php endwhile; ?>
               <?php else: ?>
                 <tr>
@@ -318,6 +312,7 @@
 
 
       <!-- DISSABLED ACCOUNT -->
+
       <div id="disabledTableContainer" class="table-section" style="display:none;">
           <?php
             $sql = "
@@ -362,14 +357,8 @@
                     <td>
                       <form action="../../function/function.php" method="POST" class="d-inline">
                         <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                        <button type="button" 
-                                class="btn btn-success btn-sm enable-btn" 
-                                data-userid="<?= htmlspecialchars($row['userid']) ?>" 
-                                data-username="<?= htmlspecialchars($row['userName']) ?>" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#enableModal" 
-                                title="Enable Account">
-                            <i class="fa fa-check"></i> Enable
+                        <button type="submit" name="enable_user" class="btn btn-success btn-sm" title="Enable Account" onclick="return confirm('Are you sure you want to enable this account?');">
+                          <i class="fa fa-check"></i> Enable
                         </button>
                       </form>
                     </td>
@@ -409,98 +398,94 @@
         </div>
       </div>
       
-    <<!-- ===== JS ===== -->
+    <!-- ===== JS ===== -->
     <script src="/capstoneweb/assets/sidebarToggle.js"></script>
     <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      // ===== Auto-close alert =====
-      const alert = document.querySelector(".alert");
-      if (alert) {
-        setTimeout(() => new bootstrap.Alert(alert).close(), 3000);
-      }
-
-      // ===== Table dropdown toggle =====
-      const dropdownItems = document.querySelectorAll(".dropdown-item");
-      const sections = {
-        pending: document.getElementById("pendingTableContainer"),
-        approved: document.getElementById("approvedTableContainer"),
-        disabled: document.getElementById("disabledTableContainer")
-      };
-
-      const urlParams = new URLSearchParams(window.location.search);
-      let selectedTable = urlParams.get("table") || "pending";
-
-      function showTable(table) {
-        Object.values(sections).forEach(sec => sec.style.display = "none");
-        if (sections[table]) sections[table].style.display = "block";
-
-        dropdownItems.forEach(i => i.classList.remove("active"));
-        const activeItem = document.querySelector(`.dropdown-item[data-table="${table}"]`);
-        if (activeItem) {
-          activeItem.classList.add("active");
-          document.getElementById("filterDropdown").textContent = activeItem.textContent;
+      document.addEventListener("DOMContentLoaded", () => {
+        const alert = document.querySelector(".alert");
+        if (alert) {
+          setTimeout(() => {
+            const fade = new bootstrap.Alert(alert);
+            fade.close();
+          }, 3000);
         }
-      }
-
-      showTable(selectedTable);
-
-      dropdownItems.forEach(item => {
-        item.addEventListener("click", e => {
-          e.preventDefault();
-          const table = item.dataset.table;
-          showTable(table);
-
-          const newUrl = new URL(window.location.href);
-          newUrl.searchParams.set("table", table);
-          window.history.replaceState({}, '', newUrl);
-        });
       });
-
-      // ===== Approve modal =====
-      const approveModal = new bootstrap.Modal(document.getElementById('approveModal'));
-      const approveUserName = document.getElementById('approveUserName');
-      const approveUserId = document.getElementById('approveUserId');
-
-      document.querySelectorAll('.approve-btn').forEach(button => {
-        button.addEventListener('click', () => {
-          approveUserName.textContent = button.dataset.username;
-          approveUserId.value = button.dataset.userid;
-          approveModal.show();
-        });
-      });
-
-      // ===== Disable modal =====
-      const disableModal = new bootstrap.Modal(document.getElementById('disableModal'));
-      const disableUserName = document.getElementById('disableUserName');
-      const disableUserId = document.getElementById('disableUserId');
-
-      document.querySelectorAll('.disable-btn').forEach(button => {
-        button.addEventListener('click', () => {
-          disableUserName.textContent = button.dataset.username;
-          disableUserId.value = button.dataset.userid;
-          disableModal.show();
-        });
-      });
-
-      // ===== Enable modal =====
-      const enableModal = new bootstrap.Modal(document.getElementById('enableModal'));
-      const enableUserName = document.getElementById('enableUserName');
-      const enableUserId = document.getElementById('enableUserId');
-
-      document.querySelectorAll('.enable-btn').forEach(button => {
-        button.addEventListener('click', () => {
-          enableUserName.textContent = button.dataset.username;
-          enableUserId.value = button.dataset.userid;
-          enableModal.show();
-        });
-      });
-
-    });
     </script>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Auto-close alert after 3s
+        const alert = document.querySelector(".alert");
+        if (alert) {
+          setTimeout(() => new bootstrap.Alert(alert).close(), 3000);
+        }
+
+        // Handle approve modal
+        const approveModal = new bootstrap.Modal(document.getElementById('approveModal'));
+        const approveUserName = document.getElementById('approveUserName');
+        const approveUserId = document.getElementById('approveUserId');
+
+        document.querySelectorAll('.approve-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const userId = button.dataset.userid;
+            const userName = button.dataset.username;
+            approveUserName.textContent = userName;
+            approveUserId.value = userId;
+            approveModal.show();
+          });
+        });
+      });
+    </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const sections = {
+    pending: document.getElementById("pendingTableContainer"),
+    approved: document.getElementById("approvedTableContainer"),
+    disabled: document.getElementById("disabledTableContainer")
+  };
+
+  // Get selected table from URL or default
+  const urlParams = new URLSearchParams(window.location.search);
+  let selectedTable = urlParams.get("table") || "pending";
+
+  function showTable(table) {
+    // Hide all tables
+    Object.values(sections).forEach(sec => sec.style.display = "none");
+    // Show selected table
+    if (sections[table]) sections[table].style.display = "block";
+
+    // Update dropdown text
+    const activeItem = document.querySelector(`.dropdown-item[data-table="${table}"]`);
+    if (activeItem) {
+      dropdownItems.forEach(i => i.classList.remove("active"));
+      activeItem.classList.add("active");
+      document.getElementById("filterDropdown").textContent = activeItem.textContent;
+    }
+  }
+
+  // Initial display
+  showTable(selectedTable);
+
+  // Dropdown click
+  dropdownItems.forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      const table = item.dataset.table;
+      showTable(table);
+
+      // Update URL without reload
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set("table", table);
+      window.history.replaceState({}, '', newUrl);
+    });
+  });
+});
+</script>
+
+  </script>
 
 
     <!-- ===== PASSWORD VERIFY MODAL ===== -->
@@ -549,51 +534,8 @@
       </div>
     </div>
 
-    <!-- disable acc modal -->
-    <div class="modal fade" id="disableModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form action="../../function/function.php" method="POST">
-            <div class="modal-header">
-              <h5 class="modal-title" id="disableModalLabel">Confirm Disable Account</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to <strong>disable</strong> the account of:</p>
-              <h6 class="text-warning" id="disableUserName"></h6>
-              <input type="hidden" name="userid" id="disableUserId">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" name="disable_user" class="btn btn-warning">Confirm Disable</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
 
-    <!-- enable account modal -->
-    <div class="modal fade" id="enableModal" tabindex="-1" aria-labelledby="enableModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form action="../../function/function.php" method="POST">
-            <div class="modal-header">
-              <h5 class="modal-title" id="enableModalLabel">Confirm Enable Account</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to <strong>enable</strong> the account of:</p>
-              <h6 class="text-success" id="enableUserName"></h6>
-              <input type="hidden" name="userid" id="enableUserId">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" name="enable_user" class="btn btn-success">Confirm Enable</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+
 
   </body>
 
