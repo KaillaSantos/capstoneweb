@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
             }
 
             if ($row['status'] === 'disabled') {
-                $_SESSION['login_error'] = "Your account has been disabled. Please contact support.";
+                $_SESSION['login_error'] = "Your account has been disabled. Please contact Administrator.";
                 header("Location: ../login.php");
                 exit();
             }
