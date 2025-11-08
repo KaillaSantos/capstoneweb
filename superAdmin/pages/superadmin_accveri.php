@@ -155,11 +155,7 @@ $user = mysqli_fetch_assoc($result);
     <div id="approvedTableContainer" class="table-section" style="display:none;">
       <?php
         $sql = "
-          SELECT userid, userimg, userName, email, purok, status, role
-          FROM account 
-          WHERE status = 'approved'
-          ORDER BY userid DESC
-          LIMIT $records_per_page OFFSET $offset
+          SELECT userid, userimg, userName, email, purok, status, role FROM account WHERE status = 'approved' AND (role = 'admin' OR role = 'user') ORDER BY userid DESC LIMIT $records_per_page OFFSET $offset
         ";
         $result = mysqli_query($conn, $sql);
       ?>
