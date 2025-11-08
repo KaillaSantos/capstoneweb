@@ -240,77 +240,103 @@ require_once __DIR__ . '/../../conn/dbconn.php';
   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
-    const qrScannerModal = new bootstrap.Modal(document.getElementById('qrScannerModal'));
-    let qrScanner;
+document.addEventListener("DOMContentLoaded", () => {
+  const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
+  const qrScannerModal = new bootstrap.Modal(document.getElementById('qrScannerModal'));
+  let qrScanner;
+  let isQrVerified = false;
 
-    const modalRewardId = document.getElementById('modalRewardId');
-    const modalUserId = document.getElementById('modalUserId');
-    const modalUserName = document.getElementById('modalUserName');
-    const modalRewardName = document.getElementById('modalRewardName');
-    const qrScanStatus = document.getElementById('qrScanStatus');
+  const modalRewardId = document.getElementById('modalRewardId');
+  const modalUserId = document.getElementById('modalUserId');
+  const modalUserName = document.getElementById('modalUserName');
+  const modalRewardName = document.getElementById('modalRewardName');
+  const qrScanStatus = document.getElementById('qrScanStatus');
+  const confirmButton = document.querySelector('#approveRewardModal button[name="approve_reward"]');
 
-    document.querySelectorAll('.approve-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const rewardId = button.dataset.rewardid;
-        const userId = button.dataset.userid;
-        const userName = button.dataset.username;
-        const rewardName = button.dataset.rewardname;
+  // Disable the confirm button by default
+  confirmButton.disabled = true;
 
-        modalRewardId.value = rewardId;
-        modalUserId.value = userId;
-        modalUserName.textContent = userName;
-        modalRewardName.textContent = rewardName;
+  document.querySelectorAll('.approve-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const rewardId = button.dataset.rewardid;
+      const userId = button.dataset.userid;
+      const userName = button.dataset.username;
+      const rewardName = button.dataset.rewardname;
 
-        qrScannerModal.show();
+      modalRewardId.value = rewardId;
+      modalUserId.value = userId;
+      modalUserName.textContent = userName;
+      modalRewardName.textContent = rewardName;
 
-        setTimeout(() => {
-          qrScanner = new Html5Qrcode("qr-reader-modal");
-          Html5Qrcode.getCameras().then(cameras => {
-            if (!cameras.length) {
-              qrScanStatus.innerText = "No camera found.";
-              return;
-            }
-            qrScanner.start(
-              { facingMode: "environment" },
-              { fps: 10, qrbox: 250 },
-              decodedText => {
-                qrScanStatus.innerText = "Verifying QR...";
-                fetch("/capstoneweb/admin/api/qr_verify.php", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                  body: "qr_data=" + encodeURIComponent(decodedText)
-                })
-                .then(res => res.json())
-                .then(data => {
-                  if (data.success) {
-                    qrScanStatus.innerHTML = "✅ Verified: " + data.user.userName;
-                    setTimeout(() => {
-                      qrScanner.stop().then(() => {
-                        qrScannerModal.hide();
-                        approveModal.show();
-                      });
-                    }, 1000);
-                  } else {
-                    qrScanStatus.innerHTML = "❌ " + data.message;
-                  }
-                })
-                .catch(err => {
-                  qrScanStatus.innerText = "Error verifying: " + err;
-                });
-              },
-              err => {}
-            );
-          });
-        }, 300);
-      });
-    });
+      // Reset QR status
+      isQrVerified = false;
+      qrScanStatus.innerText = "Please scan the user's QR code to verify.";
+      confirmButton.disabled = true;
 
-    document.getElementById('qrScannerModal').addEventListener('hidden.bs.modal', () => {
-      if (qrScanner) qrScanner.stop().catch(() => {});
+      qrScannerModal.show();
+
+      setTimeout(() => {
+        qrScanner = new Html5Qrcode("qr-reader-modal");
+        Html5Qrcode.getCameras().then(cameras => {
+          if (!cameras.length) {
+            qrScanStatus.innerText = "No camera found.";
+            return;
+          }
+          qrScanner.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            decodedText => {
+              qrScanStatus.innerText = "Verifying QR...";
+
+              fetch("/capstoneweb/admin/api/qr_verify.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "qr_data=" + encodeURIComponent(decodedText)
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  // ✅ Verified user
+                  isQrVerified = true;
+                  qrScanStatus.innerHTML = "✅ Verified: " + data.user.userName;
+
+                  // Stop scanner and open approval modal
+                  setTimeout(() => {
+                    qrScanner.stop().then(() => {
+                      qrScannerModal.hide();
+                      approveModal.show();
+                      confirmButton.disabled = false; // enable only now
+                    });
+                  }, 800);
+                } else {
+                  qrScanStatus.innerHTML = "❌ " + data.message;
+                }
+              })
+              .catch(err => {
+                qrScanStatus.innerText = "Error verifying: " + err;
+              });
+            },
+            err => {}
+          );
+        });
+      }, 300);
     });
   });
-  </script>
+
+  // Prevent approval if QR not verified
+  document.querySelector('form[action="/capstoneweb/function/function.php"]').addEventListener('submit', e => {
+    if (!isQrVerified) {
+      e.preventDefault();
+      alert("Please verify the user's QR code before approving.");
+    }
+  });
+
+  // Stop camera on modal close
+  document.getElementById('qrScannerModal').addEventListener('hidden.bs.modal', () => {
+    if (qrScanner) qrScanner.stop().catch(() => {});
+  });
+});
+</script>
+
 </body>
 </html>
