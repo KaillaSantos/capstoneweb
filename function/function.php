@@ -624,7 +624,7 @@ if (isset($_POST['update_reward'])) {
                 SET product_name='$name', 
                     product_description='$description', 
                     product_points=$points, 
-                    product_quantity='$quantity', 
+                    product_quantity='$quantity'
                 WHERE reward_id=$id";
     }
 
