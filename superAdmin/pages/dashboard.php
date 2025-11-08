@@ -398,7 +398,7 @@ iframe {
     <!-- content header -->
     <header class="dashboard-header d-flex justify-content-between align-items-center" style="gap:12px;">
       <div class="header-left d-flex align-items-center" style="gap:12px;">
-        <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo" style="width:48px;height:48px;object-fit:cover;border-radius:8px">
+        <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo" style="width:48px;height:48px;object-fit:cover;border-radius:50%">
         <div class="header-text">
           <h1 style="margin:0;font-size:1.05rem;">E-Recycle Dashboard Page</h1>
           <p style="margin:0;font-size:0.85rem;">Municipality of San Ildefonso</p>
