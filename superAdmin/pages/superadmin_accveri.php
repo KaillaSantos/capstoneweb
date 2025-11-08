@@ -43,195 +43,196 @@ $user = mysqli_fetch_assoc($result);
 <!-- ===== MAIN CONTENT ===== -->
 <div class="content" id="content">
 
-<!-- ===== HEADER ===== -->
-<header class="dashboard-header d-flex justify-content-between align-items-center mb-3">
-  <div class="header-left d-flex align-items-center">
-    <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
-    <div class="header-text ms-3">
-      <h1 class="h4 mb-0">E-Recycle Account Verification</h1>
-      <p>Municipality of San Ildefonso</p>
+  <!-- ===== HEADER ===== -->
+  <header class="dashboard-header d-flex justify-content-between align-items-center mb-3">
+    <div class="header-left d-flex align-items-center">
+      <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
+      <div class="header-text ms-3">
+        <h1 class="h4 mb-0">E-Recycle Account Verification</h1>
+        <p>Municipality of San Ildefonso</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
+    </div>
+  </header>
+
+  <!-- ===== TABLE FILTER ===== -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="dropdown">
+      <button class="btn btn-outline-success dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Select Table
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
+        <li><a class="dropdown-item active" href="#" data-table="pending">Account Verification</a></li>
+        <li><a class="dropdown-item" href="#" data-table="approved">Approved Accounts</a></li>
+        <li><a class="dropdown-item" href="#" data-table="disabled">Disabled Accounts</a></li>
+      </ul>
     </div>
   </div>
-  <div class="header-right">
-    <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
-  </div>
-</header>
 
-<!-- ===== TABLE FILTER ===== -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <div class="dropdown">
-    <button class="btn btn-outline-success dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-      Select Table
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
-      <li><a class="dropdown-item active" href="#" data-table="pending">Account Verification</a></li>
-      <li><a class="dropdown-item" href="#" data-table="approved">Approved Accounts</a></li>
-      <li><a class="dropdown-item" href="#" data-table="disabled">Disabled Accounts</a></li>
-    </ul>
-  </div>
-</div>
+  <?php
+  $records_per_page = 5;
+  $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+  $offset = ($page - 1) * $records_per_page;
+  ?>
 
-<?php
-$records_per_page = 5;
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($page - 1) * $records_per_page;
-?>
+  <!-- ===== PENDING USERS ===== -->
+  <div id="pendingTableContainer" class="table-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold text-center">Account Verification</h4>
+    </div>
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 80px;">Image</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Purok</th>
+            <th>Status</th>
+            <th style="width: 180px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php
+        $sql = "SELECT userid, userimg, userName, email, purok, status 
+                FROM account 
+                WHERE role='User' AND status='pending' 
+                ORDER BY userid DESC 
+                LIMIT $records_per_page OFFSET $offset";
+        $result = mysqli_query($conn, $sql);
 
-<!-- ===== PENDING USERS ===== -->
-<div id="pendingTableContainer" class="table-section">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold text-center">Account Verification</h4>
+        if(mysqli_num_rows($result) > 0):
+          while($row = mysqli_fetch_assoc($result)):
+            $img = !empty($row['userimg']) ? "../../image/" . htmlspecialchars($row['userimg']) : "../../image/placeholder.jpg";
+        ?>
+          <tr>
+            <td><img src="<?= $img ?>" class="img-thumbnail rounded" style="width:60px;height:60px;object-fit:cover;"></td>
+            <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
+            <td><?= htmlspecialchars($row['email']) ?></td>
+            <td><?= htmlspecialchars($row['purok']) ?></td>
+            <td><span class="badge bg-warning text-dark">Pending</span></td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm action-btn" 
+                      data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="approve_user">
+                <i class="fa fa-check"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm action-btn" 
+                      data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="reject_user">
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        <?php endwhile; else: ?>
+          <tr><td colspan="6" class="text-center text-muted py-4">No unverified users found.</td></tr>
+        <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="table-responsive mt-4">
-    <table class="table table-bordered table-striped table-hover align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th style="width: 80px;">Image</th>
-          <th>User Name</th>
-          <th>Email</th>
-          <th>Purok</th>
-          <th>Status</th>
-          <th style="width: 180px;">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php
-      $sql = "SELECT userid, userimg, userName, email, purok, status 
-              FROM account 
-              WHERE role='User' AND status='pending' 
+
+  <!-- ===== APPROVED ACCOUNTS ===== -->
+  <div id="approvedTableContainer" class="table-section" style="display:none;">
+    <?php
+      $sql = "SELECT userid, userimg, userName, email, purok, status, role 
+              FROM account WHERE status='approved' 
+              AND (role='admin' OR role='user') 
               ORDER BY userid DESC 
               LIMIT $records_per_page OFFSET $offset";
       $result = mysqli_query($conn, $sql);
+    ?>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold text-center">Approved Accounts</h4>
+    </div>
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th style="width:80px;">Image</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Purok</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th style="width:150px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php if(mysqli_num_rows($result)>0):
+          while($row=mysqli_fetch_assoc($result)):
+            $img = !empty($row['userimg']) ? "../../image/" . htmlspecialchars($row['userimg']) : "../../image/placeholder.jpg";
+        ?>
+          <tr>
+            <td><img src="<?= $img ?>" class="img-thumbnail rounded" style="width:60px;height:60px;object-fit:cover;"></td>
+            <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
+            <td><?= htmlspecialchars($row['email']) ?></td>
+            <td><?= htmlspecialchars($row['purok']) ?></td>
+            <td class="text-capitalize"><?= $row['role']==='admin' ? '<span class="badge bg-primary">Admin</span>' : '<span class="badge bg-success">User</span>'; ?></td>
+            <td><span class="badge bg-success">Approved</span></td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm action-btn" 
+                      data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="disable_user">
+                <i class="fa fa-ban"></i> Disable
+              </button>
+            </td>
+          </tr>
+        <?php endwhile; else: ?>
+          <tr><td colspan="7" class="text-center text-muted py-4">No approved accounts found.</td></tr>
+        <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-      if(mysqli_num_rows($result) > 0):
-        while($row = mysqli_fetch_assoc($result)):
-          $img = !empty($row['userimg']) ? "../../image/" . htmlspecialchars($row['userimg']) : "../../image/placeholder.jpg";
-      ?>
-        <tr>
-          <td><img src="<?= $img ?>" class="img-thumbnail rounded" style="width:60px;height:60px;object-fit:cover;"></td>
-          <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
-          <td><?= htmlspecialchars($row['email']) ?></td>
-          <td><?= htmlspecialchars($row['purok']) ?></td>
-          <td><span class="badge bg-warning text-dark">Pending</span></td>
-          <td>
-            <button type="button" class="btn btn-success btn-sm action-btn" 
-                    data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="approve_user">
-              <i class="fa fa-check"></i>
-            </button>
-            <button type="button" class="btn btn-danger btn-sm action-btn" 
-                    data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="reject_user">
-              <i class="fa fa-times"></i>
-            </button>
-          </td>
-        </tr>
-      <?php endwhile; else: ?>
-        <tr><td colspan="6" class="text-center text-muted py-4">No unverified users found.</td></tr>
-      <?php endif; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ===== APPROVED ACCOUNTS ===== -->
-<div id="approvedTableContainer" class="table-section" style="display:none;">
-  <?php
-    $sql = "SELECT userid, userimg, userName, email, purok, status, role 
-            FROM account WHERE status='approved' 
-            AND (role='admin' OR role='user') 
-            ORDER BY userid DESC 
-            LIMIT $records_per_page OFFSET $offset";
-    $result = mysqli_query($conn, $sql);
-  ?>
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold text-center">Approved Accounts</h4>
-  </div>
-  <div class="table-responsive mt-4">
-    <table class="table table-bordered table-striped table-hover align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th style="width:80px;">Image</th>
-          <th>User Name</th>
-          <th>Email</th>
-          <th>Purok</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th style="width:150px;">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php if(mysqli_num_rows($result)>0):
-        while($row=mysqli_fetch_assoc($result)):
-          $img = !empty($row['userimg']) ? "../../image/" . htmlspecialchars($row['userimg']) : "../../image/placeholder.jpg";
-      ?>
-        <tr>
-          <td><img src="<?= $img ?>" class="img-thumbnail rounded" style="width:60px;height:60px;object-fit:cover;"></td>
-          <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
-          <td><?= htmlspecialchars($row['email']) ?></td>
-          <td><?= htmlspecialchars($row['purok']) ?></td>
-          <td class="text-capitalize"><?= $row['role']==='admin' ? '<span class="badge bg-primary">Admin</span>' : '<span class="badge bg-success">User</span>'; ?></td>
-          <td><span class="badge bg-success">Approved</span></td>
-          <td>
-            <button type="button" class="btn btn-warning btn-sm action-btn" 
-                    data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="disable_user">
-              <i class="fa fa-ban"></i> Disable
-            </button>
-          </td>
-        </tr>
-      <?php endwhile; else: ?>
-        <tr><td colspan="7" class="text-center text-muted py-4">No approved accounts found.</td></tr>
-      <?php endif; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ===== DISABLED ACCOUNTS ===== -->
-<div id="disabledTableContainer" class="table-section" style="display:none;">
-  <?php
-    $sql = "SELECT userid, userimg, userName, email, purok, status, role 
-            FROM account WHERE status='disabled' ORDER BY userid DESC";
-    $result = mysqli_query($conn, $sql);
-  ?>
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold text-center">Disabled Accounts</h4>
-  </div>
-  <div class="table-responsive mt-4">
-    <table class="table table-bordered table-striped table-hover align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th style="width:80px;">Image</th>
-          <th>User Name</th>
-          <th>Email</th>
-          <th>Purok</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th style="width:150px;">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php if(mysqli_num_rows($result)>0):
-        while($row=mysqli_fetch_assoc($result)):
-          $img = !empty($row['userimg']) ? "../../image/" . htmlspecialchars($row['userimg']) : "../../image/placeholder.jpg";
-      ?>
-        <tr>
-          <td><img src="<?= $img ?>" class="img-thumbnail rounded" style="width:60px;height:60px;object-fit:cover;"></td>
-          <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
-          <td><?= htmlspecialchars($row['email']) ?></td>
-          <td><?= htmlspecialchars($row['purok']) ?></td>
-          <td class="text-capitalize"><?= htmlspecialchars($row['role']) ?></td>
-          <td><span class="badge bg-secondary">Disabled</span></td>
-          <td>
-            <button type="button" class="btn btn-success btn-sm action-btn" 
-                    data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="enable_user">
-              <i class="fa fa-check"></i> Enable
-            </button>
-          </td>
-        </tr>
-      <?php endwhile; else: ?>
-        <tr><td colspan="7" class="text-center text-muted py-4">No disabled accounts found.</td></tr>
-      <?php endif; ?>
-      </tbody>
-    </table>
+  <!-- ===== DISABLED ACCOUNTS ===== -->
+  <div id="disabledTableContainer" class="table-section" style="display:none;">
+    <?php
+      $sql = "SELECT userid, userimg, userName, email, purok, status, role 
+              FROM account WHERE status='disabled' ORDER BY userid DESC";
+      $result = mysqli_query($conn, $sql);
+    ?>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold text-center">Disabled Accounts</h4>
+    </div>
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th style="width:80px;">Image</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Purok</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th style="width:150px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php if(mysqli_num_rows($result)>0):
+          while($row=mysqli_fetch_assoc($result)):
+            $img = !empty($row['userimg']) ? "../../image/" . htmlspecialchars($row['userimg']) : "../../image/placeholder.jpg";
+        ?>
+          <tr>
+            <td><img src="<?= $img ?>" class="img-thumbnail rounded" style="width:60px;height:60px;object-fit:cover;"></td>
+            <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
+            <td><?= htmlspecialchars($row['email']) ?></td>
+            <td><?= htmlspecialchars($row['purok']) ?></td>
+            <td class="text-capitalize"><?= htmlspecialchars($row['role']) ?></td>
+            <td><span class="badge bg-secondary">Disabled</span></td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm action-btn" 
+                      data-userid="<?= $row['userid'] ?>" data-username="<?= htmlspecialchars($row['userName']) ?>" data-action="enable_user">
+                <i class="fa fa-check"></i> Enable
+              </button>
+            </td>
+          </tr>
+        <?php endwhile; else: ?>
+          <tr><td colspan="7" class="text-center text-muted py-4">No disabled accounts found.</td></tr>
+        <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
