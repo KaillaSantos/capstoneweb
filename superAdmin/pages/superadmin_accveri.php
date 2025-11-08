@@ -267,12 +267,18 @@
                     <td>
                       <form action="../../function/function.php" method="POST" class="d-inline">
                         <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                        <button type="submit" name="disable_user" class="btn btn-warning btn-sm" title="Disable Account" onclick="return confirm('Are you sure you want to disable this account?');">
-                          <i class="fa fa-ban"></i> Disable
+                        <button type="button" 
+                                class="btn btn-warning btn-sm disable-btn" 
+                                data-userid="<?= htmlspecialchars($row['userid']) ?>" 
+                                data-username="<?= htmlspecialchars($row['userName']) ?>" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#disableModal" 
+                                title="Disable Account">
+                            <i class="fa fa-ban"></i> Disable
                         </button>
                       </form>
                     </td>
-                  </tr>
+                  </tr> 
                 <?php endwhile; ?>
               <?php else: ?>
                 <tr>
@@ -357,8 +363,14 @@
                     <td>
                       <form action="../../function/function.php" method="POST" class="d-inline">
                         <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                        <button type="submit" name="enable_user" class="btn btn-success btn-sm" title="Enable Account" onclick="return confirm('Are you sure you want to enable this account?');">
-                          <i class="fa fa-check"></i> Enable
+                        <button type="button" 
+                                class="btn btn-success btn-sm enable-btn" 
+                                data-userid="<?= htmlspecialchars($row['userid']) ?>" 
+                                data-username="<?= htmlspecialchars($row['userName']) ?>" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#enableModal" 
+                                title="Enable Account">
+                            <i class="fa fa-check"></i> Enable
                         </button>
                       </form>
                     </td>
@@ -534,8 +546,51 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>
 
+    <!-- disable acc modal -->
+    <div class="modal fade" id="disableModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="../../function/function.php" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="disableModalLabel">Confirm Disable Account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to <strong>disable</strong> the account of:</p>
+              <h6 class="text-warning" id="disableUserName"></h6>
+              <input type="hidden" name="userid" id="disableUserId">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" name="disable_user" class="btn btn-warning">Confirm Disable</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
-
+    <!-- enable account modal -->
+    <div class="modal fade" id="enableModal" tabindex="-1" aria-labelledby="enableModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="../../function/function.php" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="enableModalLabel">Confirm Enable Account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to <strong>enable</strong> the account of:</p>
+              <h6 class="text-success" id="enableUserName"></h6>
+              <input type="hidden" name="userid" id="enableUserId">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" name="enable_user" class="btn btn-success">Confirm Enable</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
   </body>
 
