@@ -474,7 +474,6 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
         document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
         document.getElementById('modalDate').textContent = this.getAttribute('data-date');
         document.getElementById('modalText').textContent = this.getAttribute('data-text');
-        document.getElementById('modalText').textContent = this.getAttribute('data-quantity');
         document.getElementById('modalQuantity').textContent = this.getAttribute('data-quantity');
         document.getElementById('modalImage').src = this.getAttribute('data-image');
 
