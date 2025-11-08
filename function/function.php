@@ -634,10 +634,15 @@ if (isset($_POST['update_reward'])) {
     }
 }
 
+function redirect_back() {
+    $redirect = $_SERVER['HTTP_REFERER'] ?? '../admin/pages/admin_accveri.php';
+    header("Location: $redirect");
+    exit();
+}
+
 // --- Approve User (Admin) ---
 if (isset($_POST['approve_user'])) {
     $userId = intval($_POST['userid']);
-
     $stmt = $conn->prepare("UPDATE account SET status = 'approved' WHERE userid = ?");
     $stmt->bind_param("i", $userId);
 
@@ -650,14 +655,12 @@ if (isset($_POST['approve_user'])) {
     }
 
     $stmt->close();
-    header("Location: ../admin/pages/admin_accveri.php");
-    exit();
+    redirect_back();
 }
 
-    // --- Approve User (Super Admin) ---
+// --- Approve User (Super Admin) ---
 if (isset($_POST['superadmin_approve_user'])) {
     $userId = intval($_POST['userid']);
-
     $stmt = $conn->prepare("UPDATE account SET status = 'approved' WHERE userid = ?");
     $stmt->bind_param("i", $userId);
 
@@ -670,14 +673,12 @@ if (isset($_POST['superadmin_approve_user'])) {
     }
 
     $stmt->close();
-    header("Location: ../superAdmin/pages/superadmin_accveri.php");
-    exit();
+    redirect_back();
 }
 
-    // --- Reject User (Admin) ---
+// --- Reject User (Admin) ---
 if (isset($_POST['reject_user'])) {
     $userId = intval($_POST['userid']);
-
     $stmt = $conn->prepare("UPDATE account SET status = 'rejected' WHERE userid = ?");
     $stmt->bind_param("i", $userId);
 
@@ -690,14 +691,12 @@ if (isset($_POST['reject_user'])) {
     }
 
     $stmt->close();
-    header("Location: ../admin/pages/admin_accveri.php");
-    exit();
+    redirect_back();
 }
 
 // --- Reject User (Super Admin) ---
 if (isset($_POST['superadmin_reject_user'])) {
     $userId = intval($_POST['userid']);
-
     $stmt = $conn->prepare("UPDATE account SET status = 'rejected' WHERE userid = ?");
     $stmt->bind_param("i", $userId);
 
@@ -710,14 +709,12 @@ if (isset($_POST['superadmin_reject_user'])) {
     }
 
     $stmt->close();
-    header("Location: ../superAdmin/pages/superadmin_accveri.php");
-    exit();
+    redirect_back();
 }
 
 // --- Disable Account (Admin/Super Admin) ---
 if (isset($_POST['disable_user'])) {
     $userId = intval($_POST['userid']);
-
     $stmt = $conn->prepare("UPDATE account SET status = 'disabled' WHERE userid = ?");
     $stmt->bind_param("i", $userId);
 
@@ -730,14 +727,12 @@ if (isset($_POST['disable_user'])) {
     }
 
     $stmt->close();
-    header("Location: ../admin/pages/accounts.php");
-    exit();
+    redirect_back();
 }
 
 // --- Enable (Undisable) Account ---
 if (isset($_POST['enable_user'])) {
     $userId = intval($_POST['userid']);
-
     $stmt = $conn->prepare("UPDATE account SET status = 'approved' WHERE userid = ?");
     $stmt->bind_param("i", $userId);
 
@@ -750,8 +745,7 @@ if (isset($_POST['enable_user'])) {
     }
 
     $stmt->close();
-    header("Location: ../admin/pages/accounts.php");
-    exit();
+    redirect_back();
 }
 
 // Handle reward approval
