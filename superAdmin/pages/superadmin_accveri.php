@@ -61,6 +61,7 @@ $user = mysqli_fetch_assoc($result);
         <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
+
     <?php if (isset($_SESSION['message'])): ?>
       <div class="container mt-3">
         <div class="alert alert-<?= $_SESSION['alert_type'] ?? 'info' ?> alert-dismissible fade show shadow-sm" role="alert">
@@ -73,6 +74,8 @@ $user = mysqli_fetch_assoc($result);
 
 
     <!-- ===== USERS TABLE ===== -->
+
+    <h3 class="text-center"> Account Verification</h3>
     <div class="table-responsive mt-4">
       <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark">
