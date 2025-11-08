@@ -213,8 +213,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
         <div class="modal-body">
           <img id="modalImage" src="" class="img-fluid mb-3 rounded" alt="Reward Image" style="height: 350px;">
           <h3 id="modalTitle"></h3>
-          <p><strong>Date:</strong> <span id="modalDate"></span></p>
-          <p id="modalText"></p>
+          <p><strong>Date:</strong> <span id="modalDate"></span></p>          
+          <p><strong>Reward Description:</strong> <span id="modalText"></span></p>
           <p><strong>Supply:</strong> <span id="modalQuantity"></span></p>
         </div>
       </div>
