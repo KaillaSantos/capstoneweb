@@ -182,8 +182,35 @@ $user = mysqli_fetch_assoc($result);
     </div>
 
     <!-- ACCOUNT DISSABLE -->
-    <h3 class="text-center"> Account Verification</h3>
-    <div class="table-responsive mt-4">
+    <h3 class="text-center"> Active Account</h3>
+        <div class="table-responsive mt-4">
+      <?php
+      // ===== PAGINATION =====
+      $records_per_page = 5;
+      $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+      $offset = ($page - 1) * $records_per_page;
+
+      // ===== COUNT TOTAL RECORDS =====
+      $countQuery = "SELECT COUNT(*) AS total FROM account WHERE status = 'approved'";
+      $countResult = mysqli_query($conn, $countQuery);
+      $total_records = mysqli_fetch_assoc($countResult)['total'];
+      $total_pages = ceil($total_records / $records_per_page);
+
+      // ===== FETCH APPROVED ACCOUNTS =====
+      $sql = "
+        SELECT userid, userimg, userName, email, purok, status, role
+        FROM account
+        WHERE status = 'approved'
+        ORDER BY userid DESC
+        LIMIT $records_per_page OFFSET $offset
+      ";
+      $result = mysqli_query($conn, $sql);
+      ?>
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold">Approved Accounts</h4>
+      </div>
+
       <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark">
           <tr>
@@ -191,39 +218,19 @@ $user = mysqli_fetch_assoc($result);
             <th>User Name</th>
             <th>Email</th>
             <th>Purok</th>
+            <th>Role</th>
             <th>Status</th>
-            <th style="width: 180px;">Action</th>
+            <th style="width: 150px;">Action</th>
           </tr>
         </thead>
         <tbody>
-          <?php
-          // ===== PAGINATION =====
-          $records_per_page = 5;
-          $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-          $offset = ($page - 1) * $records_per_page;
-
-          // ===== COUNT TOTAL RECORDS =====
-          $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'admin' && 'user' AND status = 'approved'";
-          $countResult = mysqli_query($conn, $countQuery);
-          $total_records = mysqli_fetch_assoc($countResult)['total'];
-          $total_pages = ceil($total_records / $records_per_page);
-
-          // ===== FETCH USERS =====
-          $sql = "
-            SELECT userid, userimg, userName, email, purok, status 
-            FROM account 
-            WHERE role = 'User' AND status = 'pending'
-            ORDER BY userid DESC
-            LIMIT $records_per_page OFFSET $offset
-          ";
-          $result = mysqli_query($conn, $sql);
-
-          if (mysqli_num_rows($result) > 0):
-            while ($row = mysqli_fetch_assoc($result)):
+          <?php if (mysqli_num_rows($result) > 0): ?>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+              <?php
               $imagePath = !empty($row['userimg'])
                 ? "../../image/" . htmlspecialchars($row['userimg'])
                 : "../../image/placeholder.jpg";
-          ?>
+              ?>
               <tr>
                 <td>
                   <img src="<?= $imagePath ?>" alt="User Image" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
@@ -231,31 +238,21 @@ $user = mysqli_fetch_assoc($result);
                 <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
                 <td><?= htmlspecialchars($row['email']) ?></td>
                 <td><?= htmlspecialchars($row['purok']) ?></td>
+                <td class="text-capitalize"><?= htmlspecialchars($row['role']) ?></td>
+                <td><span class="badge bg-success">Approved</span></td>
                 <td>
-                  <span class="badge bg-warning text-dark">Pending</span>
-                </td>
-                <td>
-                  <button type="button" 
-                          class="btn btn-success btn-sm approve-btn" 
-                          data-userid="<?= htmlspecialchars($row['userid']) ?>" 
-                          data-username="<?= htmlspecialchars($row['userName']) ?>"
-                          title="Approve">
-                    <i class="fa fa-check"></i>
-                  </button>
                   <form action="../../function/function.php" method="POST" class="d-inline">
                     <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                    <button type="submit" name="reject_user" class="btn btn-danger btn-sm" title="Reject">
-                      <i class="fa fa-times"></i>
+                    <button type="submit" name="disable_user" class="btn btn-warning btn-sm" title="Disable Account" onclick="return confirm('Are you sure you want to disable this account?');">
+                      <i class="fa fa-ban"></i> Disable
                     </button>
                   </form>
                 </td>
               </tr>
-            <?php
-            endwhile;
-          else:
-            ?>
+            <?php endwhile; ?>
+          <?php else: ?>
             <tr>
-              <td colspan="6" class="text-center text-muted py-4">No unverified users found.</td>
+              <td colspan="7" class="text-center text-muted py-4">No approved accounts found.</td>
             </tr>
           <?php endif; ?>
         </tbody>
@@ -287,6 +284,7 @@ $user = mysqli_fetch_assoc($result);
         </div>
       <?php endif; ?>
     </div>
+
   </div>
 
   <!-- ===== JS ===== -->
