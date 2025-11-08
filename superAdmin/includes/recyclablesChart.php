@@ -24,12 +24,18 @@ while ($row = mysqli_fetch_assoc($result)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <style>
-    body { margin: 0; padding: 0; background: transparent; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+
     canvas {
       width: 100% !important;
       height: auto !important;
@@ -37,13 +43,14 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
   </style>
 </head>
+
 <body>
   <canvas id="recyclablesChart"></canvas>
   <script>
     const ctx = document.getElementById('recyclablesChart');
     Chart.register(ChartDataLabels);
     new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: {
         labels: <?php echo json_encode($labels); ?>,
         datasets: [{
@@ -70,35 +77,38 @@ while ($row = mysqli_fetch_assoc($result)) {
           duration: 1200,
           easing: 'easeOutQuart'
         },
-        scales: {
-          x: {
-            ticks: { color: '#2c5e1a', font: { size: 12 } },
-            grid: { display: false }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: { color: '#2c5e1a', font: { size: 12 } },
-            grid: { color: 'rgba(0,0,0,0.05)' }
-          }
-        },
         plugins: {
           datalabels: {
-            anchor: 'end',
-            align: 'top',
-            color: '#1b5e20',
-            font: { weight: 'bold', size: 12 },
+            anchor: 'center',
+            align: 'center',
+            color: '#fff',
+            font: {
+              weight: 'bold',
+              size: 12
+            },
             formatter: (value) => value.toLocaleString() + ' kg',
             clip: false
           },
-          legend: { display: false },
-        },
-        tooltip: {
-            callbacks: {
-              label: (ctx) => ctx.dataset.label + ': ' + ctx.parsed.y + ' kg'
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#2c5e1a',
+              font: {
+                size: 12
+              }
             }
           }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ctx.dataset.label + ': ' + ctx.parsed + ' kg'
+          }
         }
+      }
     });
   </script>
+
 </body>
+
 </html>
