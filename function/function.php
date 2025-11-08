@@ -590,7 +590,7 @@ if (isset($_POST['update_reward'])) {
     $description = mysqli_real_escape_string($conn, $_POST['product_description']);
     $points = intval($_POST['product_points']);
     $date = mysqli_real_escape_string($conn, $_POST['product_date']);
-    $quantity = mysqli_real_escape_string($conn, $_POST['paroduct_quantity']);
+    $quantity = mysqli_real_escape_string($conn, $_POST['product_quantity']);
 
     $img = "";
     if (!empty($_FILES['product_img']['name'])) {
