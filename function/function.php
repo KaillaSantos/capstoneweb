@@ -671,10 +671,10 @@ if(isset($_POST['action_type'], $_POST['userid'])) {
 
     if ($stmt->execute()) {
         switch($action) {
-            case 'approve_user': $_SESSION['message'] = "✅ User approved successfully."; $_SESSION['alert_type'] = "success"; break;
-            case 'reject_user': $_SESSION['message'] = "❌ User rejected successfully."; $_SESSION['alert_type'] = "warning"; break;
-            case 'disable_user': $_SESSION['message'] = "🚫 User disabled."; $_SESSION['alert_type'] = "warning"; break;
-            case 'enable_user': $_SESSION['message'] = "✅ User enabled."; $_SESSION['alert_type'] = "success"; break;
+            case 'approve_user': $_SESSION['message'] = "✅ User account approved successfully."; $_SESSION['alert_type'] = "success"; break;
+            case 'reject_user': $_SESSION['message'] = "❌ User account rejected successfully."; $_SESSION['alert_type'] = "warning"; break;
+            case 'disable_user': $_SESSION['message'] = "🚫 User account disabled successfully."; $_SESSION['alert_type'] = "warning"; break;
+            case 'enable_user': $_SESSION['message'] = "✅ User account enabled successfully."; $_SESSION['alert_type'] = "success"; break;
         }
     } else {
         $_SESSION['message'] = "❌ Action failed: " . $stmt->error;
