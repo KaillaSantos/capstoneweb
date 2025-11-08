@@ -646,111 +646,60 @@ function redirect_back() {
     exit();
 }
 
-// --- Approve User (Admin) ---
-if (isset($_POST['approve_user'])) {
+if(isset($_POST['action_type'], $_POST['userid'])) {
     $userId = intval($_POST['userid']);
-    $stmt = $conn->prepare("UPDATE account SET status = 'approved' WHERE userid = ?");
-    $stmt->bind_param("i", $userId);
+    $action = $_POST['action_type'];
 
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "✅ User account approved successfully.";
-        $_SESSION['alert_type'] = "success";
+    switch($action) {
+        case 'approve_user':
+        case 'superadmin_approve_user':
+            $stmt = $conn->prepare("UPDATE account SET status='approved' WHERE userid=?");
+            $stmt->bind_param("i", $userId);
+            $success_msg = "✅ User account approved successfully.";
+            $alert_type = "success";
+            break;
+
+        case 'reject_user':
+        case 'superadmin_reject_user':
+            $stmt = $conn->prepare("UPDATE account SET status='rejected' WHERE userid=?");
+            $stmt->bind_param("i", $userId);
+            $success_msg = "❌ User account rejected successfully.";
+            $alert_type = "warning";
+            break;
+
+        case 'disable_user':
+            $stmt = $conn->prepare("UPDATE account SET status='disabled' WHERE userid=?");
+            $stmt->bind_param("i", $userId);
+            $success_msg = "🚫 Account has been disabled successfully.";
+            $alert_type = "warning";
+            break;
+
+        case 'enable_user':
+            $stmt = $conn->prepare("UPDATE account SET status='approved' WHERE userid=?");
+            $stmt->bind_param("i", $userId);
+            $success_msg = "✅ Account has been re-enabled successfully.";
+            $alert_type = "success";
+            break;
+
+        default:
+            $_SESSION['message'] = "❌ Invalid action.";
+            $_SESSION['alert_type'] = "danger";
+            redirect_back();
+    }
+
+    if($stmt->execute()){
+        $_SESSION['message'] = $success_msg;
+        $_SESSION['alert_type'] = $alert_type;
     } else {
-        $_SESSION['message'] = "❌ Error approving account: " . $stmt->error;
+        $_SESSION['message'] = "❌ Action failed: ".$stmt->error;
         $_SESSION['alert_type'] = "danger";
     }
 
     $stmt->close();
     redirect_back();
-}
-
-// --- Approve User (Super Admin) ---
-if (isset($_POST['superadmin_approve_user'])) {
-    $userId = intval($_POST['userid']);
-    $stmt = $conn->prepare("UPDATE account SET status = 'approved' WHERE userid = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "✅ User account approved successfully.";
-        $_SESSION['alert_type'] = "success";
-    } else {
-        $_SESSION['message'] = "❌ Error approving account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
-    }
-
-    $stmt->close();
-    redirect_back();
-}
-
-// --- Reject User (Admin) ---
-if (isset($_POST['reject_user'])) {
-    $userId = intval($_POST['userid']);
-    $stmt = $conn->prepare("UPDATE account SET status = 'rejected' WHERE userid = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "❌ User account rejected successfully.";
-        $_SESSION['alert_type'] = "warning";
-    } else {
-        $_SESSION['message'] = "❌ Error rejecting account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
-    }
-
-    $stmt->close();
-    redirect_back();
-}
-
-// --- Reject User (Super Admin) ---
-if (isset($_POST['superadmin_reject_user'])) {
-    $userId = intval($_POST['userid']);
-    $stmt = $conn->prepare("UPDATE account SET status = 'rejected' WHERE userid = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "❌ User account rejected successfully.";
-        $_SESSION['alert_type'] = "warning";
-    } else {
-        $_SESSION['message'] = "❌ Error rejecting account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
-    }
-
-    $stmt->close();
-    redirect_back();
-}
-
-// --- Disable Account (Admin/Super Admin) ---
-if (isset($_POST['disable_user'])) {
-    $userId = intval($_POST['userid']);
-    $stmt = $conn->prepare("UPDATE account SET status = 'disabled' WHERE userid = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "🚫 Account has been disabled successfully.";
-        $_SESSION['alert_type'] = "warning";
-    } else {
-        $_SESSION['message'] = "❌ Failed to disable account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
-    }
-
-    $stmt->close();
-    redirect_back();
-}
-
-// --- Enable (Undisable) Account ---
-if (isset($_POST['enable_user'])) {
-    $userId = intval($_POST['userid']);
-    $stmt = $conn->prepare("UPDATE account SET status = 'approved' WHERE userid = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "✅ Account has been re-enabled successfully.";
-        $_SESSION['alert_type'] = "success";
-    } else {
-        $_SESSION['message'] = "❌ Failed to re-enable account: " . $stmt->error;
-        $_SESSION['alert_type'] = "danger";
-    }
-
-    $stmt->close();
+} else {
+    $_SESSION['message'] = "❌ Invalid request.";
+    $_SESSION['alert_type'] = "danger";
     redirect_back();
 }
 
