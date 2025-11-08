@@ -168,7 +168,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                 <p><i class="fa-solid fa-star text-warning"></i> <?= htmlspecialchars($rows['product_points']) ?> points</p>
                 <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['product_date'])) ?></p>
                 <p><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
-                <p><i class="fa-solid fa-boxes-packing"></i> <?= htmlspecialchars($rows['product_quantity'])?> remaining</p>
+                <p><i class="fa-solid fa-boxes-packing"></i> <?= htmlspecialchars($rows['product_quantity'])?> pcs remaining</p>
                 <div class="reward-actions">
                   <button type="button" class="btn btn-link read-more-btn"
                     data-title="<?= htmlspecialchars($rows['product_name']) ?>"

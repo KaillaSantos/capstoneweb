@@ -590,6 +590,7 @@ if (isset($_POST['update_reward'])) {
     $description = mysqli_real_escape_string($conn, $_POST['product_description']);
     $points = intval($_POST['product_points']);
     $date = mysqli_real_escape_string($conn, $_POST['product_date']);
+    $quantity = mysqli_real_escape_string($conn, $_POST['paroduct_quantity']);
 
     $img = "";
     if (!empty($_FILES['product_img']['name'])) {
@@ -598,11 +599,11 @@ if (isset($_POST['update_reward'])) {
         move_uploaded_file($_FILES['product_img']['tmp_name'], $target);
 
         $sql = "UPDATE rewards 
-                SET product_name='$name', product_description='$description', product_points=$points, product_date='$date', product_img='$img'
+                SET product_name='$name', product_description='$description', product_points=$points, product_quantity='$quantity', product_date='$date', product_img='$img'
                 WHERE reward_id=$id";
     } else {
         $sql = "UPDATE rewards 
-                SET product_name='$name', product_description='$description', product_points=$points, product_date='$date'
+                SET product_name='$name', product_description='$description', product_points=$points, product_quantity='$quantity', product_date='$date'
                 WHERE reward_id=$id";
     }
 
