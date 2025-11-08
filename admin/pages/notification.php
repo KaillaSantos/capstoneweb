@@ -16,15 +16,13 @@ require_once __DIR__ . '/../../conn/dbconn.php';
   <link rel="stylesheet" href="\capstoneweb\assets/bootstrap-5.3.7-dist/css/bootstrap.css" />
   <link rel="stylesheet" href="\capstoneweb\assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
   <link rel="stylesheet" href="\capstoneweb/assets/fontawesome-free-7.0.1-web/css/all.min.css">
-  <link rel="icon" type="image/x-icon"
-    href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
+  <link rel="icon" type="image/x-icon" href="/capstoneweb/assets/E-Recycle_Logo_with_Green_and_Blue_Palette-removebg-preview.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
     .reward-card {
       border: 1px solid #ccc;
       border-left: 6px solid #2c5e1a;
-      /* Sleek green accent */
       border-radius: 8px;
       padding: 15px;
       margin: 15px 0;
@@ -80,27 +78,19 @@ require_once __DIR__ . '/../../conn/dbconn.php';
     }
 
     .reward-actions .btn-success:hover {
-      background-color: #4ea42fff;
+      background-color: #4ea42f;
     }
   </style>
-
 </head>
 
 <body>
 
-  <!-- Sidebar -->
   <?php include '../includes/sidebar.php'; ?>
 
-  <!-- Sidebar Toggle -->
   <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
-
-  <!-- Overlay -->
   <div class="overlay"></div>
 
-  <!-- Main Content -->
   <div class="content" id="content">
-
-    <!-- Header -->
     <header class="dashboard-header">
       <div class="header-left">
         <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
@@ -113,25 +103,17 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         <span class="date-display"><?php echo date("F j, Y"); ?></span>
       </div>
     </header>
+
     <?php if (isset($_SESSION['notif_success']) || isset($_SESSION['notif_error'])): ?>
       <div id="notif-alert"
-        class="alert <?= isset($_SESSION['notif_success']) ? 'alert-success' : 'alert-danger'; ?> 
-       alert-dismissible fade show text-center mx-auto mt-3"
+        class="alert <?= isset($_SESSION['notif_success']) ? 'alert-success' : 'alert-danger'; ?> alert-dismissible fade show text-center mx-auto mt-3"
         style="max-width: 600px; z-index: 2000;">
-
         <?= $_SESSION['notif_success'] ?? $_SESSION['notif_error']; ?>
-
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       <?php unset($_SESSION['notif_success'], $_SESSION['notif_error']); ?>
     <?php endif; ?>
-    <!-- 🔍 QR Code Verification Section -->
-    <div class="container my-4 text-center">
-      <h4><i class="bi bi-qr-code-scan"></i> Scan User QR to Verify</h4>
-      <div id="reader" style="width:400px; margin:20px auto;"></div>
-      <p id="qrResult" class="mt-2 fw-bold text-success"></p>
-    </div>
-    <!-- Reward Request Cards -->
+
     <div class="row row-cols-1 row-cols-md-3 g-4 reward-container">
       <?php
       $records_per_page = 6;
@@ -148,7 +130,6 @@ require_once __DIR__ . '/../../conn/dbconn.php';
         ORDER BY ur.date_redeemed DESC
         LIMIT $records_per_page OFFSET $offset
       ";
-
       $run = mysqli_query($conn, $sql);
 
       if (mysqli_num_rows($run) > 0) {
@@ -165,10 +146,8 @@ require_once __DIR__ . '/../../conn/dbconn.php';
                 <p><i class="fa fa-user text-success"></i> <?= htmlspecialchars($rows['userName']) ?></p>
                 <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['date_redeemed'])) ?></p>
                 <span class="badge bg-warning text-dark badge-status"><?= ucfirst($rows['status']) ?></span>
-
                 <div class="reward-actions">
-                  <button type="button" 
-                          class="btn btn-success btn-sm approve-btn"
+                  <button type="button" class="btn btn-success btn-sm approve-btn"
                           data-rewardid="<?= htmlspecialchars($rows['reward_id']) ?>"
                           data-userid="<?= htmlspecialchars($rows['user_id']) ?>"
                           data-username="<?= htmlspecialchars($rows['userName']) ?>"
@@ -187,13 +166,11 @@ require_once __DIR__ . '/../../conn/dbconn.php';
       ?>
     </div>
 
-    <!-- Pagination -->
     <?php
     $countQuery = "SELECT COUNT(*) AS total FROM user_rewards WHERE status = 'Pending'";
     $countResult = mysqli_query($conn, $countQuery);
     $total_records = mysqli_fetch_assoc($countResult)['total'];
     $total_pages = ceil($total_records / $records_per_page);
-
     if ($total_pages > 1): ?>
       <div class="d-flex justify-content-center mt-4 mb-4">
         <nav>
@@ -214,183 +191,126 @@ require_once __DIR__ . '/../../conn/dbconn.php';
       </div>
     <?php endif; ?>
   </div>
-  <!-- 🔐 Password Verification Modal -->
-    <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form method="post" action="">
-            <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
-            <div class="modal-header">
-              <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="verifyPassword" class="form-label">Enter Password</label>
-                <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-            </div>
-          </form>
+
+  <!-- ✅ QR SCANNER MODAL -->
+  <div class="modal fade" id="qrScannerModal" tabindex="-1" aria-labelledby="qrScannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-header">
+          <h5 class="modal-title" id="qrScannerModalLabel"><i class="bi bi-qr-code-scan"></i> Scan User QR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="qr-reader-modal" style="width: 100%;"></div>
+          <p id="qrScanStatus" class="mt-3 text-success fw-bold"></p>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ===== SECONDARY APPROVAL MODAL ===== -->
-    <div class="modal fade" id="approveRewardModal" tabindex="-1" aria-labelledby="approveRewardModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form action="/capstoneweb/function/function.php" method="POST">
-            <div class="modal-header">
-              <h5 class="modal-title" id="approveRewardModalLabel">Confirm Reward Approval</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-              <p>Are you sure you want to approve this reward redemption?</p>
-              <ul class="list-unstyled mb-3">
-                <li><strong>User:</strong> <span id="modalUserName" class="text-success"></span></li>
-                <li><strong>Reward:</strong> <span id="modalRewardName" class="text-primary"></span></li>
-              </ul>
-              <input type="hidden" name="reward_id" id="modalRewardId">
-              <input type="hidden" name="user_id" id="modalUserId">
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" name="approve_reward" class="btn btn-success">Confirm Approve</button>
-            </div>
-          </form>
-        </div>
+  <!-- ✅ APPROVAL MODAL -->
+  <div class="modal fade" id="approveRewardModal" tabindex="-1" aria-labelledby="approveRewardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="/capstoneweb/function/function.php" method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title" id="approveRewardModalLabel">Confirm Reward Approval</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to approve this reward redemption?</p>
+            <ul class="list-unstyled mb-3">
+              <li><strong>User:</strong> <span id="modalUserName" class="text-success"></span></li>
+              <li><strong>Reward:</strong> <span id="modalRewardName" class="text-primary"></span></li>
+            </ul>
+            <input type="hidden" name="reward_id" id="modalRewardId">
+            <input type="hidden" name="user_id" id="modalUserId">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" name="approve_reward" class="btn btn-success">Confirm Approve</button>
+          </div>
+        </form>
       </div>
     </div>
-
+  </div>
 
   <script src="\capstoneweb/assets/sidebarToggle.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  // =================== AUTO CLOSE ALERT ===================
-  setTimeout(() => {
-    const alert = document.getElementById('notif-alert');
-    if (alert) {
-      alert.classList.remove('show');
-      alert.classList.add('fade');
-      setTimeout(() => alert.remove(), 500);
-    }
-  }, 3000);
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
+    const qrScannerModal = new bootstrap.Modal(document.getElementById('qrScannerModal'));
+    let qrScanner;
 
-  // =================== APPROVE MODAL LOGIC ===================
-  const approveModal = new bootstrap.Modal(document.getElementById('approveRewardModal'));
-  const modalRewardId = document.getElementById('modalRewardId');
-  const modalUserId = document.getElementById('modalUserId');
-  const modalUserName = document.getElementById('modalUserName');
-  const modalRewardName = document.getElementById('modalRewardName');
+    const modalRewardId = document.getElementById('modalRewardId');
+    const modalUserId = document.getElementById('modalUserId');
+    const modalUserName = document.getElementById('modalUserName');
+    const modalRewardName = document.getElementById('modalRewardName');
+    const qrScanStatus = document.getElementById('qrScanStatus');
 
-  document.querySelectorAll('.approve-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      modalRewardId.value = button.dataset.rewardid;
-      modalUserId.value = button.dataset.userid;
-      modalUserName.textContent = button.dataset.username;
-      modalRewardName.textContent = button.dataset.rewardname;
-      approveModal.show();
+    document.querySelectorAll('.approve-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const rewardId = button.dataset.rewardid;
+        const userId = button.dataset.userid;
+        const userName = button.dataset.username;
+        const rewardName = button.dataset.rewardname;
+
+        modalRewardId.value = rewardId;
+        modalUserId.value = userId;
+        modalUserName.textContent = userName;
+        modalRewardName.textContent = rewardName;
+
+        qrScannerModal.show();
+
+        setTimeout(() => {
+          qrScanner = new Html5Qrcode("qr-reader-modal");
+          Html5Qrcode.getCameras().then(cameras => {
+            if (!cameras.length) {
+              qrScanStatus.innerText = "No camera found.";
+              return;
+            }
+            qrScanner.start(
+              { facingMode: "environment" },
+              { fps: 10, qrbox: 250 },
+              decodedText => {
+                qrScanStatus.innerText = "Verifying QR...";
+                fetch("/capstoneweb/admin/api/qr_verify.php", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                  body: "qr_data=" + encodeURIComponent(decodedText)
+                })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.success) {
+                    qrScanStatus.innerHTML = "✅ Verified: " + data.user.userName;
+                    setTimeout(() => {
+                      qrScanner.stop().then(() => {
+                        qrScannerModal.hide();
+                        approveModal.show();
+                      });
+                    }, 1000);
+                  } else {
+                    qrScanStatus.innerHTML = "❌ " + data.message;
+                  }
+                })
+                .catch(err => {
+                  qrScanStatus.innerText = "Error verifying: " + err;
+                });
+              },
+              err => {}
+            );
+          });
+        }, 300);
+      });
+    });
+
+    document.getElementById('qrScannerModal').addEventListener('hidden.bs.modal', () => {
+      if (qrScanner) qrScanner.stop().catch(() => {});
     });
   });
-
-  // =================== QR SCANNER LOGIC ===================
-  const qrResult = document.getElementById('qrResult');
-  const readerDiv = document.getElementById('reader');
-
-  if (!readerDiv) {
-    console.error("QR reader div not found.");
-    return;
-  }
-
-  const html5QrCode = new Html5Qrcode("reader");
-  let isScanning = false;
-
-  function onScanSuccess(decodedText) {
-    if (isScanning) return; // prevent multiple triggers
-    isScanning = true;
-    qrResult.innerText = "Processing...";
-
-    fetch("/capstoneweb/admin/api/qr_verify.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: "qr_data=" + encodeURIComponent(decodedText)
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        qrResult.innerHTML = `
-          ✅ User: <b>${data.user.userName}</b><br>
-          🪙 Points: <b>${data.user.total_points}</b><br>
-          🎁 Reward: <b>${data.user.reward_name ?? "N/A"}</b>
-        `;
-
-        // Fill modal details
-        modalUserId.value = data.user.userid;
-        modalUserName.textContent = data.user.userName;
-        modalRewardName.textContent = data.user.reward_name ?? "Scanned Reward";
-        modalRewardId.value = data.user.reward_id ?? "";
-
-        // Stop scanner before showing modal
-        html5QrCode.stop().then(() => {
-          approveModal.show();
-        }).catch(err => console.warn("Failed to stop scanner:", err));
-
-      } else {
-        qrResult.innerHTML = "❌ " + data.message;
-        isScanning = false; // allow rescanning
-      }
-    })
-    .catch(err => {
-      qrResult.innerText = "Error: " + err;
-      isScanning = false;
-    });
-  }
-
-  function onScanError(errorMessage) {
-    // Optional: console.log("Scan error:", errorMessage);
-  }
-
-  // Initialize camera safely
-  Html5Qrcode.getCameras()
-    .then(cameras => {
-      if (cameras && cameras.length) {
-        html5QrCode.start(
-          { facingMode: "environment" },
-          { fps: 10, qrbox: { width: 250, height: 250 } },
-          onScanSuccess,
-          onScanError
-        ).catch(err => {
-          qrResult.innerText = "Camera start failed: " + err;
-        });
-      } else {
-        qrResult.innerText = "No camera found.";
-      }
-    })
-    .catch(err => {
-      qrResult.innerText = "Camera access denied: " + err;
-    });
-
-  // Restart scanner when modal closes (optional)
-  document.getElementById('approveRewardModal').addEventListener('hidden.bs.modal', () => {
-    isScanning = false;
-    html5QrCode.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 250, height: 250 } },
-      onScanSuccess,
-      onScanError
-    ).catch(() => {}); // silently retry
-  });
-});
-</script>
-
+  </script>
 </body>
-
 </html>
