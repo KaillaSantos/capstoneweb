@@ -168,10 +168,12 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                 <p><i class="fa-solid fa-star text-warning"></i> <?= htmlspecialchars($rows['product_points']) ?> points</p>
                 <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['product_date'])) ?></p>
                 <p><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
+                <p><i class="fa-solid fa-boxes-packing"></i> <?= htmlspecialchars($rows['product_quantity'])?> remaining</p>
                 <div class="reward-actions">
                   <button type="button" class="btn btn-link read-more-btn"
                     data-title="<?= htmlspecialchars($rows['product_name']) ?>"
                     data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                    data-quantity="<?= htmlspecialchars($rows['product_quantity'])?>"
                     data-date="<?= date("F j, Y", strtotime($rows['product_date'])) ?>"
                     data-text="<?= htmlspecialchars($rows['product_description']) ?>"
                     data-image="<?= $rewardImage ?>">
@@ -183,6 +185,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                   data-name="<?= htmlspecialchars($rows['product_name']) ?>"
                   data-description="<?= htmlspecialchars($rows['product_description']) ?>"
                   data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                  data-quantity="<?= htmlspecialchars($rows['product_quantity'])?>"
                   data-img="<?= htmlspecialchars($rows['product_img']) ?>">
                   <i class="fa fa-edit"></i> Edit
                 </button>
@@ -268,6 +271,11 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
             <label for="product_points" class="form-label fw-semibold">Points Required:</label>
             <input type="number" class="form-control" id="product_points" name="product_points"
               placeholder="Enter points required" min="1" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="product_quantity" class="form-label fw-semibold">Date:</label>
+            <input type="date" class="form-control" id="product_quantity" name="product_quantity" required>
           </div>
 
           <div class="mb-3">
