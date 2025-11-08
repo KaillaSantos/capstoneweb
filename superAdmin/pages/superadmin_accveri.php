@@ -48,19 +48,19 @@
     <!-- ===== MAIN CONTENT ===== -->
     <div class="content" id="content">
 
-      <!-- ===== HEADER ===== -->
-      <header class="dashboard-header d-flex justify-content-between align-items-center">
-        <div class="header-left d-flex align-items-center">
-          <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
-          <div class="header-text ms-3">
-            <h1 class="h4 mb-0">E-Recycle Account Verification</h1>
-            <p>Municipality of San Ildefonso</p>
-          </div>
+    <!-- ===== HEADER ===== -->
+    <header class="dashboard-header d-flex justify-content-between align-items-center">
+      <div class="header-left d-flex align-items-center">
+        <img src="/capstoneweb/assets/logo_matimbubong.jpeg" alt="E-Recycle Logo" class="header-logo">
+        <div class="header-text ms-3">
+          <h1 class="h4 mb-0">E-Recycle Account Verification</h1>
+          <p>Municipality of San Ildefonso</p>
         </div>
-        <div class="header-right">
-          <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
-        </div>
-      </header>
+      </div>
+      <div class="header-right">
+        <span class="date-display fw-semibold"><?php echo date("F j, Y"); ?></span>
+      </div>
+    </header>
 
 
       <?php if (isset($_SESSION['message'])): ?>
@@ -88,11 +88,147 @@
 
 
       <!-- ===== USERS TABLE ===== -->
-      <div id="pendingTableContainer" class="table-section">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="fw-bold text-center">Account Verification</h4>
+        <div id="pendingTableContainer" class="table-section">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold text-center">Account Verification</h4>
+          </div>
+          <div class="table-responsive mt-4">
+            <table class="table table-bordered table-striped table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th style="width: 80px;">Image</th>
+                  <th>User Name</th>
+                  <th>Email</th>
+                  <th>Purok</th>
+                  <th>Status</th>
+                  <th style="width: 180px;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                // ===== PAGINATION =====
+                $records_per_page = 5;
+                $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+                $offset = ($page - 1) * $records_per_page;
+
+                // ===== COUNT TOTAL RECORDS =====
+                $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'admin' AND status = 'pending'";
+                $countResult = mysqli_query($conn, $countQuery);
+                $total_records = mysqli_fetch_assoc($countResult)['total'];
+                $total_pages = ceil($total_records / $records_per_page);
+
+                // ===== FETCH USERS =====
+                $sql = "
+                  SELECT userid, userimg, userName, email, purok, status 
+                  FROM account 
+                  WHERE role = 'User' AND status = 'pending'
+                  ORDER BY userid DESC
+                  LIMIT $records_per_page OFFSET $offset
+                ";
+                $result = mysqli_query($conn, $sql);
+
+                if (mysqli_num_rows($result) > 0):
+                  while ($row = mysqli_fetch_assoc($result)):
+                    $imagePath = !empty($row['userimg'])
+                      ? "../../image/" . htmlspecialchars($row['userimg'])
+                      : "../../image/placeholder.jpg";
+                ?>
+                    <tr>
+                      <td>
+                        <img src="<?= $imagePath ?>" alt="User Image" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                      </td>
+                      <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
+                      <td><?= htmlspecialchars($row['email']) ?></td>
+                      <td><?= htmlspecialchars($row['purok']) ?></td>
+                      <td>
+                        <span class="badge bg-warning text-dark">Pending</span>
+                      </td>
+                      <td>
+                        <button type="button" 
+                                class="btn btn-success btn-sm approve-btn" 
+                                data-userid="<?= htmlspecialchars($row['userid']) ?>" 
+                                data-username="<?= htmlspecialchars($row['userName']) ?>"
+                                title="Approve">
+                          <i class="fa fa-check"></i>
+                        </button>
+                        <form action="../../function/function.php" method="POST" class="d-inline">
+                          <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
+                          <button type="submit" name="reject_user" class="btn btn-danger btn-sm" title="Reject">
+                            <i class="fa fa-times"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  <?php
+                  endwhile;
+                else:
+                  ?>
+                  <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No unverified users found.</td>
+                  </tr>
+                <?php endif; ?>
+              </tbody>
+            </table>
+
+             <!-- ===== PAGINATION ===== -->
+            <?php if ($total_pages > 1): ?>
+              <div class="d-flex justify-content-center mt-3">
+                <nav>
+                  <ul class="pagination">
+                    <!-- Prev -->
+                    <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                      <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+                    </li>
+
+                    <!-- Page numbers -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                      <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                      </li>
+                    <?php endfor; ?>
+
+                    <!-- Next -->
+                    <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+                      <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            <?php endif; ?>
+          </div>
+        </div>
+
+      
+      <!-- ACCOUNT DISSABLING TABLE-->
+      <div id="approvedTableContainer" class="table-section" style="display:none;">
+        <?php 
+              // ===== COUNT TOTAL RECORDS =====
+            $countQuery = "
+              SELECT COUNT(*) AS total 
+              FROM account 
+              WHERE status = 'approved' 
+              AND (role = 'admin' OR role = 'user')
+            ";
+            $countResult = mysqli_query($conn, $countQuery);
+            $total_records = mysqli_fetch_assoc($countResult)['total'];
+            $total_pages = ceil($total_records / $records_per_page);
+
+            // ===== FETCH APPROVED ADMINS + USERS =====
+            $sql = "
+              SELECT userid, userimg, userName, email, purok, status, role
+              FROM account 
+              WHERE status = 'approved'
+              AND (role = 'admin' OR role = 'user')
+              ORDER BY userid DESC
+              LIMIT $records_per_page OFFSET $offset
+            ";
+            $result = mysqli_query($conn, $sql);
+          ?>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold text-center">Approved Accounts</h4>
         </div>
         <div class="table-responsive mt-4">
+          
           <table class="table table-bordered table-striped table-hover align-middle">
             <thead class="table-dark">
               <tr>
@@ -100,39 +236,19 @@
                 <th>User Name</th>
                 <th>Email</th>
                 <th>Purok</th>
+                <th>Role</th>
                 <th>Status</th>
-                <th style="width: 180px;">Action</th>
+                <th style="width: 150px;">Action</th>
               </tr>
             </thead>
             <tbody>
-              <?php
-              // ===== PAGINATION =====
-              $records_per_page = 5;
-              $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-              $offset = ($page - 1) * $records_per_page;
-
-              // ===== COUNT TOTAL RECORDS =====
-              $countQuery = "SELECT COUNT(*) AS total FROM account WHERE role = 'admin' AND status = 'pending'";
-              $countResult = mysqli_query($conn, $countQuery);
-              $total_records = mysqli_fetch_assoc($countResult)['total'];
-              $total_pages = ceil($total_records / $records_per_page);
-
-              // ===== FETCH USERS =====
-              $sql = "
-                SELECT userid, userimg, userName, email, purok, status 
-                FROM account 
-                WHERE role = 'User' AND status = 'pending'
-                ORDER BY userid DESC
-                LIMIT $records_per_page OFFSET $offset
-              ";
-              $result = mysqli_query($conn, $sql);
-
-              if (mysqli_num_rows($result) > 0):
-                while ($row = mysqli_fetch_assoc($result)):
+              <?php if (mysqli_num_rows($result) > 0): ?>
+                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                  <?php
                   $imagePath = !empty($row['userimg'])
                     ? "../../image/" . htmlspecialchars($row['userimg'])
                     : "../../image/placeholder.jpg";
-              ?>
+                  ?>
                   <tr>
                     <td>
                       <img src="<?= $imagePath ?>" alt="User Image" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
@@ -140,31 +256,27 @@
                     <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
                     <td><?= htmlspecialchars($row['email']) ?></td>
                     <td><?= htmlspecialchars($row['purok']) ?></td>
-                    <td>
-                      <span class="badge bg-warning text-dark">Pending</span>
+                    <td class="text-capitalize">
+                      <?php if ($row['role'] === 'admin'): ?>
+                        <span class="badge bg-primary">Admin</span>
+                      <?php else: ?>
+                        <span class="badge bg-success">User</span>
+                      <?php endif; ?>
                     </td>
+                    <td><span class="badge bg-success">Approved</span></td>
                     <td>
-                      <button type="button" 
-                              class="btn btn-success btn-sm approve-btn" 
-                              data-userid="<?= htmlspecialchars($row['userid']) ?>" 
-                              data-username="<?= htmlspecialchars($row['userName']) ?>"
-                              title="Approve">
-                        <i class="fa fa-check"></i>
-                      </button>
                       <form action="../../function/function.php" method="POST" class="d-inline">
                         <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                        <button type="submit" name="reject_user" class="btn btn-danger btn-sm" title="Reject">
-                          <i class="fa fa-times"></i>
+                        <button type="submit" name="disable_user" class="btn btn-warning btn-sm" title="Disable Account" onclick="return confirm('Are you sure you want to disable this account?');">
+                          <i class="fa fa-ban"></i> Disable
                         </button>
                       </form>
                     </td>
                   </tr>
-                <?php
-                endwhile;
-              else:
-                ?>
+                <?php endwhile; ?>
+              <?php else: ?>
                 <tr>
-                  <td colspan="6" class="text-center text-muted py-4">No unverified users found.</td>
+                  <td colspan="7" class="text-center text-muted py-4">No approved admin or user accounts found.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
@@ -198,133 +310,22 @@
         </div>
       </div>
 
-      <!-- ACCOUNT DISSABLING TABLE-->
-      <div class="table-responsive mt-4">
-        <?php
-        // ===== PAGINATION =====
-        $records_per_page = 5;
-        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-        $offset = ($page - 1) * $records_per_page;
-
-        // ===== COUNT TOTAL RECORDS =====
-        $countQuery = "
-          SELECT COUNT(*) AS total 
-          FROM account 
-          WHERE status = 'approved' 
-          AND (role = 'admin' OR role = 'user')
-        ";
-        $countResult = mysqli_query($conn, $countQuery);
-        $total_records = mysqli_fetch_assoc($countResult)['total'];
-        $total_pages = ceil($total_records / $records_per_page);
-
-        // ===== FETCH APPROVED ADMINS + USERS =====
-        $sql = "
-          SELECT userid, userimg, userName, email, purok, status, role
-          FROM account 
-          WHERE status = 'approved'
-          AND (role = 'admin' OR role = 'user')
-          ORDER BY userid DESC
-          LIMIT $records_per_page OFFSET $offset
-        ";
-        $result = mysqli_query($conn, $sql);
-        ?>
-
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="fw-bold text-center">Approved Accounts</h4>
-        </div>
-
-        <table class="table table-bordered table-striped table-hover align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th style="width: 80px;">Image</th>
-              <th>User Name</th>
-              <th>Email</th>
-              <th>Purok</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th style="width: 150px;">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (mysqli_num_rows($result) > 0): ?>
-              <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                <?php
-                $imagePath = !empty($row['userimg'])
-                  ? "../../image/" . htmlspecialchars($row['userimg'])
-                  : "../../image/placeholder.jpg";
-                ?>
-                <tr>
-                  <td>
-                    <img src="<?= $imagePath ?>" alt="User Image" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                  </td>
-                  <td class="text-capitalize"><?= htmlspecialchars($row['userName']) ?></td>
-                  <td><?= htmlspecialchars($row['email']) ?></td>
-                  <td><?= htmlspecialchars($row['purok']) ?></td>
-                  <td class="text-capitalize">
-                    <?php if ($row['role'] === 'admin'): ?>
-                      <span class="badge bg-primary">Admin</span>
-                    <?php else: ?>
-                      <span class="badge bg-success">User</span>
-                    <?php endif; ?>
-                  </td>
-                  <td><span class="badge bg-success">Approved</span></td>
-                  <td>
-                    <form action="../../function/function.php" method="POST" class="d-inline">
-                      <input type="hidden" name="userid" value="<?= htmlspecialchars($row['userid']) ?>">
-                      <button type="submit" name="disable_user" class="btn btn-warning btn-sm" title="Disable Account" onclick="return confirm('Are you sure you want to disable this account?');">
-                        <i class="fa fa-ban"></i> Disable
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              <?php endwhile; ?>
-            <?php else: ?>
-              <tr>
-                <td colspan="7" class="text-center text-muted py-4">No approved admin or user accounts found.</td>
-              </tr>
-            <?php endif; ?>
-          </tbody>
-        </table>
-
-        <!-- ===== PAGINATION ===== -->
-        <?php if ($total_pages > 1): ?>
-          <div class="d-flex justify-content-center mt-3">
-            <nav>
-              <ul class="pagination">
-                <!-- Prev -->
-                <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
-                </li>
-
-                <!-- Page numbers -->
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                  <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                  </li>
-                <?php endfor; ?>
-
-                <!-- Next -->
-                <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        <?php endif; ?>
-      </div>
 
       <!-- DISSABLED ACCOUNT -->
+
       <div id="disabledTableContainer" class="table-section" style="display:none;">
-        <?php
-        $sql = "
-          SELECT userid, userimg, userName, email, purok, status, role
-          FROM account 
-          WHERE status = 'disabled'
-          ORDER BY userid DESC
-        ";
-        $result = mysqli_query($conn, $sql);
-        ?>
-        <h4 class="fw-bold text-center mb-3">Disabled Accounts</h4>
+          <?php
+            $sql = "
+              SELECT userid, userimg, userName, email, purok, status, role
+              FROM account 
+              WHERE status = 'disabled'
+              ORDER BY userid DESC
+            ";
+            $result = mysqli_query($conn, $sql);
+          ?>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold text-center">Disabled Accounts</h4>
+        </div>
         <div class="table-responsive mt-4">
           <table class="table table-bordered table-striped table-hover align-middle">
             <thead class="table-dark">
@@ -368,13 +369,35 @@
               <?php endif; ?>
             </tbody>
           </table>
+
+          <!-- ===== PAGINATION ===== -->
+          <?php if ($total_pages > 1): ?>
+            <div class="d-flex justify-content-center mt-3">
+              <nav>
+                <ul class="pagination">
+                  <!-- Prev -->
+                  <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+                  </li>
+
+                  <!-- Page numbers -->
+                  <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                      <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                  <?php endfor; ?>
+
+                  <!-- Next -->
+                  <li class="page-item <?= ($page >= $total_pages) ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
-
-
-
-    </div>
-
+      
     <!-- ===== JS ===== -->
     <script src="/capstoneweb/assets/sidebarToggle.js"></script>
     <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
@@ -416,34 +439,52 @@
     </script>
 
     <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const dropdownItems = document.querySelectorAll(".dropdown-item");
-    const sections = {
-      pending: document.getElementById("pendingTableContainer"),
-      approved: document.getElementById("approvedTableContainer"),
-      disabled: document.getElementById("disabledTableContainer")
-    };
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const sections = {
+    pending: document.getElementById("pendingTableContainer"),
+    approved: document.getElementById("approvedTableContainer"),
+    disabled: document.getElementById("disabledTableContainer")
+  };
 
-    dropdownItems.forEach(item => {
-      item.addEventListener("click", e => {
-        e.preventDefault();
+  // Get selected table from URL or default
+  const urlParams = new URLSearchParams(window.location.search);
+  let selectedTable = urlParams.get("table") || "pending";
 
-        // Remove active state from all
-        dropdownItems.forEach(i => i.classList.remove("active"));
-        item.classList.add("active");
+  function showTable(table) {
+    // Hide all tables
+    Object.values(sections).forEach(sec => sec.style.display = "none");
+    // Show selected table
+    if (sections[table]) sections[table].style.display = "block";
 
-        // Hide all tables
-        Object.values(sections).forEach(sec => sec.style.display = "none");
+    // Update dropdown text
+    const activeItem = document.querySelector(`.dropdown-item[data-table="${table}"]`);
+    if (activeItem) {
+      dropdownItems.forEach(i => i.classList.remove("active"));
+      activeItem.classList.add("active");
+      document.getElementById("filterDropdown").textContent = activeItem.textContent;
+    }
+  }
 
-        // Show selected table
-        const selected = item.dataset.table;
-        if (sections[selected]) sections[selected].style.display = "block";
+  // Initial display
+  showTable(selectedTable);
 
-        // Update dropdown text
-        document.getElementById("filterDropdown").textContent = item.textContent;
-      });
+  // Dropdown click
+  dropdownItems.forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      const table = item.dataset.table;
+      showTable(table);
+
+      // Update URL without reload
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set("table", table);
+      window.history.replaceState({}, '', newUrl);
     });
   });
+});
+</script>
+
   </script>
 
 
