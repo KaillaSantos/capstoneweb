@@ -168,10 +168,12 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                 <p><i class="fa-solid fa-star text-warning"></i> <?= htmlspecialchars($rows['product_points']) ?> points</p>
                 <p><i class="fa fa-calendar"></i> <?= date("F j, Y", strtotime($rows['product_date'])) ?></p>
                 <p><i class="fa-regular fa-note-sticky"></i> <?= nl2br(htmlspecialchars($rows['product_description'])) ?></p>
+                <p><i class="fa-solid fa-boxes-packing"></i> <?= htmlspecialchars($rows['product_quantity'])?> remaining</p>
                 <div class="reward-actions">
                   <button type="button" class="btn btn-link read-more-btn"
                     data-title="<?= htmlspecialchars($rows['product_name']) ?>"
                     data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                    data-quantity="<?= htmlspecialchars($rows['product_quantity'])?>"
                     data-date="<?= date("F j, Y", strtotime($rows['product_date'])) ?>"
                     data-text="<?= htmlspecialchars($rows['product_description']) ?>"
                     data-image="<?= $rewardImage ?>">
@@ -183,6 +185,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
                   data-name="<?= htmlspecialchars($rows['product_name']) ?>"
                   data-description="<?= htmlspecialchars($rows['product_description']) ?>"
                   data-points="<?= htmlspecialchars($rows['product_points']) ?>"
+                  data-quantity="<?= htmlspecialchars($rows['product_quantity'])?>"
                   data-img="<?= htmlspecialchars($rows['product_img']) ?>">
                   <i class="fa fa-edit"></i> Edit
                 </button>
@@ -216,29 +219,30 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
       </div>
     </div>
   </div>
+
   <!-- 🔐 Password Verification Modal -->
-    <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form method="post" action="">
-            <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
-            <div class="modal-header">
-              <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="post" action="">
+          <input type="hidden" name="redirect" value="/capstoneweb/admin/pages/accsetting.php">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Your Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="verifyPassword" class="form-label">Enter Password</label>
+              <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
             </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="verifyPassword" class="form-label">Enter Password</label>
-                <input type="password" class="form-control" name="verify_password" id="verifyPassword" required>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="verify_submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
 <!-- Add New Reward Modal -->
 <div class="modal fade" id="addRewardModal" tabindex="-1" aria-labelledby="addRewardModalLabel" aria-hidden="true">
@@ -268,6 +272,11 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
             <label for="product_points" class="form-label fw-semibold">Points Required:</label>
             <input type="number" class="form-control" id="product_points" name="product_points"
               placeholder="Enter points required" min="1" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="product_quantity" class="form-label fw-semibold">Product Quantity:</label>
+            <input type="number" class="form-control" id="product_quantity" name="product_quantity" required>
           </div>
 
           <div class="mb-3">
@@ -316,8 +325,8 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
 });
 </script>
 
+<!-- // 🗓️ Auto-fill today's date and prevent past dates -->
 <script>
-  // 🗓️ Auto-fill today's date and prevent past dates
   document.addEventListener("DOMContentLoaded", function() {
     const today = new Date().toISOString().split("T")[0];
     const dateInput = document.getElementById("product_date");
@@ -356,7 +365,11 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
               <input type="number" class="form-control" id="edit_product_points" name="product_points" required>
             </div>
 
-            <!-- Removed product_date field (auto today handled on add modal) -->
+            <div class="mb-3">
+              <label for="product_quantity" class="form-label fw-semibold">Product Quantity:</label>
+              <input type="number" class="form-control" id="edit_product_quantity" name="product_quantity" required>
+            </div>
+
 
             <div class="mb-3">
               <label for="edit_product_img" class="form-label fw-semibold">Upload Image (optional):</label>
@@ -399,11 +412,13 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
       const description = this.getAttribute('data-description');
       const points = this.getAttribute('data-points');
       const img = this.getAttribute('data-img');
+      const quantity = this.getAttribute('data-quantity');
 
       document.getElementById('edit_reward_id').value = id;
       document.getElementById('edit_product_name').value = name;
       document.getElementById('edit_product_description').value = description;
       document.getElementById('edit_product_points').value = points;
+      document.getElementById('edit_product_quantity').value = quantity;
 
       const imgContainer = document.getElementById('currentImageContainerReward');
       const currentImage = document.getElementById('currentImageReward');
@@ -458,6 +473,7 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
         document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
         document.getElementById('modalDate').textContent = this.getAttribute('data-date');
         document.getElementById('modalText').textContent = this.getAttribute('data-text');
+        document.getElementById('modalText').textContent = this.getAttribute('data-quantity');
         document.getElementById('modalImage').src = this.getAttribute('data-image');
 
         const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
