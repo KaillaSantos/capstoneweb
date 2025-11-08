@@ -409,115 +409,98 @@
         </div>
       </div>
       
-    <!-- ===== JS ===== -->
+    <<!-- ===== JS ===== -->
     <script src="/capstoneweb/assets/sidebarToggle.js"></script>
     <script src="/capstoneweb/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-
-        // Disable account modal
-        const disableModal = new bootstrap.Modal(document.getElementById('disableModal'));
-        const disableUserName = document.getElementById('disableUserName');
-        const disableUserId = document.getElementById('disableUserId');
-
-        document.querySelectorAll('.disable-btn').forEach(button => {
-          button.addEventListener('click', () => {
-            disableUserName.textContent = button.dataset.username;
-            disableUserId.value = button.dataset.userid;
-            disableModal.show();
-          });
-        });
-
-        // Enable account modal
-        const enableModal = new bootstrap.Modal(document.getElementById('enableModal'));
-        const enableUserName = document.getElementById('enableUserName');
-        const enableUserId = document.getElementById('enableUserId');
-
-        document.querySelectorAll('.enable-btn').forEach(button => {
-          button.addEventListener('click', () => {
-            enableUserName.textContent = button.dataset.username;
-            enableUserId.value = button.dataset.userid;
-            enableModal.show();
-          });
-        });
-
-      });
-
-    </script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Auto-close alert after 3s
-        const alert = document.querySelector(".alert");
-        if (alert) {
-          setTimeout(() => new bootstrap.Alert(alert).close(), 3000);
+    document.addEventListener("DOMContentLoaded", () => {
+
+      // ===== Auto-close alert =====
+      const alert = document.querySelector(".alert");
+      if (alert) {
+        setTimeout(() => new bootstrap.Alert(alert).close(), 3000);
+      }
+
+      // ===== Table dropdown toggle =====
+      const dropdownItems = document.querySelectorAll(".dropdown-item");
+      const sections = {
+        pending: document.getElementById("pendingTableContainer"),
+        approved: document.getElementById("approvedTableContainer"),
+        disabled: document.getElementById("disabledTableContainer")
+      };
+
+      const urlParams = new URLSearchParams(window.location.search);
+      let selectedTable = urlParams.get("table") || "pending";
+
+      function showTable(table) {
+        Object.values(sections).forEach(sec => sec.style.display = "none");
+        if (sections[table]) sections[table].style.display = "block";
+
+        dropdownItems.forEach(i => i.classList.remove("active"));
+        const activeItem = document.querySelector(`.dropdown-item[data-table="${table}"]`);
+        if (activeItem) {
+          activeItem.classList.add("active");
+          document.getElementById("filterDropdown").textContent = activeItem.textContent;
         }
+      }
 
-        // Handle approve modal
-        const approveModal = new bootstrap.Modal(document.getElementById('approveModal'));
-        const approveUserName = document.getElementById('approveUserName');
-        const approveUserId = document.getElementById('approveUserId');
+      showTable(selectedTable);
 
-        document.querySelectorAll('.approve-btn').forEach(button => {
-          button.addEventListener('click', () => {
-            const userId = button.dataset.userid;
-            const userName = button.dataset.username;
-            approveUserName.textContent = userName;
-            approveUserId.value = userId;
-            approveModal.show();
-          });
+      dropdownItems.forEach(item => {
+        item.addEventListener("click", e => {
+          e.preventDefault();
+          const table = item.dataset.table;
+          showTable(table);
+
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set("table", table);
+          window.history.replaceState({}, '', newUrl);
         });
       });
+
+      // ===== Approve modal =====
+      const approveModal = new bootstrap.Modal(document.getElementById('approveModal'));
+      const approveUserName = document.getElementById('approveUserName');
+      const approveUserId = document.getElementById('approveUserId');
+
+      document.querySelectorAll('.approve-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          approveUserName.textContent = button.dataset.username;
+          approveUserId.value = button.dataset.userid;
+          approveModal.show();
+        });
+      });
+
+      // ===== Disable modal =====
+      const disableModal = new bootstrap.Modal(document.getElementById('disableModal'));
+      const disableUserName = document.getElementById('disableUserName');
+      const disableUserId = document.getElementById('disableUserId');
+
+      document.querySelectorAll('.disable-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          disableUserName.textContent = button.dataset.username;
+          disableUserId.value = button.dataset.userid;
+          disableModal.show();
+        });
+      });
+
+      // ===== Enable modal =====
+      const enableModal = new bootstrap.Modal(document.getElementById('enableModal'));
+      const enableUserName = document.getElementById('enableUserName');
+      const enableUserId = document.getElementById('enableUserId');
+
+      document.querySelectorAll('.enable-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          enableUserName.textContent = button.dataset.username;
+          enableUserId.value = button.dataset.userid;
+          enableModal.show();
+        });
+      });
+
+    });
     </script>
 
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const dropdownItems = document.querySelectorAll(".dropdown-item");
-  const sections = {
-    pending: document.getElementById("pendingTableContainer"),
-    approved: document.getElementById("approvedTableContainer"),
-    disabled: document.getElementById("disabledTableContainer")
-  };
-
-  // Get selected table from URL or default
-  const urlParams = new URLSearchParams(window.location.search);
-  let selectedTable = urlParams.get("table") || "pending";
-
-  function showTable(table) {
-    // Hide all tables
-    Object.values(sections).forEach(sec => sec.style.display = "none");
-    // Show selected table
-    if (sections[table]) sections[table].style.display = "block";
-
-    // Update dropdown text
-    const activeItem = document.querySelector(`.dropdown-item[data-table="${table}"]`);
-    if (activeItem) {
-      dropdownItems.forEach(i => i.classList.remove("active"));
-      activeItem.classList.add("active");
-      document.getElementById("filterDropdown").textContent = activeItem.textContent;
-    }
-  }
-
-  // Initial display
-  showTable(selectedTable);
-
-  // Dropdown click
-  dropdownItems.forEach(item => {
-    item.addEventListener("click", e => {
-      e.preventDefault();
-      const table = item.dataset.table;
-      showTable(table);
-
-      // Update URL without reload
-      const newUrl = new URL(window.location.href);
-      newUrl.searchParams.set("table", table);
-      window.history.replaceState({}, '', newUrl);
-    });
-  });
-});
-</script>
-
-  </script>
 
 
     <!-- ===== PASSWORD VERIFY MODAL ===== -->
