@@ -274,8 +274,8 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
           </div>
 
           <div class="mb-3">
-            <label for="product_quantity" class="form-label fw-semibold">Date:</label>
-            <input type="date" class="form-control" id="product_quantity" name="product_quantity" required>
+            <label for="product_quantity" class="form-label fw-semibold">Product Quantity:</label>
+            <input type="number" class="form-control" id="product_quantity" name="product_quantity" required>
           </div>
 
           <div class="mb-3">
