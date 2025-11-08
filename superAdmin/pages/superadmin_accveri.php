@@ -75,7 +75,9 @@ $user = mysqli_fetch_assoc($result);
 
     <!-- ===== USERS TABLE ===== -->
 
-    <h3 class="text-center"> Account Verification</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-center">Account Verification</h4>
+      </div>
     <div class="table-responsive mt-4">
       <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark">
@@ -182,7 +184,6 @@ $user = mysqli_fetch_assoc($result);
     </div>
 
     <!-- ACCOUNT DISSABLE -->
-    <h3 class="text-center"> Active Account</h3>
     <div class="table-responsive mt-4">
       <?php
       // ===== PAGINATION =====
@@ -214,7 +215,7 @@ $user = mysqli_fetch_assoc($result);
       ?>
 
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold">Approved Accounts (Admin & User)</h4>
+        <h4 class="fw-bold text-center">Approved Accounts</h4>
       </div>
 
       <table class="table table-bordered table-striped table-hover align-middle">

@@ -725,7 +725,6 @@ if (isset($_POST['disable_user'])) {
     }
 }
 
-
 // Handle reward approval
 if (isset($_POST['approve_reward'])) {
     $userid = intval($_POST['user_id']);
