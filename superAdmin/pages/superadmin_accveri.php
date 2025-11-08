@@ -91,6 +91,7 @@ $user = mysqli_fetch_assoc($result);
     <!-- ===== USERS TABLE ===== -->
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4 class="fw-bold text-center">Account Verification</h4>
+    </div>
       <div class="table-responsive mt-4">
       <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark">
@@ -194,7 +195,6 @@ $user = mysqli_fetch_assoc($result);
           </nav>
         </div>
       <?php endif; ?>
-      </div>
     </div>
 
     <!-- ACCOUNT DISSABLING TABLE-->
