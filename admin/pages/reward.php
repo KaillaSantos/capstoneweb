@@ -215,6 +215,7 @@ include_once __DIR__ . '/../includes/passwordVerification.php';
           <h3 id="modalTitle"></h3>
           <p><strong>Date:</strong> <span id="modalDate"></span></p>
           <p id="modalText"></p>
+          <p><strong>Supply:</strong> <span id="modalQuantity"></span></p>
         </div>
       </div>
     </div>
@@ -473,7 +474,7 @@ document.getElementById('rewardForm').addEventListener('submit', function(event)
         document.getElementById('modalTitle').textContent = this.getAttribute('data-title');
         document.getElementById('modalDate').textContent = this.getAttribute('data-date');
         document.getElementById('modalText').textContent = this.getAttribute('data-text');
-        document.getElementById('modalText').textContent = this.getAttribute('data-quantity');
+        document.getElementById('modalQuantity').textContent = this.getAttribute('data-quantity');
         document.getElementById('modalImage').src = this.getAttribute('data-image');
 
         const modal = new bootstrap.Modal(document.getElementById('readMoreModal'));
