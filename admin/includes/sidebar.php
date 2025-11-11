@@ -63,7 +63,7 @@ $current_page = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
        <i class="fas fa-exclamation-circle"></i> <span class="link-text">Notification</span>
     </a>
 
-    <a href="#" data-bs-toggle="modal" data-bs-target="#verifyPasswordModal"
+    <a href="/capstoneweb/admin/pages/accsetting.php"
        title="Account Settings"
        class="<?= ($current_page == 'accsetting.php') ? 'active' : '' ?>">
        <i class="fa-solid fa-gears"></i> <span class="link-text">Account Settings</span>
